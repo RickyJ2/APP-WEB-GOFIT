@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'const.dart';
+import '../const.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -99,8 +99,8 @@ class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  var _usernameError;
-  var _passwordError;
+  var _usernameError = null;
+  var _passwordError = null;
 
   bool _passwordVisible = false;
 

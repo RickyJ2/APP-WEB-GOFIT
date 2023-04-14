@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+String uri = 'http://127.0.0.1:8000/api/';
+
 Color primaryColor = const Color(0xFFFB8B24);
 Color accentColor = const Color(0xFF131515);
 Color textColor = const Color(0xFFFCF7FF);
