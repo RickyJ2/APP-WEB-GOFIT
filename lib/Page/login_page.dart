@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_gofit/LoginBloc/login_bloc.dart';
+import 'package:web_gofit/LoginBloc/login_repository.dart';
+import 'package:web_gofit/LoginBloc/login_state.dart';
+import '../LoginBloc/login_event.dart';
 import '../const.dart';
+import '../form_submission_state.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => LoginBloc(loginRepository: LoginRepository()),
+        child: const LoginView(),
+      ),
+    );
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -21,65 +36,50 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
-          body: Center(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Expanded(
-                  child: Container(
-                    margin: EdgeInsetsGeometry.lerp(
-                      EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth * 0.1,
-                        vertical: constraints.maxHeight * 0.1,
-                      ),
-                      EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth * 0.05,
-                        vertical: constraints.maxHeight * 0.05,
-                      ),
-                      0.5,
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return Center(
+                child: Container(
+                  margin: EdgeInsetsGeometry.lerp(
+                    EdgeInsets.symmetric(
+                      horizontal: constraints.maxWidth * 0.1,
+                      vertical: constraints.maxHeight * 0.1,
                     ),
-                    constraints: const BoxConstraints(
-                      maxWidth: 600,
-                      maxHeight: 500,
+                    EdgeInsets.symmetric(
+                      horizontal: constraints.maxWidth * 0.05,
+                      vertical: constraints.maxHeight * 0.05,
                     ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: constraints.maxWidth * 0.02,
-                      vertical: constraints.maxHeight * 0.01,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white.withOpacity(0.8),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Text(
-                          'Selamat Datang',
-                          style: TextStyle(
-                            fontFamily: 'SchibstedGrotesk',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Divider(
-                          color: primaryColor,
-                          thickness: 3.0,
-                          endIndent: 340,
-                        ),
-                        const SizedBox(height: 10),
-                        const SubTextLogin(),
-                        const SizedBox(height: 30),
-                        const LoginForm(),
-                        const SizedBox(height: 15),
-                        const Center(
-                          child: SubtextFormLogin(),
-                        )
-                      ],
-                    ),
+                    0.5,
                   ),
-                );
-              },
-            ),
+                  constraints: const BoxConstraints(
+                    maxWidth: 600,
+                    maxHeight: 500,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: constraints.maxWidth * 0.02,
+                    vertical: constraints.maxHeight * 0.01,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const TitleFormText(),
+                      const LineDivider(),
+                      const SizedBox(height: 10),
+                      const SubTextLogin(),
+                      const SizedBox(height: 30),
+                      LoginForm(),
+                      const SizedBox(height: 15),
+                      const SubtextFormLogin(),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -87,89 +87,105 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
-
-  @override
-  State<LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final _formLoginKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  var _usernameError = null;
-  var _passwordError = null;
-
-  bool _passwordVisible = false;
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+class LineDivider extends StatelessWidget {
+  const LineDivider({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formLoginKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _usernameController,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.person),
-              labelText: 'Username',
-              errorText: _usernameError,
-              errorStyle: const TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 15,
-              ),
+    return Divider(
+      color: primaryColor,
+      thickness: 3.0,
+      endIndent: 340,
+    );
+  }
+}
+
+class TitleFormText extends StatelessWidget {
+  const TitleFormText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      'Selamat Datang',
+      style: TextStyle(
+        fontFamily: 'SchibstedGrotesk',
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+class LoginForm extends StatelessWidget {
+  LoginForm({super.key});
+  final _formLoginKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        final formState = state.formSubmissionState;
+        if (formState is SubmissionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("sukses"),
             ),
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            controller: _passwordController,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.lock),
-              labelText: 'Password',
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _passwordVisible = !_passwordVisible;
-                  });
-                },
-                icon: Icon(
-                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: _passwordVisible ? primaryColor : textColorSecond,
-                ),
-              ),
-              errorText: _passwordError,
-              errorStyle: const TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 15,
-              ),
+          );
+        } else if (formState is SubmissionFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(formState.exception.toString()),
             ),
-            obscureText: _passwordVisible,
-          ),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                debugPrint('Username: ${_usernameController.text}');
-                debugPrint('Password: ${_passwordController.text}');
-                setState(() {
-                  _usernameError = "error";
-                  _passwordError = "error";
-                });
-              },
-              child: Padding(
+          );
+        }
+      },
+      child: Form(
+        key: _formLoginKey,
+        child: Column(
+          children: const [
+            UsernameTextFormField(),
+            SizedBox(height: 10),
+            PasswordTextFormField(),
+            SizedBox(height: 40),
+            ButtonLoginForm(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonLoginForm extends StatelessWidget {
+  const ButtonLoginForm({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            context.read<LoginBloc>().add(LoginSubmitted());
+          },
+          child: Stack(
+            children: [
+              state.formSubmissionState is FormSubmitting
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+              Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Text(
-                  'Login',
+                  state.formSubmissionState is! FormSubmitting ? 'Login' : '',
                   style: TextStyle(
                     fontFamily: 'SchibstedGrotesk',
                     fontSize: 15,
@@ -177,11 +193,69 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class PasswordTextFormField extends StatelessWidget {
+  const PasswordTextFormField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextFormField(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.lock),
+          labelText: 'Password',
+          suffixIcon: IconButton(
+            onPressed: () {
+              context.read<LoginBloc>().add(PasswordVisibleChanged());
+            },
+            icon: Icon(
+              state.isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              color: state.isPasswordVisible ? primaryColor : textColorSecond,
             ),
           ),
-        ],
-      ),
-    );
+        ),
+        obscureText: !state.isPasswordVisible,
+        autovalidateMode: AutovalidateMode.always,
+        validator: (value) =>
+            state.passwordError == '' ? null : state.passwordError,
+        onChanged: (value) => context.read<LoginBloc>().add(
+              LoginPasswordChanged(password: value),
+            ),
+      );
+    });
+  }
+}
+
+class UsernameTextFormField extends StatelessWidget {
+  const UsernameTextFormField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextFormField(
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.person),
+          labelText: 'Username',
+        ),
+        autovalidateMode: AutovalidateMode.always,
+        validator: (value) =>
+            state.usernameError == '' ? null : state.usernameError,
+        onChanged: (value) => context.read<LoginBloc>().add(
+              LoginUsernameChanged(username: value),
+            ),
+      );
+    });
   }
 }
 
@@ -192,25 +266,27 @@ class SubtextFormLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: 'Butuh Bantuan? Hubungi ',
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 15,
-          color: textColorSecond,
-        ),
-        children: [
-          TextSpan(
-            text: 'IT Support',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 15,
-              color: textColorSecond,
-              fontWeight: FontWeight.bold,
-            ),
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          text: 'Butuh Bantuan? Hubungi ',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 15,
+            color: textColorSecond,
           ),
-        ],
+          children: [
+            TextSpan(
+              text: 'IT Support',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 15,
+                color: textColorSecond,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

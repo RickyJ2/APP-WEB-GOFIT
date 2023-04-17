@@ -33,3 +33,5 @@ Text goFit = Text(
     fontWeight: FontWeight.bold,
   ),
 );
+
+final sharedPrefKey = {'token': 'tokenKey'};
