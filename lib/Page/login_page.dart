@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:web_gofit/LoginBloc/login_bloc.dart';
 import 'package:web_gofit/LoginBloc/login_repository.dart';
 import 'package:web_gofit/LoginBloc/login_state.dart';
@@ -132,9 +133,10 @@ class LoginForm extends StatelessWidget {
         if (formState is SubmissionSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("sukses"),
+              content: Text("Berhasil Login"),
             ),
           );
+          context.go('/main');
         } else if (formState is SubmissionFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

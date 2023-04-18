@@ -1,4 +1,4 @@
-import '../model/pegawai.dart';
+import '../../model/pegawai.dart';
 
 abstract class AppEvent {
   const AppEvent();
