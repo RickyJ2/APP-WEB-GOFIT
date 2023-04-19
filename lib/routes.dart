@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_gofit/AppBloc/app_bloc.dart';
 import 'Page/login_page.dart';
 import 'Page/main_page.dart';
 
@@ -10,8 +12,16 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: '/main',
+      path: '/',
       builder: (context, state) => const MainPage(),
     ),
   ],
+  initialLocation: '/',
+  redirect: (context, state) {
+    if (!context.read<AppBloc>().state.authenticated) {
+      return '/login';
+    } else {
+      return null;
+    }
+  },
 );
