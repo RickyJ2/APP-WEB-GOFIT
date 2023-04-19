@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:web_gofit/AppBloc/app_event.dart';
+import 'package:web_gofit/AppBloc/app_state.dart';
 import 'package:web_gofit/LoginBloc/login_bloc.dart';
 import 'package:web_gofit/LoginBloc/login_repository.dart';
 import 'package:web_gofit/LoginBloc/login_state.dart';
+import '../AppBloc/app_bloc.dart';
 import '../LoginBloc/login_event.dart';
 import '../const.dart';
 import '../form_submission_state.dart';
@@ -13,11 +16,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
-        create: (context) => LoginBloc(loginRepository: LoginRepository()),
-        child: const LoginView(),
-      ),
+    return BlocProvider(
+      create: (context) => LoginBloc(loginRepository: LoginRepository()),
+      child: const LoginView(),
     );
   }
 }
@@ -127,24 +128,39 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        final formState = state.formSubmissionState;
-        if (formState is SubmissionSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Berhasil Login"),
-            ),
-          );
-          context.go('/main');
-        } else if (formState is SubmissionFailed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(formState.exception.toString()),
-            ),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) =>
+              previous.formSubmissionState != current.formSubmissionState,
+          listener: (context, state) {
+            final formState = state.formSubmissionState;
+            if (formState is SubmissionSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Berhasil Login"),
+                ),
+              );
+              BlocProvider.of<AppBloc>(context).add(const AppLogined());
+            } else if (formState is SubmissionFailed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(formState.exception.toString()),
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<AppBloc, AppState>(
+          listenWhen: (previous, current) =>
+              previous.authenticated != current.authenticated,
+          listener: (context, state) {
+            if (state.authenticated == true) {
+              context.go('/');
+            }
+          },
+        ),
+      ],
       child: Form(
         key: _formLoginKey,
         child: Column(

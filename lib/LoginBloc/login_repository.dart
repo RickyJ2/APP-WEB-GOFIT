@@ -27,6 +27,12 @@ class LogOutWithFailure implements Exception {
   LogOutWithFailure(this.message);
 }
 
+class TokenFailure implements Exception {
+  final String message;
+
+  TokenFailure(this.message);
+}
+
 class GetUserFailure implements Exception {
   final String message;
 
@@ -94,10 +100,14 @@ class LoginRepository {
 
   Future<Pegawai> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString(sharedPrefKey['token']!);
+
+    if (token == null) {
+      throw TokenFailure('Token is null');
+    }
     var url = Uri.parse('${uri}pegawai/index');
-    var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ${prefs.getString(sharedPrefKey['token']!)}'
-    });
+    var response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       var data = json.decode(response.body)['data'];
       return Pegawai.createPegawai(data);

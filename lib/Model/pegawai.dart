@@ -7,7 +7,6 @@ class Pegawai extends Equatable {
   final String tglLahir;
   final String noTelp;
   final String username;
-  final String password;
   final String jabatan;
 
   const Pegawai({
@@ -17,20 +16,18 @@ class Pegawai extends Equatable {
     this.tglLahir = '',
     this.noTelp = '',
     this.username = '',
-    this.password = '',
     this.jabatan = '',
   });
 
   factory Pegawai.createPegawai(Map<String, dynamic> object) {
     return Pegawai(
-      id: object['id'],
-      nama: object['nama'],
-      alamat: object['alamat'],
-      tglLahir: object['tgl_lahir'],
-      noTelp: object['no_telp'],
-      username: object['username'],
-      password: object['password'],
-      jabatan: object['jabatan'],
+      id: object['id'].toString(),
+      nama: object['nama'].toString(),
+      alamat: object['alamat'].toString(),
+      tglLahir: object['tgl_lahir'].toString(),
+      noTelp: object['no_telp'].toString(),
+      username: object['username'].toString(),
+      jabatan: object['jabatan_id'].toString(),
     );
   }
 
@@ -41,7 +38,6 @@ class Pegawai extends Equatable {
       tglLahir: '',
       noTelp: '',
       username: '',
-      password: '',
       jabatan: '');
 
   bool get isEmpty => this == Pegawai.empty;
@@ -49,5 +45,5 @@ class Pegawai extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, nama, alamat, tglLahir, noTelp, username, password, jabatan];
+      [id, nama, alamat, tglLahir, noTelp, username, jabatan];
 }
