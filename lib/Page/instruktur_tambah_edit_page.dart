@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web_gofit/InstrukturBloc/instruktur_repository.dart';
-import 'package:web_gofit/InstrukturTambahEditBloc/instruktur_tambah_edit_bloc.dart';
+import 'package:web_gofit/InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_bloc.dart';
 import 'package:web_gofit/const.dart';
 import 'package:web_gofit/StateBlocTemplate/form_submission_state.dart';
-import '../InstrukturTambahEditBloc/instruktur_tambah_edit_event.dart';
-import '../InstrukturTambahEditBloc/instruktur_tambah_edit_state.dart';
+import '../Asset/create_text_form_field.dart';
+import '../InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_event.dart';
+import '../InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_state.dart';
 import '../Model/instruktur.dart';
 
 class InstrukturTambahEditPage extends StatelessWidget {
@@ -68,10 +69,10 @@ class _InstrukturTambahEditViewState extends State<InstrukturTambahEditView> {
   void initState() {
     super.initState();
     if (widget.tambahEdit == 'edit') {
-      context.read<InstrukturTambahEditBloc>().add(UpdateTambahEdit(
+      context.read<InstrukturTambahEditBloc>().add(InstrukturUpdateTambahEdit(
           tambahEdit: TambahEdit.edit, instruktur: widget.instruktur));
     } else if (widget.tambahEdit == 'tambah') {
-      context.read<InstrukturTambahEditBloc>().add(UpdateTambahEdit(
+      context.read<InstrukturTambahEditBloc>().add(InstrukturUpdateTambahEdit(
           tambahEdit: TambahEdit.tambah, instruktur: widget.instruktur));
     }
   }
@@ -282,7 +283,7 @@ class _TambahEditFormState extends State<TambahEditForm> {
                         onPressed: () {
                           context
                               .read<InstrukturTambahEditBloc>()
-                              .add(PasswordVisibleChanged());
+                              .add(InstrukturPasswordVisibleChanged());
                         },
                         icon: Icon(
                           state.isPasswordVisible
@@ -326,69 +327,11 @@ class _TambahEditFormState extends State<TambahEditForm> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
       );
     });
-  }
-}
-
-class CreateTextFormField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String labelText;
-  final String hintText;
-  final String? initialValue;
-  final String? Function(String?)? validator;
-  final void Function(String?)? onChanged;
-  final IconButton? suffixIcon;
-  final TextInputType? keyboardType;
-  final TextInputFormatter? inputFormatter;
-  final bool? obscureText;
-
-  const CreateTextFormField({
-    super.key,
-    this.controller,
-    required this.labelText,
-    required this.hintText,
-    this.initialValue,
-    required this.validator,
-    required this.onChanged,
-    this.suffixIcon,
-    this.keyboardType,
-    this.inputFormatter,
-    this.obscureText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText,
-        suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: accentColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: primaryColor),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: accentColor),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
-        ),
-      ),
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatter != null ? [inputFormatter!] : null,
-      initialValue: initialValue,
-      autovalidateMode: AutovalidateMode.always,
-      validator: validator,
-      onChanged: onChanged,
-      obscureText: obscureText ?? false,
-    );
   }
 }

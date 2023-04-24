@@ -1,44 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_repository.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_state.dart';
-import '../InstrukturBloc/instruktur_bloc.dart';
-import '../InstrukturBloc/instruktur_data_table_source.dart';
-import '../InstrukturBloc/instruktur_event.dart';
+import 'package:web_gofit/MemberBloc/member_bloc.dart';
+import 'package:web_gofit/MemberBloc/member_data_table_source.dart';
+import 'package:web_gofit/MemberBloc/member_repository.dart';
+import 'package:web_gofit/MemberBloc/member_state.dart';
+
+import '../MemberBloc/member_event.dart';
 import '../StateBlocTemplate/form_submission_state.dart';
 import '../StateBlocTemplate/page_fetched_data_state.dart';
 
-class InstrukturPage extends StatelessWidget {
-  const InstrukturPage({super.key});
+class MemberPage extends StatelessWidget {
+  const MemberPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<InstrukturBloc>(
-      create: (context) => InstrukturBloc(
-        instrukturRepository: InstrukturRepository(),
-      ),
-      child: const PaginatedDataTableInstruktur(),
-    );
+    return BlocProvider<MemberBloc>(
+        create: (context) => MemberBloc(memberRepository: MemberRepository()),
+        child: const PaginatedDataTableMember());
   }
 }
 
-class PaginatedDataTableInstruktur extends StatefulWidget {
-  const PaginatedDataTableInstruktur({super.key});
+class PaginatedDataTableMember extends StatefulWidget {
+  const PaginatedDataTableMember({super.key});
 
   @override
-  State<PaginatedDataTableInstruktur> createState() =>
-      _PaginatedDataTableInstrukturState();
+  State<PaginatedDataTableMember> createState() =>
+      _PaginatedDataTableMemberState();
 }
 
-class _PaginatedDataTableInstrukturState
-    extends State<PaginatedDataTableInstruktur> {
+class _PaginatedDataTableMemberState extends State<PaginatedDataTableMember> {
   final TextEditingController searchController = TextEditingController();
 
   @override
   initState() {
     super.initState();
-    BlocProvider.of<InstrukturBloc>(context).add(InstrukturDataFetched());
+    BlocProvider.of<MemberBloc>(context).add(MemberDataFetched());
   }
 
   @override
@@ -49,7 +46,7 @@ class _PaginatedDataTableInstrukturState
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InstrukturBloc, InstrukturState>(
+    return BlocListener<MemberBloc, MemberState>(
       listener: (context, state) {
         if (state.pageFetchedDataState is PageFetchedDataFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +58,7 @@ class _PaginatedDataTableInstrukturState
           );
         }
         if (state.deleteFormSubmissionState is SubmissionSuccess) {
-          BlocProvider.of<InstrukturBloc>(context).add(InstrukturDataFetched());
+          BlocProvider.of<MemberBloc>(context).add(MemberDataFetched());
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Data berhasil dihapus'),
@@ -78,8 +75,7 @@ class _PaginatedDataTableInstrukturState
           );
         }
       },
-      child: BlocBuilder<InstrukturBloc, InstrukturState>(
-          builder: (context, state) {
+      child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
         return SizedBox(
           width: double.infinity,
           child: Center(
@@ -91,7 +87,7 @@ class _PaginatedDataTableInstrukturState
                       children: [
                         RichText(
                           text: const TextSpan(
-                            text: 'Data Instruktur Gym ',
+                            text: 'Data Member Gym ',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 24,
@@ -117,8 +113,8 @@ class _PaginatedDataTableInstrukturState
                                   maxHeight: 30, maxWidth: 300),
                               suffixIcon: IconButton(
                                   onPressed: () {
-                                    BlocProvider.of<InstrukturBloc>(context)
-                                        .add(InstrukturFindDataRequested(
+                                    BlocProvider.of<MemberBloc>(context).add(
+                                        MemberFindDataRequested(
                                             data: searchController.text));
                                   },
                                   icon: const Icon(Icons.search)),
@@ -133,22 +129,22 @@ class _PaginatedDataTableInstrukturState
                       DataColumn(label: Text('Alamat')),
                       DataColumn(label: Text('Tanggal Lahir')),
                       DataColumn(label: Text('No Telp')),
+                      DataColumn(label: Text('Email')),
                       DataColumn(label: Text('Action')),
                     ],
-                    source:
-                        InstrukturDataTableSource(data: state.instrukturList),
+                    source: MemberDataTableSource(data: state.memberList),
                     actions: [
                       IconButton(
-                        icon: const Icon(Icons.refresh),
                         onPressed: () {
-                          BlocProvider.of<InstrukturBloc>(context)
-                              .add(InstrukturDataFetched());
+                          BlocProvider.of<MemberBloc>(context)
+                              .add(MemberDataFetched());
                         },
+                        icon: const Icon(Icons.refresh),
                       ),
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () {
-                          context.go('/instruktur/tambah');
+                          context.go('/member/tambah');
                         },
                       ),
                     ],

@@ -142,7 +142,7 @@ class LoginForm extends StatelessWidget {
               previous.authenticated != current.authenticated,
           listener: (context, state) {
             if (state.authenticated == true) {
-              context.go('/');
+              context.go('/home');
             }
           },
         ),

@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_gofit/InstrukturBloc/instruktur_repository.dart';
 import 'package:web_gofit/const.dart';
 
-import '../Model/instruktur.dart';
-import '../StateBlocTemplate/form_submission_state.dart';
+import '../../Model/instruktur.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
 import 'instruktur_tambah_edit_event.dart';
 import 'instruktur_tambah_edit_state.dart';
 
@@ -13,31 +13,26 @@ class InstrukturTambahEditBloc
 
   InstrukturTambahEditBloc({required this.instrukturRepository})
       : super(InstrukturTambahEditState()) {
-    on<UpdateTambahEdit>((event, emit) => _onUpdateTambahEdit(event, emit));
+    on<InstrukturUpdateTambahEdit>(
+        (event, emit) => _onUpdateTambahEdit(event, emit));
     on<InstrukturFormChanged>(
         (event, emit) => _onInstrukturFormChanged(event, emit));
-    on<PasswordVisibleChanged>(
+    on<InstrukturPasswordVisibleChanged>(
         (event, emit) => _onPasswordVisibleChanged(event, emit));
-    on<FormInputErrorChanged>(
+    on<InstrukturFormInputErrorChanged>(
         (event, emit) => _onFormInputErrorChanged(event, emit));
     on<InstrukturTambahEditSubmitted>(
         (event, emit) => _onInstrukturTambahEditSubmitted(event, emit));
   }
 
-  void updateTglLahir(String value) {
-    add(InstrukturFormChanged(
-      instruktur: state.instrukturForm.copyWith(tglLahir: value),
-    ));
-  }
-
-  void _onUpdateTambahEdit(
-      UpdateTambahEdit event, Emitter<InstrukturTambahEditState> emit) {
+  void _onUpdateTambahEdit(InstrukturUpdateTambahEdit event,
+      Emitter<InstrukturTambahEditState> emit) {
     emit(state.copyWith(
         tambahEdit: event.tambahEdit, instrukturForm: event.instruktur));
   }
 
-  void _onPasswordVisibleChanged(
-      PasswordVisibleChanged event, Emitter<InstrukturTambahEditState> emit) {
+  void _onPasswordVisibleChanged(InstrukturPasswordVisibleChanged event,
+      Emitter<InstrukturTambahEditState> emit) {
     emit(state.copyWith(
         isPasswordVisible: !state.isPasswordVisible,
         formSubmissionState: const InitialFormState()));
@@ -50,8 +45,8 @@ class InstrukturTambahEditBloc
         formSubmissionState: const InitialFormState()));
   }
 
-  void _onFormInputErrorChanged(
-      FormInputErrorChanged event, Emitter<InstrukturTambahEditState> emit) {
+  void _onFormInputErrorChanged(InstrukturFormInputErrorChanged event,
+      Emitter<InstrukturTambahEditState> emit) {
     emit(state.copyWith(
         instrukturError: event.instrukturError,
         formSubmissionState: const InitialFormState()));

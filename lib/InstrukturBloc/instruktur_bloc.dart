@@ -11,12 +11,14 @@ class InstrukturBloc extends Bloc<InstrukturEvent, InstrukturState> {
 
   InstrukturBloc({required this.instrukturRepository})
       : super(InstrukturState()) {
-    on<DataFetched>((event, emit) => _onDataFetched(event, emit));
-    on<FindDataRequested>((event, emit) => _onFindDataRequested(event, emit));
-    on<DeleteDataRequested>(
+    on<InstrukturDataFetched>((event, emit) => _onDataFetched(event, emit));
+    on<InstrukturFindDataRequested>(
+        (event, emit) => _onFindDataRequested(event, emit));
+    on<InstrukturDeleteDataRequested>(
         (event, emit) => _onDeleteDataRequested(event, emit));
   }
-  void _onDataFetched(DataFetched event, Emitter<InstrukturState> emit) async {
+  void _onDataFetched(
+      InstrukturDataFetched event, Emitter<InstrukturState> emit) async {
     emit(state.copyWith(
         pageFetchedDataState: PageFetchedDataLoading(),
         findPageFetchedDataState: const InitialPageFetchedDataState(),
@@ -33,7 +35,7 @@ class InstrukturBloc extends Bloc<InstrukturEvent, InstrukturState> {
   }
 
   void _onFindDataRequested(
-      FindDataRequested event, Emitter<InstrukturState> emit) async {
+      InstrukturFindDataRequested event, Emitter<InstrukturState> emit) async {
     emit(state.copyWith(pageFetchedDataState: PageFetchedDataLoading()));
     try {
       final instrukturList = await instrukturRepository.find(event.data);
@@ -46,8 +48,8 @@ class InstrukturBloc extends Bloc<InstrukturEvent, InstrukturState> {
     }
   }
 
-  void _onDeleteDataRequested(
-      DeleteDataRequested event, Emitter<InstrukturState> emit) async {
+  void _onDeleteDataRequested(InstrukturDeleteDataRequested event,
+      Emitter<InstrukturState> emit) async {
     emit(state.copyWith(deleteFormSubmissionState: FormSubmitting()));
     try {
       await instrukturRepository.delete(event.id);

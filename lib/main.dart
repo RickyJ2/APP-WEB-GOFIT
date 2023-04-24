@@ -50,9 +50,6 @@ class _RouteAppState extends State<RouteApp> {
       theme: ThemeData(
         colorScheme: colorScheme,
       ),
-      // routerDelegate: router.routerDelegate,
-      // routeInformationParser: router.routeInformationParser,
-      // routeInformationProvider: router.routeInformationProvider,
       routerConfig: router,
     );
   }

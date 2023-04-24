@@ -45,6 +45,10 @@ const sideBarList = [
   //Manajer Operasional
   [
     NavigationRailDestination(
+      icon: Icon(Icons.home),
+      label: Text('Home'),
+    ),
+    NavigationRailDestination(
       icon: Icon(Icons.schedule),
       label: Text('Jadwal Umum'),
     ),
@@ -64,8 +68,8 @@ const sideBarList = [
 //Admin
   [
     NavigationRailDestination(
-      icon: Icon(Icons.supervisor_account),
-      label: Text('Instruktur'),
+      icon: Icon(Icons.home),
+      label: Text('Home'),
     ),
     NavigationRailDestination(
       icon: Icon(Icons.supervisor_account),
@@ -74,6 +78,10 @@ const sideBarList = [
   ],
 //Kasir
   [
+    NavigationRailDestination(
+      icon: Icon(Icons.home),
+      label: Text('Home'),
+    ),
     NavigationRailDestination(
       icon: Icon(Icons.person),
       label: Text('Member'),

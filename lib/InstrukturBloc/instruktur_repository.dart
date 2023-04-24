@@ -121,21 +121,27 @@ class InstrukturRepository {
     }
     if (response.statusCode == 400) {
       Instruktur instrukturError = const Instruktur();
-      final decoded = json.decode(response.body)['data'];
+      final decoded = json.decode(response.body)['message'];
+
       if (decoded.containsKey('nama')) {
-        instrukturError = decoded['nama'][0];
+        instrukturError =
+            instrukturError.copyWith(nama: decoded['nama'][0].toString());
       }
       if (decoded.containsKey('alamat')) {
-        instrukturError = decoded['alamat'][0];
+        instrukturError =
+            instrukturError.copyWith(alamat: decoded['alamat'][0]);
       }
       if (decoded.containsKey('tgl_lahir')) {
-        instrukturError = decoded['tgl_lahir'][0];
+        instrukturError =
+            instrukturError.copyWith(tglLahir: decoded['tgl_lahir'][0]);
       }
       if (decoded.containsKey('no_telp')) {
-        instrukturError = decoded['no_telp'][0];
+        instrukturError =
+            instrukturError.copyWith(noTelp: decoded['no_telp'][0]);
       }
       if (decoded.containsKey('username')) {
-        instrukturError = decoded['username'][0];
+        instrukturError =
+            instrukturError.copyWith(username: decoded['username'][0]);
       }
       throw ErrorValidatedFromInstruktur(instrukturError);
     } else {

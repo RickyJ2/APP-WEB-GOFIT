@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_bloc.dart';
+import 'package:web_gofit/MemberBloc/member_bloc.dart';
 import '../Asset/confirmation_dialog.dart';
-import '../Model/instruktur.dart';
+import '../Model/member.dart';
 import '../StateBlocTemplate/form_submission_state.dart';
-import 'instruktur_event.dart';
+import 'member_event.dart';
 
-class InstrukturDataTableSource extends DataTableSource {
-  List<Instruktur> data;
-
-  InstrukturDataTableSource({this.data = const []});
+class MemberDataTableSource extends DataTableSource {
+  List<Member> data;
+  MemberDataTableSource({this.data = const []});
 
   @override
   DataRow? getRow(int index) => DataRow(cells: [
@@ -19,11 +18,12 @@ class InstrukturDataTableSource extends DataTableSource {
         DataCell(Text(data[index].alamat.toString())),
         DataCell(Text(data[index].tglLahir.toString())),
         DataCell(Text(data[index].noTelp.toString())),
+        DataCell(Text(data[index].email.toString())),
         DataCell(Builder(
           builder: (context) => Row(children: [
             IconButton(
               onPressed: () {
-                context.go('/instruktur/edit', extra: data[index]);
+                context.go('/member/edit', extra: data[index]);
               },
               icon: const Icon(
                 Icons.edit,
@@ -31,7 +31,7 @@ class InstrukturDataTableSource extends DataTableSource {
               ),
             ),
             //Delete Button
-            BlocProvider.of<InstrukturBloc>(context)
+            BlocProvider.of<MemberBloc>(context)
                         .state
                         .deleteFormSubmissionState ==
                     FormSubmitting()
@@ -39,8 +39,8 @@ class InstrukturDataTableSource extends DataTableSource {
                 : IconButton(
                     onPressed: () {
                       void delete() {
-                        BlocProvider.of<InstrukturBloc>(context).add(
-                            InstrukturDeleteDataRequested(
+                        BlocProvider.of<MemberBloc>(context).add(
+                            MemberDeleteDataRequested(
                                 id: int.parse(data[index].id)));
                       }
 
@@ -49,7 +49,7 @@ class InstrukturDataTableSource extends DataTableSource {
                         builder: (context) => ConfirmationDialog(
                           title: 'Konfirmasi',
                           message:
-                              'Apakah anda yakin ingin menghapus data Instruktur ${data[index].nama}?',
+                              'Apakah anda yakin ingin menghapus data Member ${data[index].nama}?',
                           onYes: () {
                             Navigator.pop(context);
                             delete();
@@ -60,9 +60,10 @@ class InstrukturDataTableSource extends DataTableSource {
                     icon: const Icon(
                       Icons.delete,
                       color: Colors.red,
-                    )),
+                    ),
+                  ),
           ]),
-        )),
+        ))
       ]);
 
   @override

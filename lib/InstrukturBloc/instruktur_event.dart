@@ -1,13 +1,13 @@
 abstract class InstrukturEvent {}
 
-class DataFetched extends InstrukturEvent {}
+class InstrukturDataFetched extends InstrukturEvent {}
 
-class FindDataRequested extends InstrukturEvent {
+class InstrukturFindDataRequested extends InstrukturEvent {
   final String data;
-  FindDataRequested({required this.data});
+  InstrukturFindDataRequested({required this.data});
 }
 
-class DeleteDataRequested extends InstrukturEvent {
+class InstrukturDeleteDataRequested extends InstrukturEvent {
   final int id;
-  DeleteDataRequested({required this.id});
+  InstrukturDeleteDataRequested({required this.id});
 }
