@@ -1,5 +1,5 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_gofit/token_bearer.dart';
 import 'dart:convert';
 import '../const.dart';
 import '../Model/pegawai.dart';
@@ -55,8 +55,7 @@ class LoginRepository {
     if (response.statusCode == 200) {
       //sukses, simpan token
       var token = json.decode(response.body)['data'];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString(sharedPrefKey['token']!, token);
+      TokenBearer().save(token);
     } else if (response.statusCode == 400) {
       //username atau password kosong
       String usernameError = '';
@@ -83,14 +82,13 @@ class LoginRepository {
   }
 
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = await TokenBearer().get();
     var url = Uri.parse('${uri}logout');
-    var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ${prefs.getString(sharedPrefKey['token']!)}'
-    });
+    var response =
+        await http.post(url, headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       //sukses, hapus token
-      prefs.remove(sharedPrefKey['token']!);
+      TokenBearer().remove();
     } else {
       //terjadi kesalahan
       throw LogOutWithFailure(
@@ -99,12 +97,7 @@ class LoginRepository {
   }
 
   Future<Pegawai> getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString(sharedPrefKey['token']!);
-
-    if (token == null) {
-      throw TokenFailure('Token is null');
-    }
+    var token = await TokenBearer().get();
     var url = Uri.parse('${uri}pegawai/index');
     var response =
         await http.get(url, headers: {'Authorization': 'Bearer $token'});

@@ -1,4 +1,4 @@
-import 'package:web_gofit/form_submission_state.dart';
+import 'package:web_gofit/StateBlocTemplate/form_submission_state.dart';
 
 class LoginState {
   final String username;

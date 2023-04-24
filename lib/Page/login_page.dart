@@ -7,9 +7,10 @@ import 'package:web_gofit/LoginBloc/login_bloc.dart';
 import 'package:web_gofit/LoginBloc/login_repository.dart';
 import 'package:web_gofit/LoginBloc/login_state.dart';
 import '../AppBloc/app_bloc.dart';
+import '../Asset/line_divider.dart';
 import '../LoginBloc/login_event.dart';
 import '../const.dart';
-import '../form_submission_state.dart';
+import '../StateBlocTemplate/form_submission_state.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -85,21 +86,6 @@ class LoginView extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class LineDivider extends StatelessWidget {
-  const LineDivider({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Divider(
-      color: primaryColor,
-      thickness: 3.0,
-      endIndent: 340,
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+//url Utama Repository
 String uri = 'http://127.0.0.1:8000/api/';
 
+//Theme
 Color primaryColor = const Color(0xFFFB8B24);
 Color accentColor = const Color(0xFF131515);
 Color textColor = const Color(0xFFFCF7FF);
@@ -25,6 +27,7 @@ ColorScheme colorScheme = ColorScheme.fromSwatch(
   brightness: brightness,
 );
 
+//Logo GoFit
 Text goFit = Text(
   'GoFit',
   style: TextStyle(
@@ -34,4 +37,61 @@ Text goFit = Text(
   ),
 );
 
+//Shared pref key list
 final sharedPrefKey = {'token': 'tokenKey'};
+
+//Sidebar List
+const sideBarList = [
+  //Manajer Operasional
+  [
+    NavigationRailDestination(
+      icon: Icon(Icons.schedule),
+      label: Text('Jadwal Umum'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.calendar_month),
+      label: Text('Jadwal Harian'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.supervisor_account),
+      label: Text('Izin Instruktur'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.summarize),
+      label: Text('Laporan'),
+    ),
+  ],
+//Admin
+  [
+    NavigationRailDestination(
+      icon: Icon(Icons.supervisor_account),
+      label: Text('Instruktur'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.supervisor_account),
+      label: Text('Instruktur'),
+    ),
+  ],
+//Kasir
+  [
+    NavigationRailDestination(
+      icon: Icon(Icons.person),
+      label: Text('Member'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.fitness_center),
+      label: Text('Presensi Gym'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.sports_gymnastics),
+      label: Text('Presensi Kelas'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.point_of_sale),
+      label: Text('Transaksi'),
+    ),
+  ],
+];
+
+//enum
+enum TambahEdit { tambah, edit }
