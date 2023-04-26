@@ -1,8 +1,9 @@
-import 'package:web_gofit/LoginBloc/login_event.dart';
-import 'package:web_gofit/LoginBloc/login_repository.dart';
-import 'package:web_gofit/LoginBloc/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../StateBlocTemplate/form_submission_state.dart';
+
+import '../../Repository/login_repository.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
+import 'login_event.dart';
+import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository;

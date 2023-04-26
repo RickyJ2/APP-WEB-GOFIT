@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_event.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_state.dart';
+import 'package:web_gofit/StateBlocTemplate/page_fetched_data_state.dart';
 
-import '../StateBlocTemplate/form_submission_state.dart';
-import '../StateBlocTemplate/page_fetched_data_state.dart';
-import 'instruktur_repository.dart';
+import '../../Repository/instruktur_repository.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
+import 'instruktur_event.dart';
+import 'instruktur_state.dart';
 
 class InstrukturBloc extends Bloc<InstrukturEvent, InstrukturState> {
   final InstrukturRepository instrukturRepository;

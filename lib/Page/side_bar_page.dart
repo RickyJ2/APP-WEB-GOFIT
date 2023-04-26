@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/AppBloc/app_state.dart';
 
-import '../AppBloc/app_bloc.dart';
-import '../AppBloc/app_event.dart';
+import '../Bloc/AppBloc/app_bloc.dart';
+import '../Bloc/AppBloc/app_event.dart';
+import '../Bloc/AppBloc/app_state.dart';
 import '../const.dart';
 
 class SideBarPage extends StatelessWidget {

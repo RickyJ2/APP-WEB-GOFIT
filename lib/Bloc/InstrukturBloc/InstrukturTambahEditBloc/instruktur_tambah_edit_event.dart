@@ -1,5 +1,5 @@
-import '../../Model/instruktur.dart';
-import '../../const.dart';
+import '../../../Model/instruktur.dart';
+import '../../../const.dart';
 
 abstract class InstrukturTambahEditEvent {}
 

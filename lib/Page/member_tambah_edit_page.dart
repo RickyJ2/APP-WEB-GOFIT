@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/MemberBloc/MemberTambahEditBloc/member_tambah_edit_event.dart';
-import 'package:web_gofit/MemberBloc/member_repository.dart';
+import 'package:web_gofit/Repository/member_repository.dart';
 import 'package:web_gofit/const.dart';
 
 import '../Asset/create_text_form_field.dart';
-import '../MemberBloc/MemberTambahEditBloc/member_tambah_edit_bloc.dart';
-import '../MemberBloc/MemberTambahEditBloc/member_tambah_edit_state.dart';
+import '../Bloc/MemberBloc/MemberTambahEditBloc/member_tambah_edit_bloc.dart';
+import '../Bloc/MemberBloc/MemberTambahEditBloc/member_tambah_edit_event.dart';
+import '../Bloc/MemberBloc/MemberTambahEditBloc/member_tambah_edit_state.dart';
 import '../Model/member.dart';
 import '../StateBlocTemplate/form_submission_state.dart';
 

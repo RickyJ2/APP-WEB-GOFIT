@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/MemberBloc/member_bloc.dart';
+
 import 'package:web_gofit/const.dart';
-import '../Asset/confirmation_dialog.dart';
-import '../Model/member.dart';
-import '../StateBlocTemplate/form_submission_state.dart';
+
+import '../../Asset/confirmation_dialog.dart';
+import '../../Model/member.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
+import 'member_bloc.dart';
 import 'member_event.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;

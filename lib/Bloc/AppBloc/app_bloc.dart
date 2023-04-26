@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_gofit/AppBloc/app_event.dart';
-import 'package:web_gofit/AppBloc/app_state.dart';
-import 'package:web_gofit/LoginBloc/login_repository.dart';
-import '../Model/pegawai.dart';
+
+import '../../Model/pegawai.dart';
+import '../../Repository/login_repository.dart';
+import 'app_event.dart';
+import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   final LoginRepository loginRepository;

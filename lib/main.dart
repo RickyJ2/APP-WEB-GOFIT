@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:web_gofit/AppBloc/app_bloc.dart';
-import 'package:web_gofit/LoginBloc/login_repository.dart';
+
 import '../const.dart';
-import 'AppBloc/app_event.dart';
+
+import 'Bloc/AppBloc/app_bloc.dart';
+import 'Bloc/AppBloc/app_event.dart';
+import 'Repository/login_repository.dart';
 import 'routes.dart';
 
 void main() {

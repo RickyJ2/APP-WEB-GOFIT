@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/AppBloc/app_event.dart';
-import 'package:web_gofit/AppBloc/app_state.dart';
-import 'package:web_gofit/LoginBloc/login_bloc.dart';
-import 'package:web_gofit/LoginBloc/login_repository.dart';
-import 'package:web_gofit/LoginBloc/login_state.dart';
-import '../AppBloc/app_bloc.dart';
+
 import '../Asset/line_divider.dart';
-import '../LoginBloc/login_event.dart';
+
+import '../Bloc/AppBloc/app_bloc.dart';
+import '../Bloc/AppBloc/app_event.dart';
+import '../Bloc/AppBloc/app_state.dart';
+import '../Bloc/LoginBloc/login_bloc.dart';
+import '../Bloc/LoginBloc/login_event.dart';
+import '../Bloc/LoginBloc/login_state.dart';
+import '../Repository/login_repository.dart';
 import '../const.dart';
 import '../StateBlocTemplate/form_submission_state.dart';
 

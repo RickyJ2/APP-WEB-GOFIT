@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_repository.dart';
-import 'package:web_gofit/InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_bloc.dart';
+import 'package:web_gofit/Repository/instruktur_repository.dart';
+
 import 'package:web_gofit/const.dart';
 import 'package:web_gofit/StateBlocTemplate/form_submission_state.dart';
 import '../Asset/create_text_form_field.dart';
-import '../InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_event.dart';
-import '../InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_state.dart';
+
+import '../Bloc/InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_bloc.dart';
+import '../Bloc/InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_event.dart';
+import '../Bloc/InstrukturBloc/InstrukturTambahEditBloc/instruktur_tambah_edit_state.dart';
 import '../Model/instruktur.dart';
 
 class InstrukturTambahEditPage extends StatelessWidget {

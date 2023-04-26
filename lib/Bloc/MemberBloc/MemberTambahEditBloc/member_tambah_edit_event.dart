@@ -1,5 +1,5 @@
-import '../../Model/member.dart';
-import '../../const.dart';
+import '../../../Model/member.dart';
+import '../../../const.dart';
 
 abstract class MemberTambahEditEvent {}
 

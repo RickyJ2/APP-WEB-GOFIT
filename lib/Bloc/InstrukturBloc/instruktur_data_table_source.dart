@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_bloc.dart';
-import '../Asset/confirmation_dialog.dart';
-import '../Model/instruktur.dart';
-import '../StateBlocTemplate/form_submission_state.dart';
+
+import '../../Asset/confirmation_dialog.dart';
+import '../../Model/instruktur.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
+import 'instruktur_bloc.dart';
 import 'instruktur_event.dart';
 
 class InstrukturDataTableSource extends DataTableSource {

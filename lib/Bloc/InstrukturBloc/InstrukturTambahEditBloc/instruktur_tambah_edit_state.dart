@@ -1,7 +1,7 @@
 import 'package:web_gofit/StateBlocTemplate/form_submission_state.dart';
 
-import '../../Model/instruktur.dart';
-import '../../const.dart';
+import '../../../Model/instruktur.dart';
+import '../../../const.dart';
 
 class InstrukturTambahEditState {
   final TambahEdit tambahEdit;

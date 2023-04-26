@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../Model/member.dart';
-import '../../StateBlocTemplate/form_submission_state.dart';
-import '../../const.dart';
-import '../member_repository.dart';
+import '../../../Model/member.dart';
+import '../../../Repository/member_repository.dart';
+import '../../../StateBlocTemplate/form_submission_state.dart';
+import '../../../const.dart';
 import 'member_tambah_edit_event.dart';
 import 'member_tambah_edit_state.dart';
 

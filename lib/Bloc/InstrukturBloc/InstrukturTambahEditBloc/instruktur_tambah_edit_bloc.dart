@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_gofit/InstrukturBloc/instruktur_repository.dart';
+import 'package:web_gofit/Repository/instruktur_repository.dart';
 import 'package:web_gofit/const.dart';
 
-import '../../Model/instruktur.dart';
-import '../../StateBlocTemplate/form_submission_state.dart';
+import '../../../Model/instruktur.dart';
+import '../../../StateBlocTemplate/form_submission_state.dart';
 import 'instruktur_tambah_edit_event.dart';
 import 'instruktur_tambah_edit_state.dart';
 

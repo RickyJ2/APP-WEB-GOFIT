@@ -1,4 +1,4 @@
-import '../Model/pegawai.dart';
+import '../../Model/pegawai.dart';
 
 class AppState {
   final Pegawai user;

@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_gofit/MemberBloc/member_event.dart';
-import 'package:web_gofit/MemberBloc/member_repository.dart';
-import 'package:web_gofit/MemberBloc/member_state.dart';
 
-import '../StateBlocTemplate/form_submission_state.dart';
-import '../StateBlocTemplate/page_fetched_data_state.dart';
+import '../../Repository/member_repository.dart';
+import '../../StateBlocTemplate/form_submission_state.dart';
+import '../../StateBlocTemplate/page_fetched_data_state.dart';
+import 'member_event.dart';
+import 'member_state.dart';
 
 class MemberBloc extends Bloc<MemberEvent, MemberState> {
   final MemberRepository memberRepository;

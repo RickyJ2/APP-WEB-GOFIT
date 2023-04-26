@@ -1,6 +1,6 @@
-import '../../Model/member.dart';
-import '../../StateBlocTemplate/form_submission_state.dart';
-import '../../const.dart';
+import '../../../Model/member.dart';
+import '../../../StateBlocTemplate/form_submission_state.dart';
+import '../../../const.dart';
 
 class MemberTambahEditState {
   final TambahEdit tambahEdit;
