@@ -8,11 +8,11 @@ class MemberFindDataRequested extends MemberEvent {
 }
 
 class MemberDeleteDataRequested extends MemberEvent {
-  final int id;
+  final String id;
   MemberDeleteDataRequested({required this.id});
 }
 
 class MemberResetPasswordRequested extends MemberEvent {
-  final int id;
+  final String id;
   MemberResetPasswordRequested({required this.id});
 }

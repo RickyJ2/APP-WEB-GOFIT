@@ -160,7 +160,7 @@ class MemberRepository {
     }
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     var token = await TokenBearer().get();
     var url = Uri.parse('${uri}member/$id');
     var response =
@@ -172,7 +172,7 @@ class MemberRepository {
     }
   }
 
-  Future<void> resetPassword(int id) async {
+  Future<void> resetPassword(String id) async {
     var token = await TokenBearer().get();
     var url = Uri.parse('${uri}member/resetPassword/$id');
     var response =

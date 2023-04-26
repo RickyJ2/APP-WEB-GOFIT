@@ -124,6 +124,7 @@ class _PaginatedDataTableMemberState extends State<PaginatedDataTableMember> {
                       ],
                     ),
                     columns: const [
+                      DataColumn(label: Text('Id')),
                       DataColumn(label: Text('Nama')),
                       DataColumn(label: Text('Username')),
                       DataColumn(label: Text('Alamat')),
