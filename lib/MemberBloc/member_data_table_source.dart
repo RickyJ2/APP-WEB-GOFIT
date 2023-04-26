@@ -29,6 +29,7 @@ class MemberDataTableSource extends DataTableSource {
         DataCell(Builder(
           builder: (context) => Row(children: [
             IconButton(
+              tooltip: "Edit Data Member",
               onPressed: () {
                 context.go('/member/edit', extra: data[index]);
               },
@@ -44,6 +45,7 @@ class MemberDataTableSource extends DataTableSource {
                     FormSubmitting()
                 ? const CircularProgressIndicator()
                 : IconButton(
+                    tooltip: "Hapus Data Member",
                     onPressed: () {
                       void delete() {
                         BlocProvider.of<MemberBloc>(context)
@@ -75,6 +77,7 @@ class MemberDataTableSource extends DataTableSource {
                     FormSubmitting()
                 ? const CircularProgressIndicator()
                 : IconButton(
+                    tooltip: "Reset Password Member",
                     onPressed: () {
                       void resetPassword() {
                         BlocProvider.of<MemberBloc>(context).add(
@@ -100,6 +103,7 @@ class MemberDataTableSource extends DataTableSource {
                     ),
                   ),
             IconButton(
+              tooltip: "Cetak Kartu Member",
               onPressed: () {
                 Printing.layoutPdf(onLayout: (PdfPageFormat format) {
                   return buildPdf(format, data[index]);

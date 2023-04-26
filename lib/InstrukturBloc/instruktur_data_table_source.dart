@@ -22,6 +22,7 @@ class InstrukturDataTableSource extends DataTableSource {
         DataCell(Builder(
           builder: (context) => Row(children: [
             IconButton(
+              tooltip: "Edit Data Instruktur",
               onPressed: () {
                 context.go('/instruktur/edit', extra: data[index]);
               },
@@ -37,6 +38,7 @@ class InstrukturDataTableSource extends DataTableSource {
                     FormSubmitting()
                 ? const CircularProgressIndicator()
                 : IconButton(
+                    tooltip: "Hapus Data Instruktur",
                     onPressed: () {
                       void delete() {
                         BlocProvider.of<InstrukturBloc>(context).add(
