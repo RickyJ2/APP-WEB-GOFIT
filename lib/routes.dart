@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_gofit/Model/jadwal_umum.dart';
 
 import 'package:web_gofit/Page/instruktur_page.dart';
+import 'package:web_gofit/Page/jadwal_umum_page.dart';
+import 'package:web_gofit/Page/jadwal_umum_tambah_edit_page.dart';
 import 'package:web_gofit/Page/main_page.dart';
 import 'package:web_gofit/Page/member_tambah_edit_page.dart';
 import 'Bloc/AppBloc/app_bloc.dart';
@@ -50,6 +53,21 @@ final GoRouter router = GoRouter(
             mainPageContent: MemberTambahEditPage(
                 tambahEdit: state.params['tambahEdit']!,
                 member: (state.extra ?? const Member()) as Member),
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/jadwal-umum',
+      builder: (context, state) =>
+          const SideBarPage(mainPageContent: JadwalUmumPage()),
+      routes: [
+        GoRoute(
+          path: ':tambahEdit',
+          builder: (context, state) => SideBarPage(
+            mainPageContent: JadwalUmumTambahEditPage(
+                tambahEdit: state.params['tambahEdit']!,
+                jadwalUmum: (state.extra ?? const JadwalUmum()) as JadwalUmum),
           ),
         ),
       ],

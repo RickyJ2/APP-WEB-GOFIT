@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:web_gofit/LoginBloc/login_repository.dart';
 import 'dart:convert';
 import '../const.dart';
 import '../Model/instruktur.dart';
@@ -82,7 +82,7 @@ class InstrukturRepository {
       }
       throw ErrorValidatedFromInstruktur(instrukturError);
     } else {
-      throw HttpException('Failed to register instruktur');
+      throw const HttpException('Failed to register instruktur');
     }
   }
 
@@ -145,7 +145,7 @@ class InstrukturRepository {
       }
       throw ErrorValidatedFromInstruktur(instrukturError);
     } else {
-      throw HttpException('Failed to update instruktur');
+      throw const HttpException('Failed to update instruktur');
     }
   }
 
@@ -157,7 +157,7 @@ class InstrukturRepository {
     if (response.statusCode == 200) {
       return;
     } else {
-      throw HttpException('Failed to delete instruktur');
+      throw const HttpException('Failed to delete instruktur');
     }
   }
 }

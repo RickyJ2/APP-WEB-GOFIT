@@ -103,3 +103,14 @@ const sideBarList = [
 
 //enum
 enum TambahEdit { tambah, edit }
+
+//List
+final List<String> day = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+];

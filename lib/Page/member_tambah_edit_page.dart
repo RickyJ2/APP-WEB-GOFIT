@@ -155,9 +155,13 @@ class _TambahEditFormState extends State<TambahEditForm> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    DateTime initTime = DateTime.now();
+    if (_tglLahirController.text.isNotEmpty) {
+      initTime = DateTime.parse(_tglLahirController.text);
+    }
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: initTime,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );

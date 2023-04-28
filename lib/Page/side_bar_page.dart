@@ -31,6 +31,7 @@ class SideBarPage extends StatelessWidget {
                   }
                 case 1:
                   {
+                    context.go('/jadwal-umum');
                     break;
                   }
                 case 2:
