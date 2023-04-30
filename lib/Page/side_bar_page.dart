@@ -125,6 +125,7 @@ class _SideBarPageState extends State<SideBarPage> {
                                   }
                                 case 2:
                                   {
+                                    context.go('/jadwal-harian');
                                     break;
                                   }
                                 case 3:

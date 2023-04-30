@@ -32,9 +32,6 @@ class JadwalUmumRepository {
       data.forEach((key, value) {
         jadwalUmum.add(JadwalUmumFormated.createJadwalUmumFormated(key, value));
       });
-      // List<JadwalUmumFormated> jadwalUmum = data
-      //     .map((e) => JadwalUmumFormated.createJadwalUmumFormated(e))
-      //     .toList();
       return jadwalUmum;
     } else {
       throw FailedToLoadJadwalUmum('Failed to load jadwal umum');

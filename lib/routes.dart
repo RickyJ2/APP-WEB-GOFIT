@@ -3,6 +3,7 @@ import 'package:web_gofit/Model/jadwal_umum.dart';
 import 'package:web_gofit/Page/home_page.dart';
 
 import 'package:web_gofit/Page/instruktur_page.dart';
+import 'package:web_gofit/Page/jadwal_harian_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_tambah_edit_page.dart';
 import 'package:web_gofit/Page/member_tambah_edit_page.dart';
@@ -102,6 +103,20 @@ final GoRouter router = GoRouter(
         }
       },
     ),
+    GoRoute(
+      path: '/jadwal-harian',
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: JadwalHarianPage(),
+        selectedIndex: 2,
+      ),
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 1) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
+    )
   ],
   initialLocation: '/home',
   redirect: (context, state) {

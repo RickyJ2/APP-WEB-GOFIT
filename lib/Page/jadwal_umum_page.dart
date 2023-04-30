@@ -48,7 +48,6 @@ class _JadwalUmumViewState extends State<JadwalUmumView> {
                       .exception)));
         }
         if (state.deleteFormSubmissionState is SubmissionSuccess) {
-          BlocProvider.of<JadwalUmumBloc>(context).add(JadwalUmumDataFetched());
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Data berhasil dihapus')));
           BlocProvider.of<JadwalUmumBloc>(context).add(JadwalUmumDataFetched());
@@ -62,175 +61,172 @@ class _JadwalUmumViewState extends State<JadwalUmumView> {
       },
       child: BlocBuilder<JadwalUmumBloc, JadwalUmumState>(
         builder: (context, state) {
-          return Center(
-            child: state.pageFetchedDataState is PageFetchedDataLoading ||
-                    state.jadwalUmumList.isEmpty
-                ? const CircularProgressIndicator()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RichText(
-                              text: const TextSpan(
-                                text: 'Jadwal Umum Gym ',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 24,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'GoFit',
-                                    style: TextStyle(
-                                      fontFamily: 'SchibstedGrotesk',
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+          return state.pageFetchedDataState is PageFetchedDataLoading ||
+                  state.jadwalUmumList.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RichText(
+                            text: const TextSpan(
+                              text: 'Jadwal Umum Gym ',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 24,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: 'GoFit',
+                                  style: TextStyle(
+                                    fontFamily: 'SchibstedGrotesk',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          IconButton(
-                            tooltip: "Refresh Data Jadwal Umum",
-                            onPressed: () {
-                              BlocProvider.of<JadwalUmumBloc>(context)
-                                  .add(JadwalUmumDataFetched());
-                            },
-                            icon: const Icon(Icons.refresh, color: Colors.grey),
-                          ),
-                          IconButton(
-                            tooltip: "Tambah Data Jadwal Umum",
-                            icon: const Icon(Icons.add, color: Colors.grey),
-                            onPressed: () {
-                              context.go('/jadwal-umum/tambah');
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      DataTable(
-                        headingRowColor: MaterialStateColor.resolveWith(
-                            (states) => primaryColor),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: textColor,
-                          ),
                         ),
-                        dataRowHeight: 110,
-                        columns: [
-                          const DataColumn(
+                        IconButton(
+                          tooltip: "Refresh Data Jadwal Umum",
+                          onPressed: () {
+                            BlocProvider.of<JadwalUmumBloc>(context)
+                                .add(JadwalUmumDataFetched());
+                          },
+                          icon: const Icon(Icons.refresh, color: Colors.grey),
+                        ),
+                        IconButton(
+                          tooltip: "Tambah Data Jadwal Umum",
+                          icon: const Icon(Icons.add, color: Colors.grey),
+                          onPressed: () {
+                            context.go('/jadwal-umum/tambah');
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    DataTable(
+                      headingRowColor: MaterialStateColor.resolveWith(
+                          (states) => primaryColor),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: textColor,
+                        ),
+                      ),
+                      dataRowHeight: 120,
+                      columns: [
+                        const DataColumn(
+                          label: Expanded(
+                              child: Center(
+                                  child: Text('Hari',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      )))),
+                        ),
+                        for (int i = 1; i <= state.lengthColumn; i++)
+                          DataColumn(
                             label: Expanded(
                                 child: Center(
-                                    child: Text('Hari',
-                                        style: TextStyle(
+                                    child: Text('Sesi $i',
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                         )))),
                           ),
-                          for (int i = 1; i <= state.lengthColumn; i++)
-                            DataColumn(
-                              label: Expanded(
-                                  child: Center(
-                                      child: Text('Sesi $i',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          )))),
-                            ),
-                        ],
-                        rows: [
-                          for (var jadwalUmum in state.jadwalUmumList)
-                            DataRow(
-                              cells: [
+                      ],
+                      rows: [
+                        for (var jadwalUmum in state.jadwalUmumList)
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                Center(
+                                    child: Text(jadwalUmum.hari,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ))),
+                              ),
+                              for (var item in jadwalUmum.jadwalUmumList)
                                 DataCell(
                                   Center(
-                                      child: Text(jadwalUmum.hari,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ))),
-                                ),
-                                for (var item in jadwalUmum.jadwalUmumList)
-                                  DataCell(
-                                    Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 20),
-                                          Text(item.jamMulai),
-                                          Text(item.kelas.nama),
-                                          Text(item.instruktur.nama),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              IconButton(
-                                                tooltip:
-                                                    "Edit Data Jadwal Umum",
-                                                icon: const Icon(
-                                                  Icons.edit,
-                                                  color: Colors.blue,
-                                                  size: 20,
-                                                ),
-                                                onPressed: () {
-                                                  context.go(
-                                                      '/jadwal-umum/edit',
-                                                      extra: item);
-                                                },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 20),
+                                        Text(item.jamMulai),
+                                        const SizedBox(height: 5),
+                                        Text(item.kelas.nama),
+                                        const SizedBox(height: 5),
+                                        Text(item.instruktur.nama),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              tooltip: "Edit Data Jadwal Umum",
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Colors.blue,
+                                                size: 20,
                                               ),
-                                              IconButton(
-                                                tooltip:
-                                                    "Hapus Data Jadwal Umum",
-                                                icon: const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                  size: 20,
-                                                ),
-                                                onPressed: () {
-                                                  void delete() {
-                                                    BlocProvider.of<
-                                                                JadwalUmumBloc>(
-                                                            context)
-                                                        .add(
-                                                            JadwalUmumDeleteDataRequested(
-                                                                id: int.parse(
-                                                                    item.id)));
-                                                  }
+                                              onPressed: () {
+                                                context.go('/jadwal-umum/edit',
+                                                    extra: item);
+                                              },
+                                            ),
+                                            IconButton(
+                                              tooltip: "Hapus Data Jadwal Umum",
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                void delete() {
+                                                  BlocProvider.of<
+                                                              JadwalUmumBloc>(
+                                                          context)
+                                                      .add(
+                                                          JadwalUmumDeleteDataRequested(
+                                                              id: int.parse(
+                                                                  item.id)));
+                                                }
 
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        ConfirmationDialog(
-                                                      title: 'Konfirmasi',
-                                                      message:
-                                                          'Apakah anda yakin ingin menghapus data Jadwal Umum kelas ${item.kelas.nama} pada hari ${item.hari} jam ${item.jamMulai} oleh Instruktur ${item.instruktur.nama}?',
-                                                      onYes: () {
-                                                        Navigator.pop(context);
-                                                        delete();
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      ConfirmationDialog(
+                                                    title: 'Konfirmasi',
+                                                    message:
+                                                        'Apakah anda yakin ingin menghapus data Jadwal Umum kelas ${item.kelas.nama} pada hari ${item.hari} jam ${item.jamMulai} oleh Instruktur ${item.instruktur.nama}?',
+                                                    onYes: () {
+                                                      Navigator.pop(context);
+                                                      delete();
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                for (int i = jadwalUmum.jadwalUmumList.length;
-                                    i < state.lengthColumn;
-                                    i++)
-                                  const DataCell(Text('')),
-                              ],
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-          );
+                                ),
+                              for (int i = jadwalUmum.jadwalUmumList.length;
+                                  i < state.lengthColumn;
+                                  i++)
+                                const DataCell(Text('')),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ],
+                );
         },
       ),
     );
