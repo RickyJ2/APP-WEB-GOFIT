@@ -53,6 +53,17 @@ class JadwalUmumTambahEditPage extends StatelessWidget {
               ),
             );
           }
+          if (state.pageFetchedDataState is PageFetchedDataFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  (state.pageFetchedDataState as PageFetchedDataFailed)
+                      .exception
+                      .toString(),
+                ),
+              ),
+            );
+          }
         },
         child: JadwalUmumTambahEditView(
             jadwalUmum: jadwalUmum, tambahEdit: tambahEdit),
@@ -159,12 +170,7 @@ class _TambahEditFormState extends State<TambahEditForm> {
   void _onJamMulaiChanged() {
     final newValue = _jamMulaiController.text;
     context.read<JadwalUmumTambahEditBloc>().add(
-          JadwalUmumFormChanged(
-              jadwalUmum: context
-                  .read<JadwalUmumTambahEditBloc>()
-                  .state
-                  .jadwalUmumForm
-                  .copyWith(jamMulai: newValue)),
+          JadwalUmumJamMulaiFormChanged(jamMulai: newValue),
         );
   }
 
@@ -258,11 +264,13 @@ class _TambahEditFormState extends State<TambahEditForm> {
                             child: Text(value),
                           );
                         }).toList(),
-                        onChanged: (value) => context
-                            .read<JadwalUmumTambahEditBloc>()
-                            .add(JadwalUmumFormChanged(
-                                jadwalUmum: state.jadwalUmumForm
-                                    .copyWith(hari: value as String))),
+                        onChanged: (value) =>
+                            context.read<JadwalUmumTambahEditBloc>().add(
+                                  JadwalUmumFormChanged(
+                                    jadwalUmum: state.jadwalUmumForm
+                                        .copyWith(hari: value as String),
+                                  ),
+                                ),
                       ),
                       const SizedBox(height: 15),
                       CreateTextFormField(
@@ -282,7 +290,12 @@ class _TambahEditFormState extends State<TambahEditForm> {
                           onPressed: () => _selectTime(context),
                           icon: const Icon(Icons.access_time),
                         ),
+                        onTap: () => _selectTime(context),
                       ),
+                      const SizedBox(height: 15),
+                      state.jadwalUmumError.jamMulai != ''
+                          ? const SizedBox.shrink()
+                          : state.jamMulaiHelperText,
                       const SizedBox(height: 50),
                       ElevatedButton(
                         onPressed: () {

@@ -22,7 +22,7 @@ class CreateDropDownButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        labelText: label,
+        label: Text(label),
         errorText: errorText,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: accentColor),

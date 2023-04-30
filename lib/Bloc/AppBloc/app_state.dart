@@ -6,7 +6,7 @@ class AppState {
   final int selectedIndex;
 
   AppState(
-      {this.user = Pegawai.empty,
+      {this.user = const Pegawai(),
       this.authenticated = false,
       this.selectedIndex = 0});
 

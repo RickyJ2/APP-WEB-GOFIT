@@ -21,7 +21,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) =>
-          const SideBarPage(mainPageContent: MainPage()),
+          const SideBarPage(mainPageContent: MainPage(), selectedIndex: 0),
     ),
     GoRoute(
       path: '/login',
@@ -29,8 +29,8 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/instruktur',
-      builder: (context, state) =>
-          const SideBarPage(mainPageContent: InstrukturPage()),
+      builder: (context, state) => const SideBarPage(
+          mainPageContent: InstrukturPage(), selectedIndex: 1),
       routes: [
         GoRoute(
           path: ':tambahEdit',
@@ -38,14 +38,17 @@ final GoRouter router = GoRouter(
             mainPageContent: InstrukturTambahEditPage(
                 tambahEdit: state.params['tambahEdit']!,
                 instruktur: (state.extra ?? const Instruktur()) as Instruktur),
+            selectedIndex: 1,
           ),
         ),
       ],
     ),
     GoRoute(
       path: '/member',
-      builder: (context, state) =>
-          const SideBarPage(mainPageContent: MemberPage()),
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: MemberPage(),
+        selectedIndex: 1,
+      ),
       routes: [
         GoRoute(
           path: ':tambahEdit',
@@ -53,14 +56,17 @@ final GoRouter router = GoRouter(
             mainPageContent: MemberTambahEditPage(
                 tambahEdit: state.params['tambahEdit']!,
                 member: (state.extra ?? const Member()) as Member),
+            selectedIndex: 1,
           ),
         ),
       ],
     ),
     GoRoute(
       path: '/jadwal-umum',
-      builder: (context, state) =>
-          const SideBarPage(mainPageContent: JadwalUmumPage()),
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: JadwalUmumPage(),
+        selectedIndex: 1,
+      ),
       routes: [
         GoRoute(
           path: ':tambahEdit',
@@ -68,6 +74,7 @@ final GoRouter router = GoRouter(
             mainPageContent: JadwalUmumTambahEditPage(
                 tambahEdit: state.params['tambahEdit']!,
                 jadwalUmum: (state.extra ?? const JadwalUmum()) as JadwalUmum),
+            selectedIndex: 1,
           ),
         ),
       ],

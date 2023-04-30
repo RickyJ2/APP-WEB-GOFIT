@@ -7,9 +7,24 @@ import '../Bloc/AppBloc/app_event.dart';
 import '../Bloc/AppBloc/app_state.dart';
 import '../const.dart';
 
-class SideBarPage extends StatelessWidget {
+class SideBarPage extends StatefulWidget {
   final Widget mainPageContent;
-  const SideBarPage({super.key, required this.mainPageContent});
+  final int selectedIndex;
+  const SideBarPage(
+      {super.key, required this.mainPageContent, required this.selectedIndex});
+
+  @override
+  State<SideBarPage> createState() => _SideBarPageState();
+}
+
+class _SideBarPageState extends State<SideBarPage> {
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<AppBloc>()
+        .add(ChangedSelectedIndex(selectedIndex: widget.selectedIndex));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,69 +105,73 @@ class SideBarPage extends StatelessWidget {
         }
       },
       child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                goFit,
-                const SizedBox(width: 30),
-                Text(
-                  "Selamat Datang, ${BlocProvider.of<AppBloc>(context).state.user.nama} !",
-                  style: TextStyle(
-                    color: textColor,
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: accentColor,
-            elevation: 0,
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: textColor,
-                ),
-                onPressed: () =>
-                    context.read<AppBloc>().add(const AppLogoutRequested()),
-              ),
-            ],
-          ),
-          body: Row(
-            children: [
-              NavigationRail(
-                backgroundColor: accentColor,
-                selectedLabelTextStyle: TextStyle(color: primaryColor),
-                unselectedIconTheme: IconThemeData(color: textColor),
-                unselectedLabelTextStyle: TextStyle(color: textColor),
-                labelType: NavigationRailLabelType.all,
-                groupAlignment: 0,
-                selectedIndex: state.selectedIndex,
-                destinations: sideBarList[state.user.jabatan - 1],
-                onDestinationSelected: (value) =>
-                    context.read<AppBloc>().add(ChangedSelectedIndex(value)),
-              ),
-              const VerticalDivider(thickness: 1, width: 1),
-              Expanded(
-                child: SingleChildScrollView(
-                    child: Container(
-                        padding: const EdgeInsets.all(20),
-                        constraints: BoxConstraints(
-                            minHeight:
-                                MediaQuery.of(context).size.height - 100),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
+        return state.authenticated == false
+            ? Container()
+            : Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      goFit,
+                      const SizedBox(width: 30),
+                      Text(
+                        "Selamat Datang, ${BlocProvider.of<AppBloc>(context).state.user.nama} !",
+                        style: TextStyle(
+                          color: textColor,
+                          fontFamily: 'Roboto',
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
                         ),
-                        child: mainPageContent)),
-              ),
-            ],
-          ),
-        );
+                      ),
+                    ],
+                  ),
+                  backgroundColor: accentColor,
+                  elevation: 0,
+                  actions: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.logout,
+                        color: textColor,
+                      ),
+                      onPressed: () => context
+                          .read<AppBloc>()
+                          .add(const AppLogoutRequested()),
+                    ),
+                  ],
+                ),
+                body: Row(
+                  children: [
+                    NavigationRail(
+                      backgroundColor: accentColor,
+                      selectedLabelTextStyle: TextStyle(color: primaryColor),
+                      unselectedIconTheme: IconThemeData(color: textColor),
+                      unselectedLabelTextStyle: TextStyle(color: textColor),
+                      labelType: NavigationRailLabelType.all,
+                      groupAlignment: 0,
+                      selectedIndex: state.selectedIndex,
+                      destinations: sideBarList[state.user.jabatan - 1],
+                      onDestinationSelected: (value) => context
+                          .read<AppBloc>()
+                          .add(ChangedSelectedIndex(selectedIndex: value)),
+                    ),
+                    const VerticalDivider(thickness: 1, width: 1),
+                    Expanded(
+                      child: SingleChildScrollView(
+                          child: Container(
+                              padding: const EdgeInsets.all(20),
+                              constraints: BoxConstraints(
+                                  minHeight:
+                                      MediaQuery.of(context).size.height - 100),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: widget.mainPageContent)),
+                    ),
+                  ],
+                ),
+              );
       }),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,6 +16,7 @@ class CreateTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextInputFormatter? inputFormatter;
   final bool? obscureText;
+  final void Function()? onTap;
 
   const CreateTextFormField({
     super.key,
@@ -27,6 +30,7 @@ class CreateTextFormField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatter,
     this.obscureText,
+    this.onTap,
   });
 
   @override
@@ -46,8 +50,8 @@ class CreateTextFormField extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: BorderSide(color: accentColor),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: errorTextColor),
         ),
       ),
       keyboardType: keyboardType,
@@ -56,6 +60,7 @@ class CreateTextFormField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.always,
       validator: validator,
       onChanged: onChanged,
+      onTap: onTap,
       obscureText: obscureText ?? false,
     );
   }

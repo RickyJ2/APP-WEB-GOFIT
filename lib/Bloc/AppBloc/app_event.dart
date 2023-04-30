@@ -15,7 +15,7 @@ class AppLogined extends AppEvent {
 }
 
 class ChangedSelectedIndex extends AppEvent {
-  const ChangedSelectedIndex(this.selectedIndex);
+  const ChangedSelectedIndex({required this.selectedIndex});
 
   final int selectedIndex;
 }

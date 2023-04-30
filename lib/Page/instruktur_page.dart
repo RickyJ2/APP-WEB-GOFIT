@@ -81,83 +81,82 @@ class _PaginatedDataTableInstrukturState
       },
       child: BlocBuilder<InstrukturBloc, InstrukturState>(
           builder: (context, state) {
-        return SizedBox(
-          width: double.infinity,
-          child: Center(
-            child: state.pageFetchedDataState is PageFetchedDataLoading
-                ? const CircularProgressIndicator()
-                : Scrollbar(
-                    child: PaginatedDataTable(
-                      header: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: 'Data Instruktur Gym ',
+        return state.pageFetchedDataState is PageFetchedDataLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Scrollbar(
+                child: PaginatedDataTable(
+                  rowsPerPage: state.instrukturList.isEmpty
+                      ? 1
+                      : state.instrukturList.length < 10
+                          ? state.instrukturList.length
+                          : 10,
+                  header: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: const TextSpan(
+                          text: 'Data Instruktur Gym ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 24,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'GoFit',
                               style: TextStyle(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'SchibstedGrotesk',
                                 fontSize: 24,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'GoFit',
-                                  style: TextStyle(
-                                    fontFamily: 'SchibstedGrotesk',
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Cari data instruktur',
-                                constraints: const BoxConstraints(
-                                    maxHeight: 30, maxWidth: 300),
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      BlocProvider.of<InstrukturBloc>(context)
-                                          .add(InstrukturFindDataRequested(
-                                              data: searchController.text));
-                                    },
-                                    icon: const Icon(Icons.search)),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      columns: const [
-                        DataColumn(label: Text('Nama')),
-                        DataColumn(label: Text('Username')),
-                        DataColumn(label: Text('Alamat')),
-                        DataColumn(label: Text('Tanggal Lahir')),
-                        DataColumn(label: Text('No Telp')),
-                        DataColumn(label: Text('Action')),
-                      ],
-                      source:
-                          InstrukturDataTableSource(data: state.instrukturList),
-                      actions: [
-                        IconButton(
-                          icon: const Icon(Icons.refresh),
-                          onPressed: () {
-                            BlocProvider.of<InstrukturBloc>(context)
-                                .add(InstrukturDataFetched());
-                          },
+                      Expanded(
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Cari data instruktur',
+                            constraints: const BoxConstraints(
+                                maxHeight: 30, maxWidth: 300),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<InstrukturBloc>(context).add(
+                                      InstrukturFindDataRequested(
+                                          data: searchController.text));
+                                },
+                                icon: const Icon(Icons.search)),
+                          ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            context.go('/instruktur/tambah');
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-          ),
-        );
+                  columns: const [
+                    DataColumn(label: Text('Nama')),
+                    DataColumn(label: Text('Username')),
+                    DataColumn(label: Text('Alamat')),
+                    DataColumn(label: Text('Tanggal Lahir')),
+                    DataColumn(label: Text('No Telp')),
+                    DataColumn(label: Text('Action')),
+                  ],
+                  source: InstrukturDataTableSource(data: state.instrukturList),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () {
+                        BlocProvider.of<InstrukturBloc>(context)
+                            .add(InstrukturDataFetched());
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        context.go('/instruktur/tambah');
+                      },
+                    ),
+                  ],
+                ),
+              );
       }),
     );
   }

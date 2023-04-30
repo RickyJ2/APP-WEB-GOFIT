@@ -9,6 +9,12 @@ class JadwalUmumFormChanged extends JadwalUmumTambahEditEvent {
   JadwalUmumFormChanged({required this.jadwalUmum});
 }
 
+class JadwalUmumJamMulaiFormChanged extends JadwalUmumTambahEditEvent {
+  final String jamMulai;
+
+  JadwalUmumJamMulaiFormChanged({required this.jamMulai});
+}
+
 class JadwalUmumUpdateTambahEdit extends JadwalUmumTambahEditEvent {
   final TambahEdit tambahEdit;
   final JadwalUmum jadwalUmum;

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_gofit/Bloc/JadwalUmumBloc/JadwalUmumTambahEditBloc/jadwal_umum_tambah_edit_event.dart';
 import 'package:web_gofit/Repository/instruktur_repository.dart';
@@ -23,6 +24,8 @@ class JadwalUmumTambahEditBloc
       : super(JadwalUmumTambahEditState()) {
     on<JadwalUmumUpdateTambahEdit>(
         (event, emit) => _onUpdateTambahEdit(event, emit));
+    on<JadwalUmumJamMulaiFormChanged>(
+        (event, emit) => _onJadwalUmumJamMulaiFormChanged(event, emit));
     on<JadwalUmumFormChanged>(
         (event, emit) => _onJadwalUmumFormChanged(event, emit));
     on<JadwalUmumFormInputErrorChanged>(
@@ -65,11 +68,47 @@ class JadwalUmumTambahEditBloc
         formSubmissionState: const InitialFormState()));
   }
 
-  void _onFormInputErrorChanged(JadwalUmumFormInputErrorChanged event,
+  void _onJadwalUmumJamMulaiFormChanged(JadwalUmumJamMulaiFormChanged event,
       Emitter<JadwalUmumTambahEditState> emit) {
     emit(state.copyWith(
-        jadwalUmumError: event.jadwalUmumError,
+        jadwalUmumForm: state.jadwalUmumForm.copyWith(jamMulai: event.jamMulai),
         formSubmissionState: const InitialFormState()));
+    try {
+      int hour = int.parse(state.jadwalUmumForm.jamMulai.split(':')[0]) + 1;
+      int minute = int.parse(state.jadwalUmumForm.jamMulai.split(':')[1]);
+      emit(
+        state.copyWith(
+          jamMulaiHelperText: Text(
+            'Kelas diperkirakan akan selesai pada pukul ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
+            style: TextStyle(
+                fontSize: 14, color: accentColor, fontFamily: 'roboto'),
+          ),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          jamMulaiHelperText: Text(
+            'Jam mulai harus dalam format hh:mm',
+            style: TextStyle(
+              fontSize: 14,
+              color: errorTextColor,
+              fontFamily: 'roboto',
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _onFormInputErrorChanged(JadwalUmumFormInputErrorChanged event,
+      Emitter<JadwalUmumTambahEditState> emit) {
+    emit(
+      state.copyWith(
+        jadwalUmumError: event.jadwalUmumError,
+        formSubmissionState: const InitialFormState(),
+      ),
+    );
   }
 
   void _onJadwalUmumTambahEditSubmitted(JadwalUmumTambahEditSubmitted event,

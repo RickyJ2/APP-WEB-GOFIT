@@ -55,32 +55,20 @@ class InstrukturTambahEditBloc
   void _onInstrukturTambahEditSubmitted(InstrukturTambahEditSubmitted event,
       Emitter<InstrukturTambahEditState> emit) async {
     emit(state.copyWith(formSubmissionState: FormSubmitting()));
-    if (state.tambahEdit == TambahEdit.tambah) {
-      try {
-        emit(state.copyWith(instrukturError: const Instruktur()));
+    try {
+      emit(state.copyWith(instrukturError: const Instruktur()));
+      if (state.tambahEdit == TambahEdit.tambah) {
         await instrukturRepository.register(state.instrukturForm);
-        emit(state.copyWith(formSubmissionState: SubmissionSuccess()));
-      } on ErrorValidatedFromInstruktur catch (e) {
-        emit(state.copyWith(
-            instrukturError: e.message,
-            formSubmissionState: SubmissionFailed(e.toString())));
-      } catch (e) {
-        emit(state.copyWith(
-            formSubmissionState: SubmissionFailed(e.toString())));
-      }
-    } else {
-      try {
-        emit(state.copyWith(instrukturError: const Instruktur()));
+      } else {
         await instrukturRepository.update(state.instrukturForm);
-        emit(state.copyWith(formSubmissionState: SubmissionSuccess()));
-      } on ErrorValidatedFromInstruktur catch (e) {
-        emit(state.copyWith(
-            instrukturError: e.message,
-            formSubmissionState: SubmissionFailed(e.toString())));
-      } catch (e) {
-        emit(state.copyWith(
-            formSubmissionState: SubmissionFailed(e.toString())));
       }
+      emit(state.copyWith(formSubmissionState: SubmissionSuccess()));
+    } on ErrorValidatedFromInstruktur catch (e) {
+      emit(state.copyWith(
+          instrukturError: e.message,
+          formSubmissionState: SubmissionFailed(e.toString())));
+    } catch (e) {
+      emit(state.copyWith(formSubmissionState: SubmissionFailed(e.toString())));
     }
   }
 }

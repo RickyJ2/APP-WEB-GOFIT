@@ -75,86 +75,103 @@ class _PaginatedDataTableMemberState extends State<PaginatedDataTableMember> {
             ),
           );
         }
+        if (state.resetPasswordFormSubmissionState is SubmissionSuccess) {
+          BlocProvider.of<MemberBloc>(context).add(MemberDataFetched());
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Reset Password Member berhasil'),
+            ),
+          );
+        }
+        if (state.resetPasswordFormSubmissionState is SubmissionFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  (state.resetPasswordFormSubmissionState as SubmissionFailed)
+                      .exception),
+            ),
+          );
+        }
       },
       child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
-        return SizedBox(
-          width: double.infinity,
-          child: Center(
-            child: state.pageFetchedDataState is PageFetchedDataLoading
-                ? const CircularProgressIndicator()
-                : Scrollbar(
-                    child: PaginatedDataTable(
-                      header: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: 'Data Member Gym ',
+        return state.pageFetchedDataState is PageFetchedDataLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Scrollbar(
+                child: PaginatedDataTable(
+                  rowsPerPage: state.memberList.isEmpty
+                      ? 1
+                      : state.memberList.length < 10
+                          ? state.memberList.length
+                          : 10,
+                  header: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: const TextSpan(
+                          text: 'Data Member Gym ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 24,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'GoFit',
                               style: TextStyle(
-                                fontFamily: 'Roboto',
+                                fontFamily: 'SchibstedGrotesk',
                                 fontSize: 24,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'GoFit',
-                                  style: TextStyle(
-                                    fontFamily: 'SchibstedGrotesk',
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Cari data instruktur',
-                                constraints: const BoxConstraints(
-                                    maxHeight: 30, maxWidth: 300),
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      BlocProvider.of<MemberBloc>(context).add(
-                                          MemberFindDataRequested(
-                                              data: searchController.text));
-                                    },
-                                    icon: const Icon(Icons.search)),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      columns: const [
-                        DataColumn(label: Text('Id')),
-                        DataColumn(label: Text('Nama')),
-                        DataColumn(label: Text('Username')),
-                        DataColumn(label: Text('Alamat')),
-                        DataColumn(label: Text('Tanggal Lahir')),
-                        DataColumn(label: Text('No Telp')),
-                        DataColumn(label: Text('Email')),
-                        DataColumn(label: Text('Action')),
-                      ],
-                      source: MemberDataTableSource(data: state.memberList),
-                      actions: [
-                        IconButton(
-                          onPressed: () {
-                            BlocProvider.of<MemberBloc>(context)
-                                .add(MemberDataFetched());
-                          },
-                          icon: const Icon(Icons.refresh),
+                      Expanded(
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Cari data member',
+                            constraints: const BoxConstraints(
+                                maxHeight: 30, maxWidth: 300),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<MemberBloc>(context).add(
+                                      MemberFindDataRequested(
+                                          data: searchController.text));
+                                },
+                                icon: const Icon(Icons.search)),
+                          ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            context.go('/member/tambah');
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-          ),
-        );
+                  columns: const [
+                    DataColumn(label: Text('Id')),
+                    DataColumn(label: Text('Nama')),
+                    DataColumn(label: Text('Username')),
+                    DataColumn(label: Text('Alamat')),
+                    DataColumn(label: Text('Tanggal Lahir')),
+                    DataColumn(label: Text('No Telp')),
+                    DataColumn(label: Text('Email')),
+                    DataColumn(label: Text('Action')),
+                  ],
+                  source: MemberDataTableSource(data: state.memberList),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        BlocProvider.of<MemberBloc>(context)
+                            .add(MemberDataFetched());
+                      },
+                      icon: const Icon(Icons.refresh),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        context.go('/member/tambah');
+                      },
+                    ),
+                  ],
+                ),
+              );
       }),
     );
   }
