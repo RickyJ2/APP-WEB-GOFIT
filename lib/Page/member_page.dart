@@ -93,86 +93,88 @@ class _PaginatedDataTableMemberState extends State<PaginatedDataTableMember> {
           );
         }
       },
-      child: BlocBuilder<MemberBloc, MemberState>(builder: (context, state) {
-        return state.pageFetchedDataState is PageFetchedDataLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Scrollbar(
-                child: PaginatedDataTable(
-                  rowsPerPage: state.memberList.isEmpty
-                      ? 1
-                      : state.memberList.length < 10
-                          ? state.memberList.length
-                          : 10,
-                  header: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: const TextSpan(
-                          text: 'Data Member Gym ',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 24,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'GoFit',
+      child: BlocBuilder<MemberBloc, MemberState>(
+        builder: (context, state) {
+          return state.pageFetchedDataState is PageFetchedDataLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Scrollbar(
+                  child: PaginatedDataTable(
+                    rowsPerPage: state.memberList.isEmpty
+                        ? 1
+                        : state.memberList.length < 10
+                            ? state.memberList.length
+                            : 10,
+                    header: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: const TextSpan(
+                              text: 'Data Member Gym ',
                               style: TextStyle(
-                                fontFamily: 'SchibstedGrotesk',
+                                fontFamily: 'Roboto',
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: 'GoFit',
+                                  style: TextStyle(
+                                    fontFamily: 'SchibstedGrotesk',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Cari data member',
-                            constraints: const BoxConstraints(
-                                maxHeight: 30, maxWidth: 300),
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  BlocProvider.of<MemberBloc>(context).add(
-                                      MemberFindDataRequested(
-                                          data: searchController.text));
-                                },
-                                icon: const Icon(Icons.search)),
                           ),
-                        ),
+                          TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: 'Cari data member',
+                              constraints: const BoxConstraints(
+                                  maxHeight: 30, maxWidth: 300),
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    BlocProvider.of<MemberBloc>(context).add(
+                                        MemberFindDataRequested(
+                                            data: searchController.text));
+                                  },
+                                  icon: const Icon(Icons.search)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    columns: const [
+                      DataColumn(label: Text('Id')),
+                      DataColumn(label: Text('Nama')),
+                      DataColumn(label: Text('Username')),
+                      DataColumn(label: Text('Alamat')),
+                      DataColumn(label: Text('Tanggal Lahir')),
+                      DataColumn(label: Text('No Telp')),
+                      DataColumn(label: Text('Email')),
+                      DataColumn(label: Text('Action')),
+                    ],
+                    source: MemberDataTableSource(data: state.memberList),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<MemberBloc>(context)
+                              .add(MemberDataFetched());
+                        },
+                        icon: const Icon(Icons.refresh),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          context.go('/member/tambah');
+                        },
                       ),
                     ],
                   ),
-                  columns: const [
-                    DataColumn(label: Text('Id')),
-                    DataColumn(label: Text('Nama')),
-                    DataColumn(label: Text('Username')),
-                    DataColumn(label: Text('Alamat')),
-                    DataColumn(label: Text('Tanggal Lahir')),
-                    DataColumn(label: Text('No Telp')),
-                    DataColumn(label: Text('Email')),
-                    DataColumn(label: Text('Action')),
-                  ],
-                  source: MemberDataTableSource(data: state.memberList),
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        BlocProvider.of<MemberBloc>(context)
-                            .add(MemberDataFetched());
-                      },
-                      icon: const Icon(Icons.refresh),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        context.go('/member/tambah');
-                      },
-                    ),
-                  ],
-                ),
-              );
-      }),
+                );
+        },
+      ),
     );
   }
 }

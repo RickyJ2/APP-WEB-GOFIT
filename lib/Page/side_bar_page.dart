@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../Bloc/AppBloc/app_bloc.dart';
 import '../Bloc/AppBloc/app_event.dart';
 import '../Bloc/AppBloc/app_state.dart';
+import '../StateBlocTemplate/form_submission_state.dart';
+import '../StateBlocTemplate/load_app_state.dart';
 import '../const.dart';
 
 class SideBarPage extends StatefulWidget {
@@ -30,83 +32,34 @@ class _SideBarPageState extends State<SideBarPage> {
   Widget build(BuildContext context) {
     return BlocListener<AppBloc, AppState>(
       listenWhen: (previous, current) =>
-          previous.authenticated != current.authenticated ||
-          previous.selectedIndex != current.selectedIndex,
+          previous.authState != current.authState ||
+          previous.logoutState != current.logoutState,
       listener: (context, state) {
-        if (state.authenticated == false) context.go('/login');
-        switch (state.user.jabatan) {
-          //MO
-          case 1:
-            {
-              switch (state.selectedIndex) {
-                case 0:
-                  {
-                    context.go('/home');
-                    break;
-                  }
-                case 1:
-                  {
-                    context.go('/jadwal-umum');
-                    break;
-                  }
-                case 2:
-                  {
-                    break;
-                  }
-                case 3:
-                  {
-                    break;
-                  }
-              }
-              break;
-            }
-          //Admin
-          case 2:
-            {
-              switch (state.selectedIndex) {
-                case 0:
-                  {
-                    context.go('/home');
-                    break;
-                  }
-                case 1:
-                  {
-                    context.go('/instruktur');
-                    break;
-                  }
-              }
-              break;
-            }
-          //Kasir
-          case 3:
-            {
-              switch (state.selectedIndex) {
-                case 0:
-                  {
-                    context.go('/home');
-                    break;
-                  }
-                case 1:
-                  {
-                    context.go('/member');
-                    break;
-                  }
-                case 2:
-                  {
-                    break;
-                  }
-                case 3:
-                  {
-                    break;
-                  }
-              }
-              break;
-            }
+        if (state.authenticated == false &&
+            state.authState is AppLoadedFailed) {
+          context.go('/login');
+        }
+        if (state.logoutState is AppLoadedSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Berhasil Logout'),
+            ),
+          );
+          context.read<AppBloc>().add(const AppLogouted());
+          context.go('/login');
+        }
+        if (state.logoutState is AppLoadedFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text((state.logoutState as AppLoadedFailed).exception),
+            ),
+          );
         }
       },
       child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
-        return state.authenticated == false
-            ? Container()
+        return state.authState is FormSubmitting ||
+                state.authState is InitialFormState
+            ? const Center(child: CircularProgressIndicator())
             : Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
@@ -151,9 +104,80 @@ class _SideBarPageState extends State<SideBarPage> {
                       groupAlignment: 0,
                       selectedIndex: state.selectedIndex,
                       destinations: sideBarList[state.user.jabatan - 1],
-                      onDestinationSelected: (value) => context
-                          .read<AppBloc>()
-                          .add(ChangedSelectedIndex(selectedIndex: value)),
+                      onDestinationSelected: (value) {
+                        context
+                            .read<AppBloc>()
+                            .add(ChangedSelectedIndex(selectedIndex: value));
+                        switch (state.user.jabatan) {
+                          //MO
+                          case 1:
+                            {
+                              switch (value) {
+                                case 0:
+                                  {
+                                    context.go('/home');
+                                    break;
+                                  }
+                                case 1:
+                                  {
+                                    context.go('/jadwal-umum');
+                                    break;
+                                  }
+                                case 2:
+                                  {
+                                    break;
+                                  }
+                                case 3:
+                                  {
+                                    break;
+                                  }
+                              }
+                              break;
+                            }
+                          //Admin
+                          case 2:
+                            {
+                              switch (value) {
+                                case 0:
+                                  {
+                                    context.go('/home');
+                                    break;
+                                  }
+                                case 1:
+                                  {
+                                    context.go('/instruktur');
+                                    break;
+                                  }
+                              }
+                              break;
+                            }
+                          //Kasir
+                          case 3:
+                            {
+                              switch (value) {
+                                case 0:
+                                  {
+                                    context.go('/home');
+                                    break;
+                                  }
+                                case 1:
+                                  {
+                                    context.go('/member');
+                                    break;
+                                  }
+                                case 2:
+                                  {
+                                    break;
+                                  }
+                                case 3:
+                                  {
+                                    break;
+                                  }
+                              }
+                              break;
+                            }
+                        }
+                      },
                     ),
                     const VerticalDivider(thickness: 1, width: 1),
                     Expanded(

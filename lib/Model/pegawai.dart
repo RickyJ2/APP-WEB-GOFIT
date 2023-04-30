@@ -16,7 +16,7 @@ class Pegawai extends Equatable {
     this.tglLahir = '',
     this.noTelp = '',
     this.username = '',
-    this.jabatan = 0,
+    this.jabatan = 1,
   });
 
   factory Pegawai.createPegawai(Map<String, dynamic> object) {

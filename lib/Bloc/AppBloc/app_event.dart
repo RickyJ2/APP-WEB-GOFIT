@@ -10,6 +10,10 @@ class AppLogoutRequested extends AppEvent {
   const AppLogoutRequested();
 }
 
+class AppLogouted extends AppEvent {
+  const AppLogouted();
+}
+
 class AppLogined extends AppEvent {
   const AppLogined();
 }

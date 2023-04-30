@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_gofit/Model/jadwal_umum.dart';
+import 'package:web_gofit/Page/home_page.dart';
 
 import 'package:web_gofit/Page/instruktur_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_tambah_edit_page.dart';
-import 'package:web_gofit/Page/main_page.dart';
 import 'package:web_gofit/Page/member_tambah_edit_page.dart';
 import 'Bloc/AppBloc/app_bloc.dart';
 import 'Model/instruktur.dart';
@@ -16,12 +16,14 @@ import 'Page/side_bar_page.dart';
 
 import 'package:go_router/go_router.dart';
 
+import 'StateBlocTemplate/form_submission_state.dart';
+
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/home',
       builder: (context, state) =>
-          const SideBarPage(mainPageContent: MainPage(), selectedIndex: 0),
+          const SideBarPage(mainPageContent: HomePage(), selectedIndex: 0),
     ),
     GoRoute(
       path: '/login',
@@ -42,6 +44,13 @@ final GoRouter router = GoRouter(
           ),
         ),
       ],
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 2) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
     ),
     GoRoute(
       path: '/member',
@@ -60,6 +69,13 @@ final GoRouter router = GoRouter(
           ),
         ),
       ],
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 3) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
     ),
     GoRoute(
       path: '/jadwal-umum',
@@ -78,11 +94,20 @@ final GoRouter router = GoRouter(
           ),
         ),
       ],
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 1) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
     ),
   ],
   initialLocation: '/home',
   redirect: (context, state) {
-    if (!context.read<AppBloc>().state.authenticated) {
+    if (!context.read<AppBloc>().state.authenticated &&
+        context.read<AppBloc>().state.authState is SubmissionFailed &&
+        state.path != '/login') {
       return '/login';
     } else {
       return null;
