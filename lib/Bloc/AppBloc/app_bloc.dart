@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_gofit/Model/informasi_umum.dart';
+import 'package:web_gofit/Repository/informasi_umum_repository.dart';
 
 import '../../Model/pegawai.dart';
 import '../../Repository/login_repository.dart';
@@ -7,9 +9,12 @@ import 'app_event.dart';
 import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
+  final InformasiUmumRepository informasiUmumRepository;
   final LoginRepository loginRepository;
 
-  AppBloc({required this.loginRepository}) : super(AppState()) {
+  AppBloc(
+      {required this.loginRepository, required this.informasiUmumRepository})
+      : super(AppState()) {
     on<AppOpened>((event, emit) => _onAppOpened(event, emit));
     on<AppLogined>((event, emit) => _onAppLogined(event, emit));
     on<AppLogouted>((event, emit) => _onAppLogouted(event, emit));
@@ -21,6 +26,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onAppOpened(AppOpened event, Emitter<AppState> emit) async {
     try {
       emit(state.copyWith(authState: AppProgressing()));
+      InformasiUmum informasiUmum = await informasiUmumRepository.get();
+      emit(state.copyWith(informasiUmum: informasiUmum));
       Pegawai user = await loginRepository.getUser();
       emit(state.copyWith(
           user: user, authenticated: true, authState: AppLoadedSuccess()));

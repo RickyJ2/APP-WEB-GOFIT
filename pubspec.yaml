@@ -18,6 +18,8 @@ dependencies:
   go_router: ^6.5.7
   pdf: ^3.10.1
   printing: ^5.10.3
+  flutter_typeahead: ^4.3.7
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

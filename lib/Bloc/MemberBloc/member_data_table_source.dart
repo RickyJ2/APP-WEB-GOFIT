@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:web_gofit/Bloc/AppBloc/app_bloc.dart';
+import 'package:web_gofit/Model/informasi_umum.dart';
 
 import 'package:web_gofit/const.dart';
 
@@ -108,7 +110,8 @@ class MemberDataTableSource extends DataTableSource {
               tooltip: "Cetak Kartu Member",
               onPressed: () {
                 Printing.layoutPdf(onLayout: (PdfPageFormat format) {
-                  return buildPdf(format, data[index]);
+                  return buildPdf(format, data[index],
+                      BlocProvider.of<AppBloc>(context).state.informasiUmum);
                 });
               },
               icon: const Icon(Icons.print),
@@ -126,7 +129,8 @@ class MemberDataTableSource extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 
-  Future<Uint8List> buildPdf(PdfPageFormat format, Member data) async {
+  Future<Uint8List> buildPdf(
+      PdfPageFormat format, Member data, InformasiUmum informasiUmum) async {
     final pw.Document doc = pw.Document();
 
     doc.addPage(
@@ -142,12 +146,12 @@ class MemberDataTableSource extends DataTableSource {
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text('GoFit',
+                pw.Text(informasiUmum.nama,
                     style: pw.TextStyle(
                       fontSize: 18,
                       fontWeight: pw.FontWeight.bold,
                     )),
-                pw.Text('Jl. Centralpark No. 10 Yogyakarta'),
+                pw.Text(informasiUmum.alamat),
                 pw.SizedBox(height: 20),
                 pw.Text('MEMBER CARD',
                     style: pw.TextStyle(

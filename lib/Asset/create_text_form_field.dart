@@ -5,30 +5,36 @@ import '../const.dart';
 
 class CreateTextFormField extends StatelessWidget {
   final TextEditingController? controller;
-  final String labelText;
-  final String hintText;
+  final String? labelText;
+  final String? hintText;
   final String? initialValue;
   final String? Function(String?)? validator;
+  final void Function(PointerDownEvent)? onTapOutside;
   final void Function(String?)? onChanged;
   final IconButton? suffixIcon;
   final TextInputType? keyboardType;
-  final TextInputFormatter? inputFormatter;
+  final List<TextInputFormatter>? inputFormatter;
   final bool? obscureText;
   final void Function()? onTap;
+  final Widget? prefix;
+  final bool? enabled;
 
   const CreateTextFormField({
     super.key,
     this.controller,
-    required this.labelText,
-    required this.hintText,
+    this.labelText,
+    this.hintText,
     this.initialValue,
-    required this.validator,
-    required this.onChanged,
+    this.validator,
+    this.onTapOutside,
+    this.onChanged,
     this.suffixIcon,
     this.keyboardType,
     this.inputFormatter,
     this.obscureText,
     this.onTap,
+    this.enabled,
+    this.prefix,
   });
 
   @override
@@ -38,7 +44,10 @@ class CreateTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
+        prefix: prefix,
         suffixIcon: suffixIcon,
+        filled: enabled == false ? true : false,
+        fillColor: enabled == false ? disabledColor : null,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: accentColor),
         ),
@@ -53,13 +62,15 @@ class CreateTextFormField extends StatelessWidget {
         ),
       ),
       keyboardType: keyboardType,
-      inputFormatters: inputFormatter != null ? [inputFormatter!] : null,
+      inputFormatters: inputFormatter,
       initialValue: initialValue,
       autovalidateMode: AutovalidateMode.always,
       validator: validator,
       onChanged: onChanged,
+      onTapOutside: onTapOutside,
       onTap: onTap,
       obscureText: obscureText ?? false,
+      enabled: enabled ?? true,
     );
   }
 }

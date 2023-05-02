@@ -9,6 +9,8 @@ Color accentColor = const Color(0xFF131515);
 Color textColor = const Color(0xFFFCF7FF);
 Color textColorSecond = const Color(0xFF131515).withOpacity(0.54);
 Color errorTextColor = const Color(0xFFE30224);
+Color disabledColor = const Color(0xFFF0F0F0);
+Color disabledBorderColor = const Color(0xFFD1D1D1);
 Brightness brightness = Brightness.light;
 
 ColorScheme colorScheme = ColorScheme.fromSwatch(
@@ -114,4 +116,11 @@ final List<String> day = [
   'Friday',
   'Saturday',
   'Sunday'
+];
+
+final List<String> jenisTransaksi = [
+  '',
+  'Aktivasi',
+  'Deposit Reguler',
+  'Deposit Kelas',
 ];

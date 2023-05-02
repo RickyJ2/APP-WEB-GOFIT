@@ -252,7 +252,7 @@ class _TambahEditFormState extends State<TambahEditForm> {
                 hintText: 'Masukkan nomor telepon instruktur',
                 initialValue: widget.instrukturInitial.noTelp,
                 keyboardType: TextInputType.number,
-                inputFormatter: FilteringTextInputFormatter.digitsOnly,
+                inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) => state.instrukturError.noTelp == ''
                     ? null
                     : state.instrukturError.noTelp,

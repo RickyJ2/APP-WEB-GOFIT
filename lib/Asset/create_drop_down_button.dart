@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../const.dart';
 
 class CreateDropDownButton extends StatelessWidget {
-  final String label;
+  final String? label;
   final String? errorText;
   final Object value;
   final List<DropdownMenuItem<Object>> items;
@@ -11,7 +11,7 @@ class CreateDropDownButton extends StatelessWidget {
 
   const CreateDropDownButton({
     super.key,
-    required this.label,
+    this.label,
     required this.errorText,
     required this.value,
     required this.items,
@@ -22,8 +22,10 @@ class CreateDropDownButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        label: Text(label),
+        label: label != null ? Text(label.toString()) : null,
         errorText: errorText,
+        filled: onChanged == null ? true : false,
+        fillColor: onChanged == null ? disabledColor : null,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: accentColor),
         ),
@@ -33,9 +35,10 @@ class CreateDropDownButton extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: BorderSide(color: accentColor),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: errorTextColor),
         ),
+        enabled: onChanged == null ? false : true,
         //border: InputBorder.none,
       ),
       child: DropdownButton(

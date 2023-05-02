@@ -7,6 +7,7 @@ import 'package:web_gofit/Page/jadwal_harian_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_page.dart';
 import 'package:web_gofit/Page/jadwal_umum_tambah_edit_page.dart';
 import 'package:web_gofit/Page/member_tambah_edit_page.dart';
+import 'package:web_gofit/Page/transaksi_page.dart';
 import 'Bloc/AppBloc/app_bloc.dart';
 import 'Model/instruktur.dart';
 import 'Model/member.dart';
@@ -79,6 +80,20 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/transaksi',
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: TransaksiPage(),
+        selectedIndex: 4,
+      ),
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 3) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
+    ),
+    GoRoute(
       path: '/jadwal-umum',
       builder: (context, state) => const SideBarPage(
         mainPageContent: JadwalUmumPage(),
@@ -116,7 +131,7 @@ final GoRouter router = GoRouter(
           return null;
         }
       },
-    )
+    ),
   ],
   initialLocation: '/home',
   redirect: (context, state) {

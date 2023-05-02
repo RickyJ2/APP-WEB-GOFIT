@@ -174,6 +174,11 @@ class _SideBarPageState extends State<SideBarPage> {
                                   {
                                     break;
                                   }
+                                case 4:
+                                  {
+                                    context.go('/transaksi');
+                                    break;
+                                  }
                               }
                               break;
                             }

@@ -6,6 +6,7 @@ import '../const.dart';
 
 import 'Bloc/AppBloc/app_bloc.dart';
 import 'Bloc/AppBloc/app_event.dart';
+import 'Repository/informasi_umum_repository.dart';
 import 'Repository/login_repository.dart';
 import 'routes.dart';
 
@@ -25,7 +26,9 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppBloc(loginRepository: LoginRepository()),
+      create: (context) => AppBloc(
+          loginRepository: LoginRepository(),
+          informasiUmumRepository: InformasiUmumRepository()),
       child: const RouteApp(),
     );
   }

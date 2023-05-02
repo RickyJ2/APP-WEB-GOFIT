@@ -1,0 +1,652 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_gofit/Asset/create_drop_down_button.dart';
+import 'package:web_gofit/Asset/create_text_form_field.dart';
+import 'package:web_gofit/Bloc/AppBloc/app_bloc.dart';
+import 'package:web_gofit/Bloc/TransaksiBloc/transaksi_bloc.dart';
+import 'package:web_gofit/Repository/kelas_repository.dart';
+import 'package:web_gofit/Repository/member_repository.dart';
+import 'package:web_gofit/Repository/promo_repository.dart';
+import 'package:web_gofit/Repository/transaksi_repository.dart';
+import 'package:web_gofit/StateBlocTemplate/form_submission_state.dart';
+import 'package:web_gofit/const.dart';
+
+import '../Asset/create_text_to_text_field.dart';
+import '../Asset/create_type_ahead_form_field.dart';
+import '../Asset/thousands_formater.dart';
+import '../Bloc/TransaksiBloc/transaksi_event.dart';
+import '../Bloc/TransaksiBloc/transaksi_state.dart';
+import '../StateBlocTemplate/page_fetched_data_state.dart';
+
+class TransaksiPage extends StatelessWidget {
+  const TransaksiPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TransaksiBloc(
+        appBloc: BlocProvider.of<AppBloc>(context),
+        transaksiRepository: TransaksiRepository(),
+        kelasRepository: KelasRepository(),
+        promoRepository: PromoRepository(),
+        memberRepository: MemberRepository(),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          TitleLabel(),
+          SizedBox(height: 30),
+          TransaksiView(),
+        ],
+      ),
+    );
+  }
+}
+
+class TransaksiView extends StatefulWidget {
+  const TransaksiView({super.key});
+
+  @override
+  State<TransaksiView> createState() => _TransaksiViewState();
+}
+
+class _TransaksiViewState extends State<TransaksiView> {
+  final TextEditingController _memberTextController = TextEditingController();
+  final TextEditingController _kelasTextController = TextEditingController();
+  final TextEditingController _promoTextController = TextEditingController();
+  final TextEditingController _grandTotalTextController =
+      TextEditingController();
+  final TextEditingController _cashTextController = TextEditingController();
+  final TextEditingController _kembalianTextController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<TransaksiBloc>().add(PageDataFetched());
+    _promoTextController.text = context
+        .read<TransaksiBloc>()
+        .state
+        .transaksiForm
+        .promo
+        .bonus
+        .toString();
+    _grandTotalTextController.text = '0';
+    _kembalianTextController.text = '0';
+    _cashTextController.text = '0';
+  }
+
+  @override
+  void dispose() {
+    _memberTextController.dispose();
+    _kelasTextController.dispose();
+    _promoTextController.dispose();
+    _grandTotalTextController.dispose();
+    _cashTextController.dispose();
+    _kembalianTextController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<TransaksiBloc, TransaksiState>(
+      listener: (context, state) {
+        if (state.pageFetchedDataState is PageFetchedDataFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                (state.pageFetchedDataState as PageFetchedDataFailed)
+                    .exception
+                    .toString(),
+              ),
+            ),
+          );
+        }
+        if (state.transaksiFormSubmissionState is SubmissionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Transaksi berhasil dibuat'),
+            ),
+          );
+          //Buat Cetak struk
+        }
+        if (state.transaksiFormSubmissionState is SubmissionFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                (state.transaksiFormSubmissionState as SubmissionFailed)
+                    .exception
+                    .toString(),
+              ),
+            ),
+          );
+        }
+        if (state.promoFormSubmissionState is SubmissionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Promo berhasil diaplikasikan'),
+            ),
+          );
+          _promoTextController.text = ThousandsFormatterString.format(
+              state.transaksiForm.promo.bonus.toString());
+        }
+        if (state.promoFormSubmissionState is SubmissionFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                (state.promoFormSubmissionState as SubmissionFailed)
+                    .exception
+                    .toString(),
+              ),
+            ),
+          );
+          _promoTextController.text = ThousandsFormatterString.format(
+              state.transaksiForm.promo.bonus.toString());
+        }
+      },
+      child:
+          BlocBuilder<TransaksiBloc, TransaksiState>(builder: (context, state) {
+        return state.pageFetchedDataState is PageFetchedDataLoading ||
+                state.kelasList.isEmpty ||
+                state.memberList.isEmpty ||
+                state.promoList.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : Form(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Column(
+                            children: [
+                              CreateTextToTextField(
+                                label: 'Tanggal Transaksi',
+                                textField: CreateTextFormField(
+                                  hintText: 'Tanggal transaksi',
+                                  enabled: false,
+                                  initialValue:
+                                      state.transaksiForm.tanggalTransaksi,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              CreateTextToTextField(
+                                label: 'Kasir',
+                                textField: CreateTextFormField(
+                                  hintText: 'Kasir',
+                                  enabled: false,
+                                  initialValue:
+                                      '${state.transaksiForm.kasir.id} - ${state.transaksiForm.kasir.nama}',
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              CreateTextToTextField(
+                                label: 'Member',
+                                textField: CreateTypeAheadFormField(
+                                  controller: _memberTextController,
+                                  hintText:
+                                      'Pilih Member yang akan melakukan transaksi',
+                                  suggestionsCallback: (pattern) async {
+                                    return state.memberList
+                                        .where((element) =>
+                                            '${element.id} - ${element.nama}'
+                                                .toLowerCase()
+                                                .contains(
+                                                    pattern.toLowerCase()))
+                                        .toList();
+                                  },
+                                  itemBuilder: (context, member) {
+                                    return ListTile(
+                                      title:
+                                          Text('${member.id} - ${member.nama}'),
+                                    );
+                                  },
+                                  onSuggestionSelected: (member) {
+                                    _memberTextController.text =
+                                        '${member.id} - ${member.nama}';
+                                    context.read<TransaksiBloc>().add(
+                                        TransaksiFormChanged(
+                                            transaksiFrom: state.transaksiForm
+                                                .copyWith(member: member)));
+                                  },
+                                  validator: (value) =>
+                                      state.transaksiError.member.id == ''
+                                          ? null
+                                          : state.transaksiError.member.id,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Column(
+                            children: [
+                              CreateTextToTextField(
+                                label: 'Jenis Transaksi',
+                                textField: CreateDropDownButton(
+                                  errorText:
+                                      state.transaksiError.jenisTransaksi == ''
+                                          ? null
+                                          : state.transaksiError.jenisTransaksi,
+                                  value: state.transaksiForm.jenisTransaksi,
+                                  items: jenisTransaksi.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: state.transaksiForm.member.isEmpty
+                                      ? null
+                                      : (value) {
+                                          context.read<TransaksiBloc>().add(
+                                              TransaksiFormChanged(
+                                                  transaksiFrom: state
+                                                      .transaksiForm
+                                                      .copyWith(
+                                                          jenisTransaksi: value
+                                                              .toString())));
+                                        },
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: CreateTextToTextField(
+                                      textFlex: 1,
+                                      textFieldFlex: 1,
+                                      label: 'Nominal',
+                                      textField: CreateTextFormField(
+                                        prefix: state.transaksiForm
+                                                    .jenisTransaksi ==
+                                                jenisTransaksi[2]
+                                            ? const Text('Rp ')
+                                            : null,
+                                        hintText:
+                                            'Nominal Deposit ${state.transaksiForm.jenisTransaksi}',
+                                        initialValue: state
+                                            .transaksiForm.nominalDeposit
+                                            .toString(),
+                                        keyboardType: TextInputType.number,
+                                        inputFormatter: [
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                          ThousandsFormatter(),
+                                        ],
+                                        onChanged: (value) {
+                                          if (value != null) {
+                                            context.read<TransaksiBloc>().add(
+                                                TransaksiFormChanged(
+                                                    transaksiFrom: state
+                                                        .transaksiForm
+                                                        .copyWith(
+                                                            nominalDeposit:
+                                                                int.parse(value
+                                                                    .replaceAll(
+                                                                        ',',
+                                                                        '')))));
+                                          } else {
+                                            context.read<TransaksiBloc>().add(
+                                                TransaksiFormChanged(
+                                                    transaksiFrom: state
+                                                        .transaksiForm
+                                                        .copyWith(
+                                                            nominalDeposit:
+                                                                0)));
+                                          }
+                                        },
+                                        enabled: state.transaksiForm
+                                                        .jenisTransaksi ==
+                                                    jenisTransaksi[1] ||
+                                                state.transaksiForm
+                                                        .jenisTransaksi ==
+                                                    jenisTransaksi[0]
+                                            ? false
+                                            : true,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 30),
+                                      child: CreateTextToTextField(
+                                        label: 'Kelas',
+                                        textField: CreateTypeAheadFormField(
+                                          controller: _kelasTextController,
+                                          hintText:
+                                              'Pilih Kelas Deposit Kelas Paket',
+                                          suggestionsCallback: (pattern) async {
+                                            return state.kelasList
+                                                .where((element) => element.nama
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        pattern.toLowerCase()))
+                                                .toList();
+                                          },
+                                          itemBuilder: (context, kelas) {
+                                            return ListTile(
+                                              title: Text(kelas.nama),
+                                            );
+                                          },
+                                          onSuggestionSelected: (kelas) {
+                                            _kelasTextController.text =
+                                                kelas.nama;
+                                            context.read<TransaksiBloc>().add(
+                                                    TransaksiFormChanged(
+                                                        transaksiFrom: state
+                                                            .transaksiForm
+                                                            .copyWith(
+                                                  kelas: kelas,
+                                                )));
+                                          },
+                                          validator: (value) => state
+                                                      .transaksiError
+                                                      .kelas
+                                                      .id ==
+                                                  ''
+                                              ? null
+                                              : state.transaksiError.kelas.id,
+                                          enabled: state.transaksiForm
+                                                          .jenisTransaksi ==
+                                                      jenisTransaksi[2] ||
+                                                  state.transaksiForm
+                                                          .jenisTransaksi ==
+                                                      jenisTransaksi[1] ||
+                                                  state.transaksiForm
+                                                          .jenisTransaksi ==
+                                                      jenisTransaksi[0]
+                                              ? false
+                                              : true,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: CreateTextToTextField(
+                                      textFlex: 1,
+                                      textFieldFlex: 2,
+                                      label: 'Promo',
+                                      textField: CreateTextFormField(
+                                        prefix: state.transaksiForm
+                                                    .jenisTransaksi ==
+                                                jenisTransaksi[2]
+                                            ? const Text('Rp ')
+                                            : null,
+                                        controller: _promoTextController,
+                                        hintText: 'Promo',
+                                        enabled: false,
+                                      ),
+                                    ),
+                                  ),
+                                  //button cek promo
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 30),
+                                      child: ElevatedButton(
+                                        onPressed: state.transaksiForm
+                                                        .jenisTransaksi ==
+                                                    jenisTransaksi[1] ||
+                                                state.transaksiForm
+                                                        .jenisTransaksi ==
+                                                    jenisTransaksi[0]
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<TransaksiBloc>()
+                                                    .add(PromoCheckRequested());
+                                              },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 15),
+                                          child: state.promoFormSubmissionState
+                                                  is FormSubmitting
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                              : Text(
+                                                  'Cek Promo',
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'SchibstedGrotesk',
+                                                    fontSize: 15,
+                                                    color: textColor,
+                                                  ),
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: CreateTextToTextField(
+                                      textFlex: 1,
+                                      textFieldFlex: 2,
+                                      label: 'Grand Total',
+                                      textField: CreateTextFormField(
+                                        prefix: const Text('Rp '),
+                                        controller: _grandTotalTextController,
+                                        hintText: 'Grand Total',
+                                        enabled: false,
+                                      ),
+                                    ),
+                                  ),
+                                  //button calculate
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 30),
+                                      child: ElevatedButton(
+                                        onPressed: state.transaksiForm
+                                                    .jenisTransaksi ==
+                                                jenisTransaksi[0]
+                                            ? null
+                                            : () {
+                                                _grandTotalTextController.text =
+                                                    ThousandsFormatterString
+                                                        .format(BlocProvider.of<
+                                                                    TransaksiBloc>(
+                                                                context)
+                                                            .hitungGrandTotal());
+                                              },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20, horizontal: 15),
+                                          child: Text(
+                                            'Hitung',
+                                            style: TextStyle(
+                                              fontFamily: 'SchibstedGrotesk',
+                                              fontSize: 15,
+                                              color: textColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              CreateTextToTextField(
+                                label: 'Tunai',
+                                textField: CreateTextFormField(
+                                  prefix: const Text('Rp '),
+                                  controller: _cashTextController,
+                                  hintText: 'Tunai',
+                                  keyboardType: TextInputType.number,
+                                  inputFormatter: [ThousandsFormatter()],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      _kembalianTextController
+                                          .text = (int.parse(
+                                                  value.replaceAll(',', '')) -
+                                              int.parse(
+                                                  _grandTotalTextController.text
+                                                      .replaceAll(',', '')))
+                                          .toString();
+                                    } else {
+                                      _kembalianTextController.text = '0';
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              CreateTextToTextField(
+                                label: 'Kembalian',
+                                textField: CreateTextFormField(
+                                  prefix: const Text('Rp '),
+                                  controller: _kembalianTextController,
+                                  hintText: 'Kembalian',
+                                  enabled: false,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('SUMMARY'),
+                              const SizedBox(height: 20),
+                              Text(state.transaksiForm.jenisTransaksi),
+                              const SizedBox(height: 10),
+                              Text(
+                                  '${state.transaksiForm.member.id} - ${state.transaksiForm.member.nama}'),
+                              const SizedBox(height: 10),
+                              state.transaksiForm.jenisTransaksi ==
+                                      jenisTransaksi[1]
+                                  ? const Text('Masa aktif membership 1 Tahun')
+                                  : const SizedBox.shrink(),
+                              state.transaksiForm.jenisTransaksi ==
+                                      jenisTransaksi[2]
+                                  ? Text(
+                                      'Total Deposit Reguler: Rp ${state.transaksiForm.nominalDeposit + state.transaksiForm.promo.bonus}')
+                                  : const SizedBox.shrink(),
+                              state.transaksiForm.jenisTransaksi ==
+                                      jenisTransaksi[3]
+                                  ? Text(
+                                      'Total Deposit kelas Paket: ${state.transaksiForm.nominalDeposit + state.transaksiForm.promo.bonus}')
+                                  : const SizedBox.shrink(),
+                              Text(
+                                  'Grand Total: Rp ${state.transaksiForm.totalDeposit}'),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<TransaksiBloc>()
+                                .add(CancelTransaksiRequested());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontFamily: 'SchibstedGrotesk',
+                                fontSize: 15,
+                                color: textColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<TransaksiBloc>()
+                                .add(TransaksiFormSubmitted());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            child: Text(
+                              'Proses Transaksi',
+                              style: TextStyle(
+                                fontFamily: 'SchibstedGrotesk',
+                                fontSize: 15,
+                                color: textColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+      }),
+    );
+  }
+}
+
+class TitleLabel extends StatelessWidget {
+  const TitleLabel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: const TextSpan(
+        text: 'Transaksi ',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 24,
+        ),
+        children: [
+          TextSpan(
+            text: 'GoFit',
+            style: TextStyle(
+              fontFamily: 'SchibstedGrotesk',
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

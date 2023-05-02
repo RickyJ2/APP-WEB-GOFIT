@@ -235,7 +235,7 @@ class _TambahEditFormState extends State<TambahEditForm> {
                 hintText: 'Masukkan nomor telepon member',
                 initialValue: widget.memberInitial.noTelp,
                 keyboardType: TextInputType.number,
-                inputFormatter: FilteringTextInputFormatter.digitsOnly,
+                inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) => state.memberError.noTelp == ''
                     ? null
                     : state.memberError.noTelp,
