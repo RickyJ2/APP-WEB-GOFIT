@@ -88,6 +88,10 @@ class _TransaksiViewState extends State<TransaksiView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<TransaksiBloc, TransaksiState>(
+      listenWhen: (previous, current) =>
+          previous.pageFetchedDataState != current.pageFetchedDataState ||
+          previous.transaksiFormSubmissionState !=
+              current.transaksiFormSubmissionState,
       listener: (context, state) {
         if (state.pageFetchedDataState is PageFetchedDataFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -152,13 +156,16 @@ class _TransaksiViewState extends State<TransaksiView> {
                         mainAxisSize: MainAxisSize.min,
                         children: const [
                           Expanded(
+                            flex: 1,
                             child: DaftarHargaPromoViewSection(),
                           ),
-                          SizedBox(width: 20),
                           Expanded(
-                            child: SummarySection(),
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 30, right: 30),
+                              child: SummarySection(),
+                            ),
                           ),
-                          SizedBox(width: 20),
                           Flexible(
                             flex: 2,
                             fit: FlexFit.loose,
@@ -440,6 +447,10 @@ class _Section2State extends State<Section2> {
                             nominal: (value ?? '').replaceAll(',', '')));
                       },
                       enabled: state.nominalEnabled,
+                      validator: (value) =>
+                          state.transaksiError.nominalDeposit == ''
+                              ? null
+                              : state.transaksiError.nominalDeposit,
                     ),
                   ),
                 ),

@@ -8,6 +8,7 @@ import 'package:web_gofit/Repository/promo_repository.dart';
 import 'package:web_gofit/Repository/transaksi_repository.dart';
 import 'package:web_gofit/StateBlocTemplate/page_fetched_data_state.dart';
 
+import '../../Asset/thousands_formater.dart';
 import '../../Model/member.dart';
 import '../../Model/promo.dart';
 import '../../StateBlocTemplate/form_submission_state.dart';
@@ -159,6 +160,20 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         submitButtonEnabled: false,
       ));
     } else {
+      if (state.transaksiForm.member.depositKelasPaket != 0) {
+        emit(state.copyWith(
+          transaksiFormSubmissionState: const SubmissionFailed(
+              "Member sudah mempunyai deposit Kelas Paket"),
+          transaksiForm: state.transaksiForm.copyWith(
+            jenisTransaksi: jenisTransaksi[0],
+          ),
+          nominalEnabled: false,
+          nominalPrefix: '',
+          kelasEnabled: false,
+          cashEnabled: false,
+          submitButtonEnabled: false,
+        ));
+      }
       emit(state.copyWith(
         nominalEnabled: true,
         nominalPrefix: '',
@@ -180,6 +195,19 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
       submitButtonEnabled: false,
       transaksiFormSubmissionState: const InitialFormState(),
     ));
+    if (int.parse(event.nominal) <
+            appBloc.state.informasiUmum.minDepositReguler &&
+        state.transaksiForm.jenisTransaksi == jenisTransaksi[2]) {
+      emit(state.copyWith(
+        transaksiError: state.transaksiError.copyWith(
+            nominalDeposit:
+                "Min Rp ${ThousandsFormatterString.format(appBloc.state.informasiUmum.minDepositReguler.toString())}"),
+      ));
+    } else {
+      emit(state.copyWith(
+        transaksiError: state.transaksiError.copyWith(nominalDeposit: ''),
+      ));
+    }
     if (state.transaksiForm.jenisTransaksi == jenisTransaksi[2] ||
         state.transaksiForm.jenisTransaksi == jenisTransaksi[3] &&
             event.nominal != '') {
@@ -234,6 +262,9 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     if (event.cash >= int.parse(hitungGrandTotal())) {
       emit(state.copyWith(submitButtonEnabled: true));
     } else {
+      emit(state.copyWith(submitButtonEnabled: false));
+    }
+    if (state.transaksiError.isNoEmpty) {
       emit(state.copyWith(submitButtonEnabled: false));
     }
   }
