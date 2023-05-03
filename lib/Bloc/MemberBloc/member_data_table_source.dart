@@ -30,6 +30,11 @@ class MemberDataTableSource extends DataTableSource {
         DataCell(Text(data[index].tglLahir.toString())),
         DataCell(Text(data[index].noTelp.toString())),
         DataCell(Text(data[index].email.toString())),
+        DataCell(Text(data[index].deactivedMembershipAt.toString())),
+        DataCell(Text(data[index].depositReguler.toString())),
+        DataCell(Text(data[index].depositKelasPaket.toString())),
+        DataCell(Text(data[index].deactivedDepositKelasPaket.toString())),
+        DataCell(Text(data[index].kelasDepositKelasPaket.toString())),
         DataCell(Builder(
           builder: (context) => Row(children: [
             IconButton(
@@ -148,45 +153,42 @@ class MemberDataTableSource extends DataTableSource {
               children: [
                 pw.Text(informasiUmum.nama,
                     style: pw.TextStyle(
-                      fontSize: 18,
+                      fontSize: 14,
                       fontWeight: pw.FontWeight.bold,
                     )),
                 pw.Text(informasiUmum.alamat),
-                pw.SizedBox(height: 20),
+                pw.SizedBox(height: 14),
                 pw.Text('MEMBER CARD',
                     style: pw.TextStyle(
-                        fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                        fontSize: 14, fontWeight: pw.FontWeight.bold)),
                 pw.SizedBox(height: 5),
                 pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text('Member ID :'),
+                    pw.Flexible(
+                      flex: 1,
+                      child: pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text('Member ID'),
+                          pw.Text('Nama'),
+                          pw.Text('Alamat'),
+                          pw.Text('Telpon'),
+                        ],
+                      ),
+                    ),
                     pw.SizedBox(width: 10),
-                    pw.Text(data.id),
-                  ],
-                ),
-                pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Nama :'),
-                    pw.SizedBox(width: 10),
-                    pw.Text(data.nama),
-                  ],
-                ),
-                pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Alamat :'),
-                    pw.SizedBox(width: 10),
-                    pw.Text(data.alamat),
-                  ],
-                ),
-                pw.Row(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Telpon :'),
-                    pw.SizedBox(width: 10),
-                    pw.Text(data.noTelp),
+                    pw.Flexible(
+                      flex: 3,
+                      child: pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(': ${data.id}'),
+                          pw.Text(': ${data.nama}'),
+                          pw.Text(': ${data.alamat}'),
+                          pw.Text(': ${data.noTelp}'),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
