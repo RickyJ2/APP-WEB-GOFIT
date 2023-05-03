@@ -84,75 +84,90 @@ class _PaginatedDataTableInstrukturState
         return state.pageFetchedDataState is PageFetchedDataLoading
             ? const Center(child: CircularProgressIndicator())
             : Scrollbar(
-                child: PaginatedDataTable(
-                  rowsPerPage: state.instrukturList.isEmpty
-                      ? 1
-                      : state.instrukturList.length < 10
-                          ? state.instrukturList.length
-                          : 10,
-                  header: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: const TextSpan(
-                          text: 'Data Instruktur Gym ',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 24,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'GoFit',
-                              style: TextStyle(
-                                fontFamily: 'SchibstedGrotesk',
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'Data Instruktur Gym ',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 24,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'GoFit',
+                                        style: TextStyle(
+                                          fontFamily: 'SchibstedGrotesk',
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                TextField(
+                                  controller: searchController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Cari data instruktur',
+                                    constraints: const BoxConstraints(
+                                        maxHeight: 30, maxWidth: 500),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          BlocProvider.of<InstrukturBloc>(
+                                                  context)
+                                              .add(InstrukturFindDataRequested(
+                                                  data: searchController.text));
+                                        },
+                                        icon: const Icon(Icons.search)),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Cari data instruktur',
-                            constraints: const BoxConstraints(
-                                maxHeight: 30, maxWidth: 300),
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  BlocProvider.of<InstrukturBloc>(context).add(
-                                      InstrukturFindDataRequested(
-                                          data: searchController.text));
-                                },
-                                icon: const Icon(Icons.search)),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  columns: const [
-                    DataColumn(label: Text('Nama')),
-                    DataColumn(label: Text('Username')),
-                    DataColumn(label: Text('Alamat')),
-                    DataColumn(label: Text('Tanggal Lahir')),
-                    DataColumn(label: Text('No Telp')),
-                    DataColumn(label: Text('Action')),
-                  ],
-                  source: InstrukturDataTableSource(data: state.instrukturList),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.refresh),
-                      onPressed: () {
-                        BlocProvider.of<InstrukturBloc>(context)
-                            .add(InstrukturDataFetched());
-                      },
+                        IconButton(
+                          tooltip: "Refresh Data Instruktur",
+                          icon: const Icon(Icons.refresh, color: Colors.grey),
+                          onPressed: () {
+                            BlocProvider.of<InstrukturBloc>(context)
+                                .add(InstrukturDataFetched());
+                          },
+                        ),
+                        IconButton(
+                          tooltip: "Tambah Data Instruktur",
+                          icon: const Icon(Icons.add, color: Colors.grey),
+                          onPressed: () {
+                            context.go('/instruktur/tambah');
+                          },
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        context.go('/instruktur/tambah');
-                      },
+                    PaginatedDataTable(
+                      rowsPerPage: state.instrukturList.isEmpty
+                          ? 1
+                          : state.instrukturList.length < 10
+                              ? state.instrukturList.length
+                              : 10,
+                      columns: const [
+                        DataColumn(label: Text('Nama')),
+                        DataColumn(label: Text('Username')),
+                        DataColumn(label: Text('Alamat')),
+                        DataColumn(label: Text('Tanggal Lahir')),
+                        DataColumn(label: Text('No Telp')),
+                        DataColumn(label: Text('Action')),
+                      ],
+                      source:
+                          InstrukturDataTableSource(data: state.instrukturList),
                     ),
                   ],
                 ),
