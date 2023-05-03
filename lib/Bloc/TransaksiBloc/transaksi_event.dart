@@ -7,11 +7,6 @@ abstract class TransaksiEvent {}
 
 class PageDataFetched extends TransaksiEvent {}
 
-class TransaksiFormChanged extends TransaksiEvent {
-  final Transaksi transaksiFrom;
-  TransaksiFormChanged({required this.transaksiFrom});
-}
-
 class MemberFormChanged extends TransaksiEvent {
   final Member member;
   MemberFormChanged({required this.member});

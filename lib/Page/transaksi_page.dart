@@ -110,7 +110,7 @@ class _TransaksiViewState extends State<TransaksiView> {
               content: Text('Transaksi berhasil dibuat'),
             ),
           );
-          //Buat Cetak struk
+          context.read<TransaksiBloc>().add(PageDataFetched());
         }
         if (state.transaksiFormSubmissionState is SubmissionFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -384,8 +384,10 @@ class _Section2State extends State<Section2> {
     return BlocListener<TransaksiBloc, TransaksiState>(
       listenWhen: (previous, current) =>
           previous.transaksiForm.promo != current.transaksiForm.promo ||
-          current.transaksiForm.nominalDeposit == '' ||
-          current.transaksiForm.kelas.isEmpty,
+          (current.transaksiForm.nominalDeposit == '' &&
+              _nominalTextController.text != '') ||
+          (current.transaksiForm.kelas.isEmpty &&
+              _kelasTextController.text != ''),
       listener: (context, state) {
         _promoTextController.text = ThousandsFormatterString.format(
             state.transaksiForm.promo.bonus.toString());
@@ -613,6 +615,10 @@ class SummarySection extends StatelessWidget {
           state.transaksiForm.jenisTransaksi == jenisTransaksi[3]
               ? Text(
                   'Total Deposit kelas Paket: ${int.parse(state.transaksiForm.nominalDeposit == '' ? '0' : state.transaksiForm.nominalDeposit) + state.transaksiForm.promo.bonus}')
+              : const SizedBox(),
+          state.transaksiForm.jenisTransaksi == jenisTransaksi[3]
+              ? Text(
+                  'Masa aktif deposit kelas paket: ${(int.parse(state.transaksiForm.nominalDeposit == '' ? '0' : state.transaksiForm.nominalDeposit)) > 10 ? 2 : 1} Bulan')
               : const SizedBox(),
           Text(
               'Grand Total: Rp ${ThousandsFormatterString.format(context.read<TransaksiBloc>().hitungGrandTotal())}'),
