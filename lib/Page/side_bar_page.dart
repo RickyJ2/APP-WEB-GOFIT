@@ -130,6 +130,7 @@ class _SideBarPageState extends State<SideBarPage> {
                                   }
                                 case 3:
                                   {
+                                    context.go('/izin-instruktur');
                                     break;
                                   }
                               }
