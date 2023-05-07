@@ -47,7 +47,13 @@ class JadwalHarianBloc extends Bloc<JadwalHarianEvent, JadwalHarianState> {
 
   void _onUpdateLiburRequested(JadwalHarianUpdateLiburRequested event,
       Emitter<JadwalHarianState> emit) async {
-    emit(state.copyWith(liburUpdateState: FormSubmitting()));
+    emit(state.copyWith(
+      liburUpdateState: FormSubmitting(),
+      generateState: const InitialFormState(),
+      findPageFetchedDataState: const InitialPageFetchedDataState(),
+      pageFetchedDataState: const InitialPageFetchedDataState(),
+    ));
+
     try {
       await jadwalHarianRepository.updateLibur(int.parse(event.id));
       emit(state.copyWith(liburUpdateState: SubmissionSuccess()));
@@ -69,11 +75,19 @@ class JadwalHarianBloc extends Bloc<JadwalHarianEvent, JadwalHarianState> {
         currentPage: 1));
     try {
       final jadwalHarianList = await jadwalHarianRepository.find(event.data);
-      emit(state.copyWith(
-          jadwalHarianList: jadwalHarianList,
-          findPageFetchedDataState: PageFetchedDataSuccess(jadwalHarianList),
-          currentPage: 1));
-      emit(state.copyWith(lengthColumn: _getColumnLength()));
+      if (jadwalHarianList.isEmpty) {
+        emit(state.copyWith(
+            jadwalHarianList: jadwalHarianList,
+            findPageFetchedDataState: PageFetchedDataSuccess(jadwalHarianList),
+            currentPage: 0,
+            lengthColumn: 0));
+      } else {
+        emit(state.copyWith(
+            jadwalHarianList: jadwalHarianList,
+            findPageFetchedDataState: PageFetchedDataSuccess(jadwalHarianList),
+            currentPage: 1));
+        emit(state.copyWith(lengthColumn: _getColumnLength()));
+      }
     } on FailedToLoadJadwalHarian catch (e) {
       emit(state.copyWith(
           generateState: SubmissionFailed(e.message.toString())));
@@ -85,7 +99,11 @@ class JadwalHarianBloc extends Bloc<JadwalHarianEvent, JadwalHarianState> {
 
   void _onGenerateRequested(JadwalHarianGenerateRequested event,
       Emitter<JadwalHarianState> emit) async {
-    emit(state.copyWith(generateState: FormSubmitting()));
+    emit(state.copyWith(
+        generateState: FormSubmitting(),
+        findPageFetchedDataState: const InitialPageFetchedDataState(),
+        liburUpdateState: const InitialFormState(),
+        pageFetchedDataState: const InitialPageFetchedDataState()));
     try {
       await jadwalHarianRepository.generate();
       emit(state.copyWith(generateState: SubmissionSuccess()));
@@ -99,7 +117,13 @@ class JadwalHarianBloc extends Bloc<JadwalHarianEvent, JadwalHarianState> {
 
   void _onCurrentPageChanged(
       CurrentPageChanged event, Emitter<JadwalHarianState> emit) async {
-    emit(state.copyWith(currentPage: event.currentPage));
+    emit(state.copyWith(
+      currentPage: event.currentPage,
+      findPageFetchedDataState: const InitialPageFetchedDataState(),
+      liburUpdateState: const InitialFormState(),
+      pageFetchedDataState: const InitialPageFetchedDataState(),
+      generateState: const InitialFormState(),
+    ));
   }
 
   int _getColumnLength() {

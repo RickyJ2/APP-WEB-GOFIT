@@ -60,6 +60,8 @@ class JadwalHarianRepository {
                 key, value));
       });
       return jadwalHarian;
+    } else if (response.statusCode == 400) {
+      return [];
     } else {
       throw FailedToLoadJadwalHarian('Failed to load jadwal harian');
     }

@@ -37,6 +37,34 @@ class MemberRepository {
     }
   }
 
+  Future<List<Member>> getMembershipExpired() async {
+    var token = await TokenBearer().get();
+    var url = Uri.parse('${uri}member/indexMembershipExpired');
+    var response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body)['data'] as List;
+      List<Member> member = data.map((e) => Member.createMember(e)).toList();
+      return member;
+    } else {
+      throw FailedToLoadMember('Failed to load member');
+    }
+  }
+
+  Future<List<Member>> getDepositKelasExpired() async {
+    var token = await TokenBearer().get();
+    var url = Uri.parse('${uri}member/indexDepositKelasExpired');
+    var response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body)['data'] as List;
+      List<Member> member = data.map((e) => Member.createMember(e)).toList();
+      return member;
+    } else {
+      throw FailedToLoadMember('Failed to load member');
+    }
+  }
+
   Future<void> register(Member member) async {
     var token = await TokenBearer().get();
     var url = Uri.parse('${uri}member/register');
@@ -181,6 +209,18 @@ class MemberRepository {
       return;
     } else {
       throw const HttpException('Failed to reset password');
+    }
+  }
+
+  Future<void> resetMemberData() async {
+    var token = await TokenBearer().get();
+    var url = Uri.parse('${uri}member/resetMemberExpired');
+    var response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw const HttpException('Failed to reset Data Member Expired');
     }
   }
 }

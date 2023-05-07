@@ -9,6 +9,7 @@ import 'package:web_gofit/Model/informasi_umum.dart';
 import 'package:web_gofit/const.dart';
 
 import '../../Asset/confirmation_dialog.dart';
+import '../../Asset/thousands_formater.dart';
 import '../../Model/member.dart';
 import '../../StateBlocTemplate/form_submission_state.dart';
 import 'member_bloc.dart';
@@ -31,7 +32,8 @@ class MemberDataTableSource extends DataTableSource {
         DataCell(Text(data[index].noTelp.toString())),
         DataCell(Text(data[index].email.toString())),
         DataCell(Text(data[index].deactivedMembershipAt.toString())),
-        DataCell(Text(data[index].depositReguler.toString())),
+        DataCell(Text(
+            'Rp ${ThousandsFormatterString.format(data[index].depositReguler.toString())}')),
         DataCell(Text(data[index].depositKelasPaket.toString())),
         DataCell(Text(data[index].deactivedDepositKelasPaket.toString())),
         DataCell(Text(data[index].kelasDepositKelasPaket.toString())),

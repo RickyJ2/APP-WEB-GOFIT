@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../const.dart';
 
 class TokenFailure implements Exception {
   final String message;
@@ -8,6 +7,7 @@ class TokenFailure implements Exception {
 }
 
 class TokenBearer {
+  final sharedPrefKey = {'token': 'tokenKey'};
   Future<String> get() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? tokenPref = prefs.getString(sharedPrefKey['token']!);

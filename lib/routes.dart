@@ -148,7 +148,7 @@ final GoRouter router = GoRouter(
       },
     ),
   ],
-  initialLocation: '/home',
+  initialLocation: '/login',
   redirect: (context, state) {
     if (!context.read<AppBloc>().state.authenticated &&
         context.read<AppBloc>().state.authState is SubmissionFailed &&

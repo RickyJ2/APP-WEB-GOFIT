@@ -11,6 +11,7 @@ Color textColorSecond = const Color(0xFF131515).withOpacity(0.54);
 Color errorTextColor = const Color(0xFFE30224);
 Color disabledColor = const Color(0xFFF0F0F0);
 Color disabledBorderColor = const Color(0xFFD1D1D1);
+Color neutralYellowColor = const Color(0xFFFFC107);
 Brightness brightness = Brightness.light;
 
 ColorScheme colorScheme = ColorScheme.fromSwatch(
@@ -39,9 +40,6 @@ Text goFit = Text(
     fontWeight: FontWeight.bold,
   ),
 );
-
-//Shared pref key list
-final sharedPrefKey = {'token': 'tokenKey'};
 
 //Sidebar List
 const sideBarList = [

@@ -11,7 +11,7 @@ class IzinInstruktur extends Equatable {
   final Instruktur instrukturPenganti;
   final JadwalUmum jadwalUmum;
   final String tanggalIzin;
-  final bool isConfirmed;
+  final int isConfirmed;
   final String tanggalMengajukan;
   final String keterangan;
 
@@ -22,7 +22,7 @@ class IzinInstruktur extends Equatable {
     Instruktur? instrukturPenganti,
     JadwalUmum? jadwalUmum,
     String? tanggalIzin,
-    bool? isConfirmed,
+    int? isConfirmed,
     String? tanggalMengajukan,
     String? keterangan,
   }) {
@@ -46,7 +46,7 @@ class IzinInstruktur extends Equatable {
     this.instrukturPenganti = Instruktur.empty,
     this.jadwalUmum = JadwalUmum.empty,
     this.tanggalIzin = '',
-    this.isConfirmed = false,
+    this.isConfirmed = 0,
     this.tanggalMengajukan = '',
     this.keterangan = '',
   });
@@ -64,7 +64,7 @@ class IzinInstruktur extends Equatable {
         jamMulai: object['jam_mulai'].toString(),
       ),
       tanggalIzin: object['tanggal_izin'].toString(),
-      isConfirmed: object['is_confirmed'] == 1 ? true : false,
+      isConfirmed: object['is_confirmed'],
       tanggalMengajukan: object['created_at'].toString(),
       keterangan: object['keterangan'].toString(),
     );
@@ -77,7 +77,7 @@ class IzinInstruktur extends Equatable {
     instrukturPenganti: Instruktur.empty,
     jadwalUmum: JadwalUmum.empty,
     tanggalIzin: '',
-    isConfirmed: false,
+    isConfirmed: 0,
     tanggalMengajukan: '',
     keterangan: '',
   );

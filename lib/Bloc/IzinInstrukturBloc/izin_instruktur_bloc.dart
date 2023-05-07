@@ -15,6 +15,8 @@ class IzinInstrukturBloc
     on<IzinInstrukturDataFetched>((event, emit) => _onDataFetched(event, emit));
     on<IzinInstrukturConfirmedDataRequested>(
         (event, emit) => _onConfirmedDataRequested(event, emit));
+    on<IzinInstrukturCancelConfirmedDataRequested>(
+        (event, emit) => _onCancelConfirmedDataRequested(event, emit));
     on<IzinInstrukturToogleChanged>(
         (event, emit) => _onToogleChanged(event, emit));
   }
@@ -38,7 +40,7 @@ class IzinInstrukturBloc
       } else {
         emit(state.copyWith(
           izinInstrukturListDisplay: state.izinInstrukturList
-              .where((element) => element.isConfirmed == false)
+              .where((element) => element.isConfirmed == 0)
               .toList(),
         ));
       }
@@ -53,7 +55,20 @@ class IzinInstrukturBloc
       Emitter<IzinInstrukturState> emit) async {
     emit(state.copyWith(confirmedFormSubmissionState: FormSubmitting()));
     try {
-      await izinInstrukturRepository.confirmed(event.id);
+      await izinInstrukturRepository.confirmed(event.id, 2);
+      emit(state.copyWith(confirmedFormSubmissionState: SubmissionSuccess()));
+    } catch (e) {
+      emit(state.copyWith(
+          confirmedFormSubmissionState: SubmissionFailed(e.toString())));
+    }
+  }
+
+  void _onCancelConfirmedDataRequested(
+      IzinInstrukturCancelConfirmedDataRequested event,
+      Emitter<IzinInstrukturState> emit) async {
+    emit(state.copyWith(confirmedFormSubmissionState: FormSubmitting()));
+    try {
+      await izinInstrukturRepository.confirmed(event.id, 1);
       emit(state.copyWith(confirmedFormSubmissionState: SubmissionSuccess()));
     } catch (e) {
       emit(state.copyWith(

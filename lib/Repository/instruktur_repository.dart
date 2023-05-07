@@ -160,4 +160,16 @@ class InstrukturRepository {
       throw const HttpException('Failed to delete instruktur');
     }
   }
+
+  Future<void> resetDataTerlambatInstruktur() async {
+    var token = await TokenBearer().get();
+    var url = Uri.parse('${uri}instruktur/resetAkumulasiTerlambat');
+    var response =
+        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw const HttpException('Failed to Reset Data Terlambat Instruktur');
+    }
+  }
 }

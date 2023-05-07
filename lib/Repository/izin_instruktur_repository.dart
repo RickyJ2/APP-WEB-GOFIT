@@ -29,11 +29,12 @@ class IzinInstrukturRepository {
     }
   }
 
-  Future<void> confirmed(String id) async {
+  Future<void> confirmed(String id, int state) async {
     var token = await TokenBearer().get();
     var url = Uri.parse('${uri}izinInstruktur/verifikasi/$id');
-    var response =
-        await http.put(url, headers: {'Authorization': 'Bearer $token'});
+    var response = await http.put(url,
+        headers: {'Authorization': 'Bearer $token'},
+        body: {'is_confirmed': state.toString()});
     if (response.statusCode == 200) {
       return;
     } else {

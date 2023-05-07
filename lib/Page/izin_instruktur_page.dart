@@ -75,95 +75,93 @@ class _PaginatedDataTableIzinInstrukturState
         builder: (context, state) {
           return state.pageFetchedDataState is PageFetchedDataLoading
               ? const Center(child: CircularProgressIndicator())
-              : Scrollbar(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RichText(
-                              text: const TextSpan(
-                                text: 'Data Izin Instuktur Gym ',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 24,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'GoFit',
-                                    style: TextStyle(
-                                      fontFamily: 'SchibstedGrotesk',
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RichText(
+                            text: const TextSpan(
+                              text: 'Data Izin Instuktur Gym ',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 24,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'GoFit',
+                                  style: TextStyle(
+                                    fontFamily: 'SchibstedGrotesk',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          IconButton(
-                            tooltip: "Refresh Data Izin Instruktur",
-                            icon: const Icon(Icons.refresh, color: Colors.grey),
-                            onPressed: () {
-                              context
-                                  .read<IzinInstrukturBloc>()
-                                  .add(IzinInstrukturDataFetched());
-                            },
+                        ),
+                        IconButton(
+                          tooltip: "Refresh Data Izin Instruktur",
+                          icon: const Icon(Icons.refresh, color: Colors.grey),
+                          onPressed: () {
+                            context
+                                .read<IzinInstrukturBloc>()
+                                .add(IzinInstrukturDataFetched());
+                          },
+                        ),
+                        const SizedBox(width: 15),
+                        ToggleButtons(
+                          onPressed: (int index) {
+                            context.read<IzinInstrukturBloc>().add(
+                                IzinInstrukturToogleChanged(
+                                    toogleState: index));
+                          },
+                          isSelected: state.toogleState,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(5),
                           ),
-                          const SizedBox(width: 15),
-                          ToggleButtons(
-                            onPressed: (int index) {
-                              context.read<IzinInstrukturBloc>().add(
-                                  IzinInstrukturToogleChanged(
-                                      toogleState: index));
-                            },
-                            isSelected: state.toogleState,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                            selectedColor: textColor,
-                            fillColor: primaryColor,
-                            color: accentColor,
-                            constraints: const BoxConstraints(
-                              minWidth: 100,
-                              minHeight: 40,
-                            ),
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Semua'),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Belum Dikonfirmasi'),
-                              ),
-                            ],
+                          selectedColor: textColor,
+                          fillColor: primaryColor,
+                          color: accentColor,
+                          constraints: const BoxConstraints(
+                            minWidth: 100,
+                            minHeight: 40,
                           ),
-                        ],
-                      ),
-                      PaginatedDataTable(
-                        rowsPerPage: state.izinInstrukturListDisplay.isEmpty
-                            ? 1
-                            : state.izinInstrukturListDisplay.length < 10
-                                ? state.izinInstrukturListDisplay.length
-                                : 10,
-                        columns: const [
-                          DataColumn(label: Text('Tanggal Mengajukan')),
-                          DataColumn(label: Text('Tanggal Izin')),
-                          DataColumn(label: Text('Jam Kelas')),
-                          DataColumn(label: Text('Nama Kelas')),
-                          DataColumn(label: Text('Instruktur Pengaju')),
-                          DataColumn(label: Text('Instruktur Penganti')),
-                          DataColumn(label: Text('Keterangan')),
-                          DataColumn(label: Text('Status')),
-                          DataColumn(label: Text('Action')),
-                        ],
-                        source: IzinInstrukturDataTableSource(
-                            data: state.izinInstrukturListDisplay),
-                      ),
-                    ],
-                  ),
+                          children: const [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Semua'),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Belum Dikonfirmasi'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    PaginatedDataTable(
+                      rowsPerPage: state.izinInstrukturListDisplay.isEmpty
+                          ? 1
+                          : state.izinInstrukturListDisplay.length < 10
+                              ? state.izinInstrukturListDisplay.length
+                              : 10,
+                      columns: const [
+                        DataColumn(label: Text('Tanggal Mengajukan')),
+                        DataColumn(label: Text('Tanggal Izin')),
+                        DataColumn(label: Text('Jam Kelas')),
+                        DataColumn(label: Text('Nama Kelas')),
+                        DataColumn(label: Text('Instruktur Pengaju')),
+                        DataColumn(label: Text('Instruktur Penganti')),
+                        DataColumn(label: Text('Keterangan')),
+                        DataColumn(label: Text('Status')),
+                        DataColumn(label: Text('Action')),
+                      ],
+                      source: IzinInstrukturDataTableSource(
+                          data: state.izinInstrukturListDisplay),
+                    ),
+                  ],
                 );
         },
       ),

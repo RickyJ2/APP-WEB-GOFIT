@@ -142,6 +142,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     ));
     if (event.jenisTransaksi == jenisTransaksi[0]) {
       emit(state.copyWith(
+        transaksiError: state.transaksiError.copyWith(jenisTransaksi: ""),
         nominalEnabled: false,
         nominalPrefix: '',
         kelasEnabled: false,
@@ -150,6 +151,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
       ));
     } else if (event.jenisTransaksi == jenisTransaksi[1]) {
       emit(state.copyWith(
+        transaksiError: state.transaksiError.copyWith(jenisTransaksi: ""),
         nominalEnabled: false,
         nominalPrefix: 'Rp ',
         kelasEnabled: false,
@@ -158,6 +160,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
       ));
     } else if (event.jenisTransaksi == jenisTransaksi[2]) {
       emit(state.copyWith(
+        transaksiError: state.transaksiError.copyWith(jenisTransaksi: ""),
         nominalEnabled: true,
         nominalPrefix: 'Rp ',
         kelasEnabled: false,
@@ -167,8 +170,8 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
     } else {
       if (state.transaksiForm.member.depositKelasPaket != 0) {
         emit(state.copyWith(
-          transaksiFormSubmissionState: const SubmissionFailed(
-              "Member sudah mempunyai deposit Kelas Paket"),
+          transaksiError: state.transaksiError.copyWith(
+              jenisTransaksi: "Member sudah mempunyai deposit Kelas Paket"),
           transaksiForm: state.transaksiForm.copyWith(
             jenisTransaksi: jenisTransaksi[0],
           ),
@@ -180,6 +183,7 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         ));
       } else {
         emit(state.copyWith(
+          transaksiError: state.transaksiError.copyWith(jenisTransaksi: ""),
           nominalEnabled: true,
           nominalPrefix: '',
           kelasEnabled: true,
@@ -230,8 +234,15 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         transaksiForm: state.transaksiForm.copyWith(
           promo: getPromo,
         ),
-        cashEnabled: true,
       ));
+    }
+    if (state.transaksiForm.jenisTransaksi == jenisTransaksi[2]) {
+      emit(state.copyWith(cashEnabled: true));
+    } else if (state.transaksiForm.jenisTransaksi == jenisTransaksi[3] &&
+        state.transaksiForm.kelas.isNoEmpty) {
+      emit(state.copyWith(kelasEnabled: true));
+    } else {
+      emit(state.copyWith(cashEnabled: false));
     }
   }
 
@@ -260,8 +271,12 @@ class TransaksiBloc extends Bloc<TransaksiEvent, TransaksiState> {
         transaksiForm: state.transaksiForm.copyWith(
           promo: getPromo,
         ),
-        cashEnabled: true,
       ));
+    }
+    if (event.kelas.isNoEmpty) {
+      emit(state.copyWith(cashEnabled: true));
+    } else {
+      emit(state.copyWith(cashEnabled: false));
     }
   }
 

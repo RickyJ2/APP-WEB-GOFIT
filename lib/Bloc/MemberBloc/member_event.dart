@@ -16,3 +16,12 @@ class MemberResetPasswordRequested extends MemberEvent {
   final String id;
   MemberResetPasswordRequested({required this.id});
 }
+
+class MemberResetDataMemberRequested extends MemberEvent {}
+
+class MemberToogleChanged extends MemberEvent {
+  final int toogleState;
+  MemberToogleChanged({required this.toogleState});
+}
+
+class InstrukturResetDataInstrukturRequested extends MemberEvent {}
