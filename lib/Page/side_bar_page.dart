@@ -169,6 +169,7 @@ class _SideBarPageState extends State<SideBarPage> {
                                   }
                                 case 2:
                                   {
+                                    context.go('/booking-gym');
                                     break;
                                   }
                                 case 3:

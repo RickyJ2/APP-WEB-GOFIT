@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_gofit/Model/jadwal_umum.dart';
+import 'package:web_gofit/Page/booking_gym_page.dart';
 import 'package:web_gofit/Page/home_page.dart';
 
 import 'package:web_gofit/Page/instruktur_page.dart';
@@ -72,6 +73,20 @@ final GoRouter router = GoRouter(
           ),
         ),
       ],
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 3) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
+    ),
+    GoRoute(
+      path: '/booking-gym',
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: BookingGymPage(),
+        selectedIndex: 2,
+      ),
       redirect: (context, state) {
         if (context.read<AppBloc>().state.user.jabatan != 3) {
           return '/home';
