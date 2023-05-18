@@ -11,6 +11,9 @@ class BookingKelas extends Equatable {
   final String noStruk;
   final Member member;
   final JadwalHarian jadwalHarian;
+  final String jenisPembayaran;
+  final String sisaDeposit;
+  final String masaBerlakuDeposit;
   final bool isCanceled;
   final String presentAt;
   final String createdAt;
@@ -20,6 +23,9 @@ class BookingKelas extends Equatable {
     String? noStruk,
     Member? member,
     JadwalHarian? jadwalHarian,
+    String? jenisPembayaran,
+    String? sisaDeposit,
+    String? masaBerlakuDeposit,
     bool? isCanceled,
     String? presentAt,
     String? createdAt,
@@ -29,6 +35,9 @@ class BookingKelas extends Equatable {
       noStruk: noStruk ?? this.noStruk,
       member: member ?? this.member,
       jadwalHarian: jadwalHarian ?? this.jadwalHarian,
+      jenisPembayaran: jenisPembayaran ?? this.jenisPembayaran,
+      sisaDeposit: sisaDeposit ?? this.sisaDeposit,
+      masaBerlakuDeposit: masaBerlakuDeposit ?? this.masaBerlakuDeposit,
       isCanceled: isCanceled ?? this.isCanceled,
       presentAt: presentAt ?? this.presentAt,
       createdAt: createdAt ?? this.createdAt,
@@ -40,6 +49,9 @@ class BookingKelas extends Equatable {
     this.noStruk = '',
     this.member = const Member(),
     this.jadwalHarian = const JadwalHarian(),
+    this.jenisPembayaran = '',
+    this.sisaDeposit = '',
+    this.masaBerlakuDeposit = '',
     this.presentAt = '',
     this.isCanceled = false,
     this.createdAt = '',
@@ -48,9 +60,12 @@ class BookingKelas extends Equatable {
   factory BookingKelas.createBookingKelas(Map<String, dynamic> object) {
     return BookingKelas(
       id: object['id'].toString(),
-      noStruk: object['no_nota'].toString(),
+      noStruk: object['no_nota'].toString() == 'null'
+          ? ''
+          : object['no_nota'].toString(),
       member: Member(
         id: object['member_id'].toString(),
+        nama: object['nama_member'].toString(),
       ),
       jadwalHarian: JadwalHarian(
         id: object['jadwal_harian_id'].toString(),
@@ -69,6 +84,9 @@ class BookingKelas extends Equatable {
           ),
         ),
       ),
+      jenisPembayaran: (object['jenis_pembayaran'] ?? '').toString(),
+      sisaDeposit: (object['sisa_deposit'] ?? '').toString(),
+      masaBerlakuDeposit: (object['masa_berlaku_deposit'] ?? '').toString(),
       presentAt: object['present_at'].toString() == 'null'
           ? ''
           : object['present_at'].toString(),
@@ -88,6 +106,9 @@ class BookingKelas extends Equatable {
         noStruk,
         member,
         jadwalHarian,
+        jenisPembayaran,
+        sisaDeposit,
+        masaBerlakuDeposit,
         presentAt,
         isCanceled,
         createdAt,
