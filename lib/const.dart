@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //url Utama Repository
-String uri = 'http://127.0.0.1:8000/api/';
+String uri = 'http://192.168.0.103:5000/api/';
 
 //Theme
 Color primaryColor = const Color(0xFFFB8B24);

@@ -100,7 +100,7 @@ class _SideBarPageState extends State<SideBarPage> {
                       selectedLabelTextStyle: TextStyle(color: primaryColor),
                       unselectedIconTheme: IconThemeData(color: textColor),
                       unselectedLabelTextStyle: TextStyle(color: textColor),
-                      labelType: NavigationRailLabelType.all,
+                      labelType: NavigationRailLabelType.selected,
                       groupAlignment: 0,
                       selectedIndex: state.selectedIndex,
                       destinations: sideBarList[state.user.jabatan - 1],
