@@ -20,6 +20,7 @@ dependencies:
   printing: ^5.10.3
   flutter_typeahead: ^4.3.7
   intl: ^0.17.0
+  charts_flutter: ^0.10.0
 
 dev_dependencies:
   flutter_test:

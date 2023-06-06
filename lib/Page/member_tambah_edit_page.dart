@@ -260,20 +260,6 @@ class _TambahEditFormState extends State<TambahEditForm> {
                     ),
               ),
               const SizedBox(height: 15),
-              CreateTextFormField(
-                labelText: 'Username',
-                hintText: 'Masukkan username member',
-                initialValue: widget.memberInitial.username,
-                validator: (value) => state.memberError.username == ''
-                    ? null
-                    : state.memberError.username,
-                onChanged: (value) => context.read<MemberTambahEditBloc>().add(
-                      MemberFormChanged(
-                        member: state.memberForm.copyWith(username: value),
-                      ),
-                    ),
-              ),
-              const SizedBox(height: 15),
               state.tambahEdit == TambahEdit.tambah
                   ? CreateTextFormField(
                       labelText: 'Password',

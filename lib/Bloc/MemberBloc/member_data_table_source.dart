@@ -26,7 +26,6 @@ class MemberDataTableSource extends DataTableSource {
   DataRow? getRow(int index) => DataRow(cells: [
         DataCell(Text(data[index].id.toString())),
         DataCell(Text(data[index].nama.toString())),
-        DataCell(Text(data[index].username.toString())),
         DataCell(Text(data[index].alamat.toString())),
         DataCell(Text(data[index].tglLahir.toString())),
         DataCell(Text(data[index].noTelp.toString())),

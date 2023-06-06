@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //url Utama Repository
-String uri = 'http://192.168.0.103:5000/api/';
+String uri = 'http://10.53.15.143:5000/api/';
 
 //Theme
 Color primaryColor = const Color(0xFFFB8B24);
@@ -122,3 +122,34 @@ final List<String> jenisTransaksi = [
   'Deposit Reguler',
   'Deposit Kelas',
 ];
+
+final List<String> laporanTypeList = [
+  'LAPORAN PENDAPATAN BULANAN',
+  'LAPORAN AKTIVITAS KELAS BULANAN',
+  'LAPORAN AKTIVITAS GYM BULANAN',
+  'LAPORAN KINERJA INSTRUKTUR BULANAN',
+];
+
+final List<String> bulan = [
+  '',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8 ',
+  '9',
+  '10',
+  '11',
+  '12',
+];
+
+int currentYear = DateTime.now().year;
+List<String> yearList = List.generate(currentYear - 2020, (index) {
+  if (index == 0) {
+    return '';
+  }
+  return (2021 + index).toString();
+});

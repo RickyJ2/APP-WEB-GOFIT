@@ -12,7 +12,7 @@ class ErrorValidateFromMember implements Exception {
 
   @override
   String toString() {
-    return '${member.nama} ${member.alamat} ${member.tglLahir} ${member.noTelp} ${member.email} ${member.username} ${member.password}';
+    return '${member.nama} ${member.alamat} ${member.tglLahir} ${member.noTelp} ${member.email} ${member.password}';
   }
 }
 
@@ -76,7 +76,6 @@ class MemberRepository {
       'tgl_lahir': member.tglLahir,
       'email': member.email,
       'no_telp': member.noTelp,
-      'username': member.username,
       'password': member.password!,
     });
     if (response.statusCode == 200) {
@@ -103,10 +102,6 @@ class MemberRepository {
       if (decoded.containsKey('no_telp')) {
         memberError =
             memberError.copyWith(noTelp: decoded['no_telp'][0].toString());
-      }
-      if (decoded.containsKey('username')) {
-        memberError =
-            memberError.copyWith(username: decoded['username'][0].toString());
       }
       if (decoded.containsKey('password')) {
         memberError =
@@ -146,7 +141,6 @@ class MemberRepository {
       'tgl_lahir': member.tglLahir,
       'email': member.email,
       'no_telp': member.noTelp,
-      'username': member.username,
       'password': member.password!,
     });
     if (response.statusCode == 200) {
@@ -173,10 +167,6 @@ class MemberRepository {
       if (decoded.containsKey('no_telp')) {
         memberError =
             memberError.copyWith(noTelp: decoded['no_telp'][0].toString());
-      }
-      if (decoded.containsKey('username')) {
-        memberError =
-            memberError.copyWith(username: decoded['username'][0].toString());
       }
       if (decoded.containsKey('password')) {
         memberError =

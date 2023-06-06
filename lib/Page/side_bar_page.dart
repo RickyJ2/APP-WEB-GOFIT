@@ -133,6 +133,11 @@ class _SideBarPageState extends State<SideBarPage> {
                                     context.go('/izin-instruktur');
                                     break;
                                   }
+                                case 4:
+                                  {
+                                    context.go('/laporan');
+                                    break;
+                                  }
                               }
                               break;
                             }

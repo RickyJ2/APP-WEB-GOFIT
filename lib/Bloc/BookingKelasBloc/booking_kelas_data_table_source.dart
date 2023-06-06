@@ -78,7 +78,7 @@ class BookingKelasDataTableSource extends DataTableSource {
         build: (pw.Context context) {
           return pw.Container(
             padding: const pw.EdgeInsets.all(10),
-            constraints: const pw.BoxConstraints(maxWidth: 300, maxHeight: 190),
+            constraints: const pw.BoxConstraints(maxWidth: 300, maxHeight: 250),
             decoration: pw.BoxDecoration(
               border: pw.Border.all(color: PdfColors.black, width: 1),
             ),

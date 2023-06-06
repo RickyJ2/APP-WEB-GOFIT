@@ -15,6 +15,7 @@ import 'Bloc/AppBloc/app_bloc.dart';
 import 'Model/instruktur.dart';
 import 'Model/member.dart';
 import 'Page/instruktur_tambah_edit_page.dart';
+import 'Page/laporan_page.dart';
 import 'Page/login_page.dart';
 import 'Page/member_page.dart';
 import 'Page/side_bar_page.dart';
@@ -168,6 +169,20 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const SideBarPage(
         mainPageContent: IzinInstrukturPage(),
         selectedIndex: 3,
+      ),
+      redirect: (context, state) {
+        if (context.read<AppBloc>().state.user.jabatan != 1) {
+          return '/home';
+        } else {
+          return null;
+        }
+      },
+    ),
+    GoRoute(
+      path: '/laporan',
+      builder: (context, state) => const SideBarPage(
+        mainPageContent: LaporanPage(),
+        selectedIndex: 4,
       ),
       redirect: (context, state) {
         if (context.read<AppBloc>().state.user.jabatan != 1) {

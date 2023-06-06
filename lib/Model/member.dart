@@ -7,7 +7,6 @@ class Member extends Equatable {
   final String tglLahir;
   final String noTelp;
   final String email;
-  final String username;
   final String? password;
   final String deactivedMembershipAt;
   final int depositReguler;
@@ -22,7 +21,6 @@ class Member extends Equatable {
     String? tglLahir,
     String? noTelp,
     String? email,
-    String? username,
     String? password,
     String? deactivedMembershipAt,
     int? depositReguler,
@@ -37,7 +35,6 @@ class Member extends Equatable {
       tglLahir: tglLahir ?? this.tglLahir,
       noTelp: noTelp ?? this.noTelp,
       email: email ?? this.email,
-      username: username ?? this.username,
       password: password ?? this.password,
       deactivedMembershipAt:
           deactivedMembershipAt ?? this.deactivedMembershipAt,
@@ -57,7 +54,6 @@ class Member extends Equatable {
     this.tglLahir = '',
     this.noTelp = '',
     this.email = '',
-    this.username = '',
     this.password = '',
     this.deactivedMembershipAt = 'Belum Aktif',
     this.depositReguler = 0,
@@ -74,7 +70,6 @@ class Member extends Equatable {
       tglLahir: object['tgl_lahir'].toString(),
       noTelp: object['no_telp'].toString(),
       email: object['email'].toString(),
-      username: object['username'].toString(),
       deactivedMembershipAt: object['deactived_membership_at'].toString(),
       depositReguler: object['deposit_reguler'],
       depositKelasPaket: object['deposit_kelas_paket'],
@@ -91,7 +86,6 @@ class Member extends Equatable {
     tglLahir: '',
     noTelp: '',
     email: '',
-    username: '',
     password: '',
     deactivedMembershipAt: 'Belum Aktif',
     depositReguler: 0,
@@ -111,7 +105,6 @@ class Member extends Equatable {
         tglLahir,
         noTelp,
         email,
-        username,
         password,
         deactivedMembershipAt,
         depositReguler,

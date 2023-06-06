@@ -12,7 +12,7 @@ class CreateDropDownButton extends StatelessWidget {
   const CreateDropDownButton({
     super.key,
     this.label,
-    required this.errorText,
+    this.errorText,
     required this.value,
     required this.items,
     this.onChanged,
