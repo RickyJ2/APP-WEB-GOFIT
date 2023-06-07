@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //url Utama Repository
-String uri = 'http://10.53.15.143:5000/api/';
+String uri = 'https://restapi-web-gofit-production.up.railway.app/api/';
 
 //Theme
 Color primaryColor = const Color(0xFFFB8B24);

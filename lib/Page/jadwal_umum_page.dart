@@ -116,7 +116,8 @@ class _JadwalUmumViewState extends State<JadwalUmumView> {
                           color: textColor,
                         ),
                       ),
-                      dataRowHeight: 120,
+                      dataRowMinHeight: 100,
+                      dataRowMaxHeight: 140,
                       columns: [
                         const DataColumn(
                           label: Expanded(

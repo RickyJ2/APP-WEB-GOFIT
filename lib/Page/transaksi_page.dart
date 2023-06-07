@@ -32,9 +32,9 @@ class TransaksiPage extends StatelessWidget {
         promoRepository: PromoRepository(),
         memberRepository: MemberRepository(),
       ),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           TitleLabel(),
           SizedBox(height: 30),
           TransaksiView(),
@@ -134,10 +134,10 @@ class _TransaksiViewState extends State<TransaksiView> {
               : Form(
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           Flexible(
                             fit: FlexFit.loose,
                             child: Section1(),
@@ -150,11 +150,11 @@ class _TransaksiViewState extends State<TransaksiView> {
                         ],
                       ),
                       const SizedBox(height: 30),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           Expanded(
                             flex: 1,
                             child: DaftarHargaPromoViewSection(),

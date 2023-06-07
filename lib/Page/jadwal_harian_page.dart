@@ -178,7 +178,8 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                                     color: textColor,
                                   ),
                                 ),
-                                dataRowHeight: 150,
+                                dataRowMinHeight: 100,
+                                dataRowMaxHeight: 140,
                                 columns: [
                                   const DataColumn(
                                     label: Expanded(

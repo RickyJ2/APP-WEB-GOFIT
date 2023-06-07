@@ -151,8 +151,8 @@ class LoginForm extends StatelessWidget {
       ],
       child: Form(
         key: _formLoginKey,
-        child: Column(
-          children: const [
+        child: const Column(
+          children: [
             UsernameTextFormField(),
             SizedBox(height: 10),
             PasswordTextFormField(),

@@ -44,7 +44,7 @@ final GoRouter router = GoRouter(
           path: ':tambahEdit',
           builder: (context, state) => SideBarPage(
             mainPageContent: InstrukturTambahEditPage(
-                tambahEdit: state.params['tambahEdit']!,
+                tambahEdit: state.pathParameters['tambahEdit']!,
                 instruktur: (state.extra ?? const Instruktur()) as Instruktur),
             selectedIndex: 1,
           ),
@@ -69,7 +69,7 @@ final GoRouter router = GoRouter(
           path: ':tambahEdit',
           builder: (context, state) => SideBarPage(
             mainPageContent: MemberTambahEditPage(
-                tambahEdit: state.params['tambahEdit']!,
+                tambahEdit: state.pathParameters['tambahEdit']!,
                 member: (state.extra ?? const Member()) as Member),
             selectedIndex: 1,
           ),
@@ -136,7 +136,7 @@ final GoRouter router = GoRouter(
           path: ':tambahEdit',
           builder: (context, state) => SideBarPage(
             mainPageContent: JadwalUmumTambahEditPage(
-                tambahEdit: state.params['tambahEdit']!,
+                tambahEdit: state.pathParameters['tambahEdit']!,
                 jadwalUmum: (state.extra ?? const JadwalUmum()) as JadwalUmum),
             selectedIndex: 1,
           ),
