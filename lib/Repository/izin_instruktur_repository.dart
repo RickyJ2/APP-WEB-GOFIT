@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_gofit/Model/izin_instruktur.dart';
 
@@ -19,6 +20,7 @@ class IzinInstrukturRepository {
     var url = Uri.parse('${uri}izinInstruktur/index');
     var response =
         await http.get(url, headers: {'Authorization': 'Bearer $token'});
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body)['data'] as List;
       List<IzinInstruktur> izinInstruktur =

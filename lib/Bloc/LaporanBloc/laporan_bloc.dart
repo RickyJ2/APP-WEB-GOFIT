@@ -278,60 +278,60 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                       ],
                                     ),
                       pw.SizedBox(height: 30),
-                      // data.jenis == laporanTypeList[0]
-                      //     ? pw.Expanded(
-                      //         child: pw.Chart(
-                      //           grid: pw.CartesianGrid(
-                      //             xAxis: pw.FixedAxis.fromStrings(
-                      //               List.generate(
-                      //                   (data.data as List<LaporanPendapatan>)
-                      //                           .length -
-                      //                       1,
-                      //                   (index) => (data.data as List<
-                      //                           LaporanPendapatan>)[index]
-                      //                       .bulan
-                      //                       .substring(0, 3)),
-                      //               marginStart: 30,
-                      //               marginEnd: 30,
-                      //               ticks: true,
-                      //             ),
-                      //             yAxis: pw.FixedAxis(
-                      //               [
-                      //                 0,
-                      //                 150000000,
-                      //                 300000000,
-                      //                 500000000,
-                      //                 750000000,
-                      //               ],
-                      //               format: (v) =>
-                      //                   'Rp${ThousandsFormatterString.format(v.toString())}}',
-                      //               divisions: true,
-                      //             ),
-                      //           ),
-                      //           datasets: [
-                      //             pw.BarDataSet(
-                      //               legend: 'Total',
-                      //               width: 15,
-                      //               offset: -10,
-                      //               data: List<pw.PointChartValue>.generate(
-                      //                 (data.data as List<LaporanPendapatan>)
-                      //                         .length -
-                      //                     1,
-                      //                 (index) {
-                      //                   final v = (data.data as List<
-                      //                           LaporanPendapatan>)[index]
-                      //                       .total;
-                      //                   return pw.PointChartValue(
-                      //                       index.toDouble(),
-                      //                       int.parse(v).toDouble());
-                      //                 },
-                      //               ),
-                      //               color: PdfColors.blue,
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       )
-                      //     : pw.SizedBox(),
+                      data.jenis == laporanTypeList[0]
+                          ? pw.Expanded(
+                              child: pw.Chart(
+                                grid: pw.CartesianGrid(
+                                  xAxis: pw.FixedAxis.fromStrings(
+                                    List.generate(
+                                        (data.data as List<LaporanPendapatan>)
+                                                .length -
+                                            1,
+                                        (index) => (data.data as List<
+                                                LaporanPendapatan>)[index]
+                                            .bulan
+                                            .substring(0, 3)),
+                                    marginStart: 30,
+                                    marginEnd: 30,
+                                    ticks: true,
+                                  ),
+                                  yAxis: pw.FixedAxis(
+                                    [
+                                      0,
+                                      150000000,
+                                      300000000,
+                                      500000000,
+                                      750000000,
+                                    ],
+                                    format: (v) =>
+                                        'Rp${ThousandsFormatterString.format(v.toString())}}',
+                                    divisions: true,
+                                  ),
+                                ),
+                                datasets: [
+                                  pw.BarDataSet(
+                                    legend: 'Total',
+                                    width: 15,
+                                    offset: -10,
+                                    data: List<pw.PointChartValue>.generate(
+                                      (data.data as List<LaporanPendapatan>)
+                                              .length -
+                                          1,
+                                      (index) {
+                                        final v = (data.data as List<
+                                                LaporanPendapatan>)[index]
+                                            .total;
+                                        return pw.PointChartValue(
+                                            index.toDouble(),
+                                            int.parse(v).toDouble());
+                                      },
+                                    ),
+                                    color: PdfColors.blue,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : pw.SizedBox(),
                     ],
                   ),
                 ),

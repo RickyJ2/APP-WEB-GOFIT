@@ -434,26 +434,59 @@ class _Section2State extends State<Section2> {
                     textFlex: 1,
                     textFieldFlex: 1,
                     label: 'Nominal',
-                    textField: CreateTextFormField(
-                      controller: _nominalTextController,
-                      prefix: Text(state.nominalPrefix),
-                      hintText:
-                          'Nominal Deposit ${state.transaksiForm.jenisTransaksi}',
-                      keyboardType: TextInputType.number,
-                      inputFormatter: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        ThousandsFormatter(),
-                      ],
-                      onChanged: (value) {
-                        context.read<TransaksiBloc>().add(NominalFormChanged(
-                            nominal: (value ?? '').replaceAll(',', '')));
-                      },
-                      enabled: state.nominalEnabled,
-                      validator: (value) =>
-                          state.transaksiError.nominalDeposit == ''
-                              ? null
-                              : state.transaksiError.nominalDeposit,
-                    ),
+                    textField: state.transaksiForm.jenisTransaksi ==
+                            jenisTransaksi[3]
+                        ? CreateDropDownButton(
+                            value: state.transaksiForm.nominalDeposit,
+                            items: const [
+                              DropdownMenuItem<String>(
+                                value: '',
+                                child: Text(''),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '5',
+                                child: Text('5'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '10',
+                                child: Text('10'),
+                              ),
+                            ],
+                            onChanged: state.nominalEnabled
+                                ? (value) {
+                                    context.read<TransaksiBloc>().add(
+                                        NominalFormChanged(
+                                            nominal: (value ?? '')
+                                                .toString()
+                                                .replaceAll(',', '')));
+                                  }
+                                : null,
+                            errorText: state.transaksiError.nominalDeposit == ''
+                                ? null
+                                : state.transaksiError.nominalDeposit,
+                          )
+                        : CreateTextFormField(
+                            controller: _nominalTextController,
+                            prefix: Text(state.nominalPrefix),
+                            hintText:
+                                'Nominal Deposit ${state.transaksiForm.jenisTransaksi}',
+                            keyboardType: TextInputType.number,
+                            inputFormatter: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              ThousandsFormatter(),
+                            ],
+                            onChanged: (value) {
+                              context.read<TransaksiBloc>().add(
+                                  NominalFormChanged(
+                                      nominal:
+                                          (value ?? '').replaceAll(',', '')));
+                            },
+                            enabled: state.nominalEnabled,
+                            validator: (value) =>
+                                state.transaksiError.nominalDeposit == ''
+                                    ? null
+                                    : state.transaksiError.nominalDeposit,
+                          ),
                   ),
                 ),
                 Flexible(
