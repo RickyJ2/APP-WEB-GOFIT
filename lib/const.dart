@@ -147,9 +147,9 @@ final List<String> bulan = [
 ];
 
 int currentYear = DateTime.now().year;
-List<String> yearList = List.generate(currentYear - 2020, (index) {
+List<String> yearList = List.generate(currentYear - 2021, (index) {
   if (index == 0) {
     return '';
   }
-  return (2021 + index).toString();
+  return (2022 + index).toString();
 });
