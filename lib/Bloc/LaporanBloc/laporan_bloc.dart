@@ -168,34 +168,10 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                               children: [
                                 pw.TableRow(
                                   children: [
-                                    pw.Table(
-                                      border: pw.TableBorder.all(),
-                                      children: [
-                                        pw.TableRow(
-                                          children: [
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text('Bulan'),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text('Aktivasi'),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text('Deposit'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text('Total'),
-                                    ),
+                                    pw.Text('Bulan'),
+                                    pw.Text('Aktivasi'),
+                                    pw.Text('Deposit'),
+                                    pw.Text('Total'),
                                   ],
                                 ),
                                 for (var index = 0;
@@ -206,53 +182,24 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                     index++)
                                   pw.TableRow(
                                     children: [
-                                      pw.Table(
-                                        border: pw.TableBorder.all(),
-                                        children: [
-                                          pw.TableRow(
-                                            children: [
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text((data.data as List<
-                                                            LaporanPendapatan>)[
-                                                        index]
-                                                    .bulan),
-                                              ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                    'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].aktivitas.toString())}'),
-                                              ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                    'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].deposit.toString())}'),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      pw.Padding(
-                                        padding: const pw.EdgeInsets.all(5),
-                                        child: pw.Text(
-                                            'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].total.toString())}'),
-                                      ),
+                                      pw.Text((data.data
+                                              as List<LaporanPendapatan>)[index]
+                                          .bulan),
+                                      pw.Text(
+                                          'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].aktivitas.toString())}'),
+                                      pw.Text(
+                                          'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].deposit.toString())}'),
+                                      pw.Text(
+                                          'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[index].total.toString())}'),
                                     ],
                                   ),
                                 pw.TableRow(
                                   children: [
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text('Total'),
-                                    ),
-                                    pw.Padding(
-                                      padding: const pw.EdgeInsets.all(5),
-                                      child: pw.Text(
-                                          'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[(data.data as List<LaporanPendapatan>).length - 1].aktivitas.toString())}'),
-                                    ),
+                                    pw.Text(''),
+                                    pw.Text(''),
+                                    pw.Text('Total'),
+                                    pw.Text(
+                                        'Rp ${ThousandsFormatterString.format((data.data as List<LaporanPendapatan>)[(data.data as List<LaporanPendapatan>).length - 1].total.toString())}'),
                                   ],
                                 ),
                               ],
@@ -263,62 +210,21 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                   children: [
                                     pw.TableRow(
                                       children: [
-                                        pw.Padding(
-                                          padding: const pw.EdgeInsets.all(5),
-                                          child: pw.Text('Kelas'),
-                                        ),
-                                        pw.Padding(
-                                          padding: const pw.EdgeInsets.all(5),
-                                          child: pw.Text(
-                                            'Instruktur',
-                                            textAlign: pw.TextAlign.center,
-                                          ),
-                                        ),
-                                        pw.Padding(
-                                          padding: const pw.EdgeInsets.all(5),
-                                          child: pw.Text(
-                                            'Jumlah Peserta',
-                                            textAlign: pw.TextAlign.center,
-                                          ),
-                                        ),
-                                        pw.Padding(
-                                          padding: const pw.EdgeInsets.all(5),
-                                          child: pw.Text(
-                                            'Jumlah Libur',
-                                            textAlign: pw.TextAlign.center,
-                                          ),
-                                        ),
+                                        pw.Text('Kelas'),
+                                        pw.Text('Instruktur'),
+                                        pw.Text('Jumlah Peserta'),
+                                        pw.Text('Jumlah Libur'),
                                       ],
                                     ),
                                     for (var item in (data.data
                                         as List<LaporanAktivitasKelas>))
                                       pw.TableRow(
                                         children: [
-                                          pw.Padding(
-                                            padding: const pw.EdgeInsets.all(5),
-                                            child: pw.Text(item.kelas),
-                                          ),
-                                          pw.Padding(
-                                            padding: const pw.EdgeInsets.all(5),
-                                            child: pw.Text(
-                                              item.instruktur,
-                                              textAlign: pw.TextAlign.center,
-                                            ),
-                                          ),
-                                          pw.Padding(
-                                            padding: const pw.EdgeInsets.all(5),
-                                            child: pw.Text(
-                                              item.jumlahPeserta.toString(),
-                                              textAlign: pw.TextAlign.center,
-                                            ),
-                                          ),
-                                          pw.Padding(
-                                            padding: const pw.EdgeInsets.all(5),
-                                            child: pw.Text(
-                                              item.jumlahLibur.toString(),
-                                              textAlign: pw.TextAlign.center,
-                                            ),
-                                          ),
+                                          pw.Text(item.kelas),
+                                          pw.Text(item.instruktur),
+                                          pw.Text(
+                                              item.jumlahPeserta.toString()),
+                                          pw.Text(item.jumlahLibur.toString()),
                                         ],
                                       ),
                                   ],
@@ -329,19 +235,8 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                       children: [
                                         pw.TableRow(
                                           children: [
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text('Tanggal'),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text(
-                                                'Jumlah Member',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
+                                            pw.Text('Tanggal'),
+                                            pw.Text('Jumlah Member'),
                                           ],
                                         ),
                                         for (var item in (data.data
@@ -349,34 +244,12 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                           pw.TableRow(
                                             children: [
                                               item.tanggal == 'Total'
-                                                  ? pw.Padding(
-                                                      padding: const pw
-                                                          .EdgeInsets.all(5),
-                                                      child: pw.Text('Total'),
-                                                    )
-                                                  : pw.Padding(
-                                                      padding: const pw
-                                                          .EdgeInsets.all(5),
-                                                      child: pw.Text(
-                                                        DateFormat(
-                                                                'dd MMMM yyyy',
-                                                                'id')
-                                                            .format(DateTime
-                                                                .parse(item
-                                                                    .tanggal)),
-                                                        textAlign:
-                                                            pw.TextAlign.center,
-                                                      ),
-                                                    ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                  item.jumlahMember,
-                                                  textAlign:
-                                                      pw.TextAlign.center,
-                                                ),
-                                              ),
+                                                  ? pw.Text('Total')
+                                                  : pw.Text(DateFormat(
+                                                          'dd MMMM yyyy', 'id')
+                                                      .format(DateTime.parse(
+                                                          item.tanggal))),
+                                              pw.Text(item.jumlahMember),
                                             ],
                                           ),
                                       ],
@@ -386,74 +259,20 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                       children: [
                                         pw.TableRow(
                                           children: [
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text('Nama'),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text(
-                                                'Jumlah Hadir',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text(
-                                                'Jumlah Libur',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                            pw.Padding(
-                                              padding:
-                                                  const pw.EdgeInsets.all(5),
-                                              child: pw.Text(
-                                                'Waktu Terlambat (detik)',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
+                                            pw.Text('Nama'),
+                                            pw.Text('Jumlah Hadir'),
+                                            pw.Text('Jumlah Libur'),
+                                            pw.Text('Waktu Terlambat (detik)'),
                                           ],
                                         ),
                                         for (var item in (data.data
                                             as List<LaporanKinerjaInstruktur>))
                                           pw.TableRow(
                                             children: [
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                    item.namaInstruktur),
-                                              ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                  item.jumlahHadir,
-                                                  textAlign:
-                                                      pw.TextAlign.center,
-                                                ),
-                                              ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                  item.jumlahLibur,
-                                                  textAlign:
-                                                      pw.TextAlign.center,
-                                                ),
-                                              ),
-                                              pw.Padding(
-                                                padding:
-                                                    const pw.EdgeInsets.all(5),
-                                                child: pw.Text(
-                                                  item.totalWaktuTerlambat,
-                                                  textAlign:
-                                                      pw.TextAlign.center,
-                                                ),
-                                              ),
+                                              pw.Text(item.namaInstruktur),
+                                              pw.Text(item.jumlahHadir),
+                                              pw.Text(item.jumlahLibur),
+                                              pw.Text(item.totalWaktuTerlambat),
                                             ],
                                           ),
                                       ],
@@ -482,9 +301,10 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
                                       150000000,
                                       300000000,
                                       500000000,
+                                      750000000,
                                     ],
                                     format: (v) =>
-                                        'Rp${ThousandsFormatterString.format(v.toString())}',
+                                        'Rp${ThousandsFormatterString.format(v.toString())}}',
                                     divisions: true,
                                   ),
                                 ),
