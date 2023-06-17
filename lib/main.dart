@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 import '../const.dart';
 
@@ -12,7 +11,7 @@ import 'routes.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  usePathUrlStrategy();
+  //usePathUrlStrategy();
   initializeDateFormatting('id', null);
   runApp(const MainApp());
 }
