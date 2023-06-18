@@ -1,3 +1,4 @@
-# web_gofit
+![image](https://github.com/RickyJ2/APP-WEB-GOFIT/blob/master/web/favicon.png)
 
-A new Flutter project.
+# Flutter Website App
+
