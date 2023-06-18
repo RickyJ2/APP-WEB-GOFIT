@@ -1,6 +1,6 @@
 {
-    "name": "web_gofit",
-    "short_name": "web_gofit",
+    "name": "GoFit",
+    "short_name": "GoFit",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

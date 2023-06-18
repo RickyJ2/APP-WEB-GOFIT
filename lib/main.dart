@@ -51,6 +51,7 @@ class _RouteAppState extends State<RouteApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: 'GoFit',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: colorScheme,
