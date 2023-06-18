@@ -97,24 +97,42 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RichText(
-                                text: const TextSpan(
-                                  text: 'Jadwal Harian Gym ',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 24,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: 'GoFit',
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Jadwal Harian Gym ',
                                       style: TextStyle(
-                                        fontFamily: 'SchibstedGrotesk',
+                                        fontFamily: 'Roboto',
                                         fontSize: 24,
-                                        fontWeight: FontWeight.bold,
+                                        color: accentColor,
                                       ),
+                                      children: [
+                                        TextSpan(
+                                          text: 'GoFit',
+                                          style: TextStyle(
+                                            fontFamily: 'SchibstedGrotesk',
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: accentColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  MediaQuery.of(context).size.width < 600
+                                      ? IconButton(
+                                          tooltip: "Refresh Data Jadwal Harian",
+                                          onPressed: () {
+                                            BlocProvider.of<JadwalHarianBloc>(
+                                                    context)
+                                                .add(JadwalHarianDataFetched());
+                                          },
+                                          icon: const Icon(Icons.refresh,
+                                              color: Colors.grey),
+                                        )
+                                      : Container(),
+                                ],
                               ),
                               const SizedBox(height: 10),
                               TextField(
@@ -132,36 +150,37 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                                       },
                                       icon: const Icon(Icons.search)),
                                 ),
-                              )
+                              ),
+                              const SizedBox(height: 15),
+                              MediaQuery.of(context).size.width < 600
+                                  ? const Row(
+                                      children: [
+                                        Expanded(
+                                          child: GenerateJadwalHarianButton(),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
-                        IconButton(
-                          tooltip: "Refresh Data Jadwal Harian",
-                          onPressed: () {
-                            BlocProvider.of<JadwalHarianBloc>(context)
-                                .add(JadwalHarianDataFetched());
-                          },
-                          icon: const Icon(Icons.refresh, color: Colors.grey),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<JadwalHarianBloc>(context)
-                                .add(JadwalHarianGenerateRequested());
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 8),
-                            child: Text(
-                              'Generate Jadwal Harian',
-                              style: TextStyle(
-                                fontFamily: 'SchibstedGrotesk',
-                                color: textColor,
-                              ),
-                            ),
-                          ),
-                        ),
+                        MediaQuery.of(context).size.width > 600
+                            ? Row(
+                                children: [
+                                  IconButton(
+                                    tooltip: "Refresh Data Jadwal Harian",
+                                    onPressed: () {
+                                      BlocProvider.of<JadwalHarianBloc>(context)
+                                          .add(JadwalHarianDataFetched());
+                                    },
+                                    icon: const Icon(Icons.refresh,
+                                        color: Colors.grey),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  const GenerateJadwalHarianButton(),
+                                ],
+                              )
+                            : Container(),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -170,73 +189,51 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              DataTable(
-                                headingRowColor: MaterialStateColor.resolveWith(
-                                    (states) => primaryColor),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: textColor,
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  headingRowColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => primaryColor),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: textColor,
+                                    ),
                                   ),
-                                ),
-                                dataRowMinHeight: 100,
-                                dataRowMaxHeight: 140,
-                                columns: [
-                                  const DataColumn(
-                                    label: Expanded(
-                                        child: Center(
-                                            child: Text('Tanggal',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                )))),
-                                  ),
-                                  for (int i = 1; i <= state.lengthColumn; i++)
-                                    DataColumn(
+                                  dataRowMinHeight: 100,
+                                  dataRowMaxHeight: 140,
+                                  columns: [
+                                    const DataColumn(
                                       label: Expanded(
                                           child: Center(
-                                              child: Text('Sesi $i',
-                                                  style: const TextStyle(
+                                              child: Text('Tanggal',
+                                                  style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
                                                   )))),
                                     ),
-                                ],
-                                rows: [
-                                  for (var jadwalHarian in state
-                                      .jadwalHarianList[
-                                          state.jadwalHarianList.length -
-                                              state.currentPage]
-                                      .jadwalHarianFormatedList)
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  jadwalHarian
-                                                      .jadwalHarianList[0]
-                                                      .jadwalUmum
-                                                      .hari,
-                                                  style: const TextStyle(
+                                    for (int i = 1;
+                                        i <= state.lengthColumn;
+                                        i++)
+                                      DataColumn(
+                                        label: Expanded(
+                                            child: Center(
+                                                child: Text('Sesi $i',
+                                                    style: const TextStyle(
                                                       fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  jadwalHarian.tanggal,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        for (var item
-                                            in jadwalHarian.jadwalHarianList)
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    )))),
+                                      ),
+                                  ],
+                                  rows: [
+                                    for (var jadwalHarian in state
+                                        .jadwalHarianList[
+                                            state.jadwalHarianList.length -
+                                                state.currentPage]
+                                        .jadwalHarianFormatedList)
+                                      DataRow(
+                                        cells: [
                                           DataCell(
                                             Center(
                                               child: Column(
@@ -244,83 +241,116 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                      item.jadwalUmum.jamMulai),
+                                                    jadwalHarian
+                                                        .jadwalHarianList[0]
+                                                        .jadwalUmum
+                                                        .hari,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                   const SizedBox(height: 5),
-                                                  Text(item
-                                                      .jadwalUmum.kelas.nama),
-                                                  const SizedBox(height: 5),
-                                                  item.instrukturPenganti == ''
-                                                      ? Text(item.jadwalUmum
-                                                          .instruktur.nama)
-                                                      : Text(item
-                                                          .instrukturPenganti),
-                                                  const SizedBox(height: 5),
-                                                  item.instrukturPenganti != ''
-                                                      ? Text(
-                                                          '(${item.status} ${item.jadwalUmum.instruktur.nama})')
-                                                      : (item.status != ''
-                                                          ? Text(
-                                                              '(${item.status})')
-                                                          : const SizedBox
-                                                              .shrink()),
-                                                  const SizedBox(height: 5),
-                                                  ElevatedButton(
-                                                    onPressed: item.status ==
-                                                            'libur'
-                                                        ? null
-                                                        : () {
-                                                            void libur() {
-                                                              BlocProvider.of<
-                                                                          JadwalHarianBloc>(
-                                                                      context)
-                                                                  .add(JadwalHarianUpdateLiburRequested(
-                                                                      id: item
-                                                                          .id));
-                                                            }
-
-                                                            showDialog(
-                                                              context: context,
-                                                              builder: (context) =>
-                                                                  ConfirmationDialog(
-                                                                title:
-                                                                    'Konfirmasi',
-                                                                message:
-                                                                    'Apakah anda yakin ingin meliburkan data Jadwal Harian kelas ${item.jadwalUmum.kelas.nama} pada tanggal ${item.tanggal} jam ${item.jadwalUmum.jamMulai} oleh Instruktur ${item.instrukturPenganti == '' ? item.jadwalUmum.instruktur.nama : item.instrukturPenganti}?',
-                                                                onYes: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  libur();
-                                                                },
-                                                              ),
-                                                            );
-                                                          },
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 5),
-                                                      child: Text(
-                                                        'Libur',
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              'SchibstedGrotesk',
-                                                          fontSize: 12,
-                                                          color: textColor,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                  Text(
+                                                    jadwalHarian.tanggal,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        for (int i = jadwalHarian
-                                                .jadwalHarianList.length;
-                                            i < state.lengthColumn;
-                                            i++)
-                                          const DataCell(Text('')),
-                                      ],
-                                    ),
-                                ],
+                                          for (var item
+                                              in jadwalHarian.jadwalHarianList)
+                                            DataCell(
+                                              Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(item
+                                                        .jadwalUmum.jamMulai),
+                                                    const SizedBox(height: 5),
+                                                    Text(item
+                                                        .jadwalUmum.kelas.nama),
+                                                    const SizedBox(height: 5),
+                                                    item.instrukturPenganti ==
+                                                            ''
+                                                        ? Text(item.jadwalUmum
+                                                            .instruktur.nama)
+                                                        : Text(item
+                                                            .instrukturPenganti),
+                                                    const SizedBox(height: 5),
+                                                    item.instrukturPenganti !=
+                                                            ''
+                                                        ? Text(
+                                                            '(${item.status} ${item.jadwalUmum.instruktur.nama})')
+                                                        : (item.status != ''
+                                                            ? Text(
+                                                                '(${item.status})')
+                                                            : const SizedBox
+                                                                .shrink()),
+                                                    const SizedBox(height: 5),
+                                                    ElevatedButton(
+                                                      onPressed:
+                                                          item.status == 'libur'
+                                                              ? null
+                                                              : () {
+                                                                  void libur() {
+                                                                    BlocProvider.of<JadwalHarianBloc>(
+                                                                            context)
+                                                                        .add(JadwalHarianUpdateLiburRequested(
+                                                                            id: item.id));
+                                                                  }
+
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ConfirmationDialog(
+                                                                      title:
+                                                                          'Konfirmasi',
+                                                                      message:
+                                                                          'Apakah anda yakin ingin meliburkan data Jadwal Harian kelas ${item.jadwalUmum.kelas.nama} pada tanggal ${item.tanggal} jam ${item.jadwalUmum.jamMulai} oleh Instruktur ${item.instrukturPenganti == '' ? item.jadwalUmum.instruktur.nama : item.instrukturPenganti}?',
+                                                                      onYes:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        libur();
+                                                                      },
+                                                                    ),
+                                                                  );
+                                                                },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 5),
+                                                        child: Text(
+                                                          'Libur',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'SchibstedGrotesk',
+                                                            fontSize: 12,
+                                                            color: textColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          for (int i = jadwalHarian
+                                                  .jadwalHarianList.length;
+                                              i < state.lengthColumn;
+                                              i++)
+                                            const DataCell(Text('')),
+                                        ],
+                                      ),
+                                  ],
+                                ),
                               ),
                               const SizedBox(height: 20),
                               Row(
@@ -374,6 +404,33 @@ class _JadwalHarianViewState extends State<JadwalHarianView> {
                   ],
                 );
         },
+      ),
+    );
+  }
+}
+
+class GenerateJadwalHarianButton extends StatelessWidget {
+  const GenerateJadwalHarianButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        BlocProvider.of<JadwalHarianBloc>(context)
+            .add(JadwalHarianGenerateRequested());
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        child: Text(
+          'Generate Jadwal Harian',
+          softWrap: true,
+          style: TextStyle(
+            fontFamily: 'SchibstedGrotesk',
+            color: textColor,
+          ),
+        ),
       ),
     );
   }

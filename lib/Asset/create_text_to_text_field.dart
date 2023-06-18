@@ -25,7 +25,7 @@ class CreateTextToTextField extends StatelessWidget {
             '$label : ',
             style: TextStyle(
               fontFamily: 'robot',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: accentColor,
             ),

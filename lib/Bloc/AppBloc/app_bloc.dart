@@ -21,6 +21,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppLogoutRequested>((event, emit) => _onAppLogoutRequested(event, emit));
     on<ChangedSelectedIndex>(
         (event, emit) => _onChangedSelectedIndex(event, emit));
+    on<NavigationRailShowChanged>(
+        (event, emit) => _onNavigationRailShowChanged(event, emit));
   }
 
   void _onAppOpened(AppOpened event, Emitter<AppState> emit) async {
@@ -74,5 +76,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onChangedSelectedIndex(
       ChangedSelectedIndex event, Emitter<AppState> emit) async {
     emit(state.copyWith(selectedIndex: event.selectedIndex));
+  }
+
+  void _onNavigationRailShowChanged(
+      NavigationRailShowChanged event, Emitter<AppState> emit) async {
+    emit(state.copyWith(showNavigationRail: !state.showNavigationRail));
   }
 }

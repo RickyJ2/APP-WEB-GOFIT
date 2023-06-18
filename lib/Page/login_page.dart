@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../Asset/line_divider.dart';
-
 import '../Bloc/AppBloc/app_bloc.dart';
 import '../Bloc/AppBloc/app_event.dart';
 import '../Bloc/AppBloc/app_state.dart';
@@ -31,63 +28,67 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const BackgroundGym(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: goFit,
+    return SafeArea(
+      child: Stack(
+        children: [
+          const BackgroundGym(),
+          Scaffold(
             backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              return Center(
-                child: Container(
-                  margin: EdgeInsetsGeometry.lerp(
-                    EdgeInsets.symmetric(
-                      horizontal: constraints.maxWidth * 0.1,
-                      vertical: constraints.maxHeight * 0.1,
+            appBar: AppBar(
+              title: goFit,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            body: SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width > 650
+                        ? 650
+                        : MediaQuery.of(context).size.width * 0.9,
+                    constraints: const BoxConstraints(
+                      maxWidth: 650,
+                      maxHeight: 500,
                     ),
-                    EdgeInsets.symmetric(
-                      horizontal: constraints.maxWidth * 0.05,
-                      vertical: constraints.maxHeight * 0.05,
+                    margin: const EdgeInsets.symmetric(vertical: 50),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 10,
                     ),
-                    0.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const TitleFormText(),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4 > 120
+                              ? 120
+                              : MediaQuery.of(context).size.width * 0.4,
+                          child: Divider(
+                            color: primaryColor,
+                            thickness: 3.0,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const SubTextLogin(),
+                        const SizedBox(height: 30),
+                        LoginForm(),
+                        const SizedBox(height: 15),
+                        const SubtextFormLogin(),
+                      ],
+                    ),
                   ),
-                  constraints: const BoxConstraints(
-                    maxWidth: 600,
-                    maxHeight: 500,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: constraints.maxWidth * 0.02,
-                    vertical: constraints.maxHeight * 0.01,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const TitleFormText(),
-                      const LineDivider(),
-                      const SizedBox(height: 10),
-                      const SubTextLogin(),
-                      const SizedBox(height: 30),
-                      LoginForm(),
-                      const SizedBox(height: 15),
-                      const SubtextFormLogin(),
-                    ],
-                  ),
-                ),
-              );
-            },
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -99,12 +100,54 @@ class TitleFormText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
+    return Text(
       'Selamat Datang',
       style: TextStyle(
         fontFamily: 'SchibstedGrotesk',
         fontSize: 30,
         fontWeight: FontWeight.bold,
+        color: accentColor,
+      ),
+    );
+  }
+}
+
+class SubTextLogin extends StatelessWidget {
+  const SubTextLogin({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        text: 'Anda memasuki website sistem informasi ',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 15,
+          fontWeight: FontWeight.normal,
+          color: accentColor,
+        ),
+        children: [
+          TextSpan(
+            text: 'GoFit.',
+            style: TextStyle(
+              fontFamily: 'SchibstedGrotesk',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: accentColor,
+            ),
+          ),
+          TextSpan(
+            text: ' Silahkan login untuk melanjutkan.',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+              color: accentColor,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -293,42 +336,6 @@ class SubtextFormLogin extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SubTextLogin extends StatelessWidget {
-  const SubTextLogin({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: const TextSpan(
-        text: 'Anda memasuki website sistem informasi ',
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 15,
-        ),
-        children: [
-          TextSpan(
-            text: 'GoFit.',
-            style: TextStyle(
-              fontFamily: 'SchibstedGrotesk',
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: ' Silahkan login untuk melanjutkan.',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 15,
-            ),
-          ),
-        ],
       ),
     );
   }

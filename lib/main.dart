@@ -11,7 +11,6 @@ import 'routes.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  //usePathUrlStrategy();
   initializeDateFormatting('id', null);
   runApp(const MainApp());
 }

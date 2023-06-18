@@ -50,11 +50,12 @@ class TitleLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: const TextSpan(
+      text: TextSpan(
         text: 'Transaksi ',
         style: TextStyle(
           fontFamily: 'Roboto',
           fontSize: 24,
+          color: accentColor,
         ),
         children: [
           TextSpan(
@@ -63,6 +64,7 @@ class TitleLabel extends StatelessWidget {
               fontFamily: 'SchibstedGrotesk',
               fontSize: 24,
               fontWeight: FontWeight.bold,
+              color: accentColor,
             ),
           ),
         ],
@@ -134,124 +136,172 @@ class _TransaksiViewState extends State<TransaksiView> {
               : Form(
                   child: Column(
                     children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: Section1(),
-                          ),
-                          SizedBox(width: 20),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: Section2(),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: DaftarHargaPromoViewSection(),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 30, right: 30),
-                              child: SummarySection(),
+                      MediaQuery.of(context).size.width > 1000
+                          ? const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  child: Section1(),
+                                ),
+                                SizedBox(width: 20),
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  child: Section2(),
+                                ),
+                              ],
+                            )
+                          : const Column(
+                              children: [
+                                Section1(),
+                                SizedBox(height: 30),
+                                Section2(),
+                              ],
                             ),
-                          ),
-                          Flexible(
-                            flex: 2,
-                            fit: FlexFit.loose,
-                            child: PaymentSection(),
-                          ),
-                        ],
-                      ),
+                      const SizedBox(height: 30),
+                      MediaQuery.of(context).size.width > 1000
+                          ? const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: DaftarHargaPromoViewSection(),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 30, right: 30),
+                                    child: SummarySection(),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  fit: FlexFit.loose,
+                                  child: PaymentSection(),
+                                ),
+                              ],
+                            )
+                          : const Column(
+                              children: [
+                                PaymentSection(),
+                                SizedBox(height: 30),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: DaftarHargaPromoViewSection()),
+                                  ],
+                                ),
+                                SizedBox(height: 30),
+                                Row(
+                                  children: [
+                                    Expanded(child: SummarySection()),
+                                  ],
+                                ),
+                              ],
+                            ),
                       const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              context
-                                  .read<TransaksiBloc>()
-                                  .add(CancelTransaksiRequested());
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  errorTextColor),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 20),
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  fontFamily: 'SchibstedGrotesk',
-                                  fontSize: 15,
-                                  color: textColor,
-                                ),
-                              ),
-                            ),
-                          ),
+                          MediaQuery.of(context).size.width > 1000
+                              ? const CancelButton()
+                              : const Expanded(child: CancelButton()),
                           const SizedBox(width: 15),
-                          ElevatedButton(
-                            onPressed: state.submitButtonEnabled
-                                ? () {
-                                    context
-                                        .read<TransaksiBloc>()
-                                        .add(TransaksiFormSubmitted());
-                                  }
-                                : null,
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.disabled)) {
-                                    return Colors.grey; // Disabled button color
-                                  }
-                                  return Colors.green; // Default button color
-                                },
-                              ),
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.disabled)) {
-                                    return Colors.black.withOpacity(
-                                        0.5); // Disabled button text color
-                                  }
-                                  return Colors
-                                      .white; // Default button text color
-                                },
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 20),
-                              child: Text(
-                                'Proses Transaksi',
-                                style: TextStyle(
-                                  fontFamily: 'SchibstedGrotesk',
-                                  fontSize: 15,
-                                  color: textColor,
-                                ),
-                              ),
-                            ),
-                          ),
+                          MediaQuery.of(context).size.width > 1000
+                              ? const TransaksiButton()
+                              : const Expanded(child: TransaksiButton()),
                         ],
                       ),
                     ],
                   ),
                 );
         },
+      ),
+    );
+  }
+}
+
+class TransaksiButton extends StatelessWidget {
+  const TransaksiButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransaksiBloc, TransaksiState>(
+        builder: (context, state) {
+      return ElevatedButton(
+        onPressed: state.submitButtonEnabled
+            ? () {
+                context.read<TransaksiBloc>().add(TransaksiFormSubmitted());
+              }
+            : null,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return Colors.grey; // Disabled button color
+              }
+              return Colors.green; // Default button color
+            },
+          ),
+          foregroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return Colors.black
+                    .withOpacity(0.5); // Disabled button text color
+              }
+              return Colors.white; // Default button text color
+            },
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          child: Text(
+            'Proses',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'SchibstedGrotesk',
+              fontSize: 15,
+              color: textColor,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class CancelButton extends StatelessWidget {
+  const CancelButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<TransaksiBloc>().add(CancelTransaksiRequested());
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(errorTextColor),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Text(
+          'Cancel',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'SchibstedGrotesk',
+            fontSize: 15,
+            color: textColor,
+          ),
+        ),
       ),
     );
   }
@@ -554,12 +604,13 @@ class DaftarHargaPromoViewSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
-          text: const TextSpan(
+          text: TextSpan(
             text: 'Daftar Harga dan Promo ',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              color: accentColor,
             ),
             children: [
               TextSpan(
@@ -568,6 +619,7 @@ class DaftarHargaPromoViewSection extends StatelessWidget {
                   fontFamily: 'SchibstedGrotesk',
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
+                  color: accentColor,
                 ),
               ),
             ],

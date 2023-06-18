@@ -82,11 +82,12 @@ class _PaginatedDataTableIzinInstrukturState
                       children: [
                         Expanded(
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               text: 'Data Izin Instuktur Gym ',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 24,
+                                color: accentColor,
                               ),
                               children: [
                                 TextSpan(
@@ -95,6 +96,7 @@ class _PaginatedDataTableIzinInstrukturState
                                     fontFamily: 'SchibstedGrotesk',
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
+                                    color: accentColor,
                                   ),
                                 ),
                               ],
@@ -111,36 +113,19 @@ class _PaginatedDataTableIzinInstrukturState
                           },
                         ),
                         const SizedBox(width: 15),
-                        ToggleButtons(
-                          onPressed: (int index) {
-                            context.read<IzinInstrukturBloc>().add(
-                                IzinInstrukturToogleChanged(
-                                    toogleState: index));
-                          },
-                          isSelected: state.toogleState,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                          selectedColor: textColor,
-                          fillColor: primaryColor,
-                          color: accentColor,
-                          constraints: const BoxConstraints(
-                            minWidth: 100,
-                            minHeight: 40,
-                          ),
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Semua'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Belum Dikonfirmasi'),
-                            ),
-                          ],
-                        ),
+                        MediaQuery.of(context).size.width > 600
+                            ? const FilterToggleButton()
+                            : Container(),
                       ],
                     ),
+                    MediaQuery.of(context).size.width < 600
+                        ? const Row(
+                            children: [
+                              Expanded(child: FilterToggleButton()),
+                            ],
+                          )
+                        : Container(),
+                    const SizedBox(height: 20),
                     PaginatedDataTable(
                       rowsPerPage: state.izinInstrukturListDisplay.isEmpty
                           ? 1
@@ -166,5 +151,46 @@ class _PaginatedDataTableIzinInstrukturState
         },
       ),
     );
+  }
+}
+
+class FilterToggleButton extends StatelessWidget {
+  const FilterToggleButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<IzinInstrukturBloc, IzinInstrukturState>(
+        builder: (context, state) {
+      return ToggleButtons(
+        onPressed: (int index) {
+          context
+              .read<IzinInstrukturBloc>()
+              .add(IzinInstrukturToogleChanged(toogleState: index));
+        },
+        isSelected: state.toogleState,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        selectedColor: textColor,
+        fillColor: primaryColor,
+        color: accentColor,
+        constraints: const BoxConstraints(
+          minWidth: 100,
+          minHeight: 40,
+        ),
+        children: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Semua'),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Belum Dikonfirmasi'),
+          ),
+        ],
+      );
+    });
   }
 }

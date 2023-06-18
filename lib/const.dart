@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 //url Utama Repository
@@ -41,66 +42,141 @@ Text goFit = Text(
   ),
 );
 
+//nama Jabatan
+const jabatanList = ['Manajer Operasional', 'Admin', 'Kasir'];
 //Sidebar List
 const sideBarList = [
   //Manajer Operasional
   [
-    NavigationRailDestination(
-      icon: Icon(Icons.home),
-      label: Text('Home'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.schedule),
-      label: Text('Jadwal Umum'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.calendar_month),
-      label: Text('Jadwal Harian'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.supervisor_account),
-      label: Text('Izin Instruktur'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.summarize),
-      label: Text('Laporan'),
-    ),
+    {
+      'icon': Icons.home,
+      'label': 'Home',
+    },
+    {
+      'icon': Icons.schedule,
+      'label': 'Jadwal Umum',
+      'deskripsi':
+          'Menu untuk menampilkan, menambah, dan mengubah data Jadwal Umum',
+    },
+    {
+      'icon': Icons.calendar_month,
+      'label': 'Jadwal Harian',
+      'deskripsi': 'Menu untuk menampilkan dan meliburkan data Jadwal Harian',
+    },
+    {
+      'icon': Icons.supervisor_account,
+      'label': 'Izin Instruktur',
+      'deskripsi':
+          'Menu untuk menampilkan, menambah, dan mengubah data Izin Instruktur',
+    },
+    {
+      'icon': Icons.summarize,
+      'label': 'Laporan',
+      'deskripsi':
+          'Menu untuk mencetak Laporan Pendapatan, Laporan Aktivitas Gym, Laporan Aktivitas Kelas, dan Laporan Aktivitas Instruktur',
+    },
   ],
 //Admin
   [
-    NavigationRailDestination(
-      icon: Icon(Icons.home),
-      label: Text('Home'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.supervisor_account),
-      label: Text('Instruktur'),
-    ),
+    {
+      'icon': Icons.home,
+      'label': 'Home',
+    },
+    {
+      'icon': Icons.supervisor_account,
+      'label': 'Instruktur',
+      'deskripsi':
+          'Menu untuk menampilkan, menambah, dan mengubah data Instruktur',
+    },
   ],
 //Kasir
   [
-    NavigationRailDestination(
-      icon: Icon(Icons.home),
-      label: Text('Home'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.person),
-      label: Text('Member'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.fitness_center),
-      label: Text('Presensi Gym'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.sports_gymnastics),
-      label: Text('Presensi Kelas'),
-    ),
-    NavigationRailDestination(
-      icon: Icon(Icons.point_of_sale),
-      label: Text('Transaksi'),
-    ),
+    {
+      'icon': Icons.home,
+      'label': 'Home',
+    },
+    {
+      'icon': Icons.person,
+      'label': 'Member',
+      'deskripsi': 'Menu untuk menampilkan, menambah, dan mengubah data Member',
+    },
+    {
+      'icon': Icons.fitness_center,
+      'label': 'Presensi Gym',
+      'deskripsi':
+          'Menu untuk menampilkan, mempresensi, dan mencetak struk Presensi Gym',
+    },
+    {
+      'icon': Icons.sports_gymnastics,
+      'label': 'Presensi Kelas',
+      'deskripsi': 'Menu untuk menampilkan dan mencetak struk Presensi Kelas',
+    },
+    {
+      'icon': Icons.point_of_sale,
+      'label': 'Transaksi',
+      'deskripsi': 'Menu untuk melakukan Transaksi',
+    },
   ],
 ];
+// const sideBarList = [
+//   //Manajer Operasional
+//   [
+//     NavigationRailDestination(
+//       icon: Icon(Icons.home),
+//       label: Text('Home'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.schedule),
+//       label: Text('Jadwal Umum'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.calendar_month),
+//       label: Text('Jadwal Harian'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.supervisor_account),
+//       label: Text('Izin Instruktur'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.summarize),
+//       label: Text('Laporan'),
+//     ),
+//   ],
+// //Admin
+//   [
+//     NavigationRailDestination(
+//       icon: Icon(Icons.home),
+//       label: Text('Home'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.supervisor_account),
+//       label: Text('Instruktur'),
+//     ),
+//   ],
+// //Kasir
+//   [
+//     NavigationRailDestination(
+//       icon: Icon(Icons.home),
+//       label: Text('Home'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.person),
+//       label: Text('Member'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.fitness_center),
+//       label: Text('Presensi Gym'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.sports_gymnastics),
+//       label: Text('Presensi Kelas'),
+//     ),
+//     NavigationRailDestination(
+//       icon: Icon(Icons.point_of_sale),
+//       label: Text('Transaksi'),
+//     ),
+//   ],
+// ];
 
 //enum
 enum TambahEdit { tambah, edit }

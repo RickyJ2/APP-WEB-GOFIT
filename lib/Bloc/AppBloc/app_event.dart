@@ -23,3 +23,5 @@ class ChangedSelectedIndex extends AppEvent {
 
   final int selectedIndex;
 }
+
+class NavigationRailShowChanged extends AppEvent {}

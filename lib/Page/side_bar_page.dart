@@ -30,32 +30,126 @@ class _SideBarPageState extends State<SideBarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppBloc, AppState>(
-      listenWhen: (previous, current) =>
-          previous.authState != current.authState ||
-          previous.logoutState != current.logoutState,
-      listener: (context, state) {
-        if (state.authenticated == false &&
-            state.authState is AppLoadedFailed) {
-          context.go('/login');
-        }
-        if (state.logoutState is AppLoadedSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Berhasil Logout'),
-            ),
-          );
-          context.read<AppBloc>().add(const AppLogouted());
-          context.go('/login');
-        }
-        if (state.logoutState is AppLoadedFailed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text((state.logoutState as AppLoadedFailed).exception),
-            ),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AppBloc, AppState>(
+          listenWhen: (previous, current) =>
+              previous.authState != current.authState ||
+              previous.logoutState != current.logoutState,
+          listener: (context, state) {
+            if (state.authenticated == false &&
+                state.authState is AppLoadedFailed) {
+              context.go('/login');
+            }
+            if (state.logoutState is AppLoadedSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Berhasil Logout'),
+                ),
+              );
+              context.read<AppBloc>().add(const AppLogouted());
+              context.go('/login');
+            }
+            if (state.logoutState is AppLoadedFailed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      Text((state.logoutState as AppLoadedFailed).exception),
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<AppBloc, AppState>(
+          listenWhen: (previous, current) =>
+              previous.selectedIndex != current.selectedIndex,
+          listener: (context, state) {
+            switch (state.user.jabatan) {
+              //MO
+              case 1:
+                {
+                  switch (state.selectedIndex) {
+                    case 0:
+                      {
+                        context.go('/home');
+                        break;
+                      }
+                    case 1:
+                      {
+                        context.go('/jadwal-umum');
+                        break;
+                      }
+                    case 2:
+                      {
+                        context.go('/jadwal-harian');
+                        break;
+                      }
+                    case 3:
+                      {
+                        context.go('/izin-instruktur');
+                        break;
+                      }
+                    case 4:
+                      {
+                        context.go('/laporan');
+                        break;
+                      }
+                  }
+                  break;
+                }
+              //Admin
+              case 2:
+                {
+                  switch (state.selectedIndex) {
+                    case 0:
+                      {
+                        context.go('/home');
+                        break;
+                      }
+                    case 1:
+                      {
+                        context.go('/instruktur');
+                        break;
+                      }
+                  }
+                  break;
+                }
+              //Kasir
+              case 3:
+                {
+                  switch (state.selectedIndex) {
+                    case 0:
+                      {
+                        context.go('/home');
+                        break;
+                      }
+                    case 1:
+                      {
+                        context.go('/member');
+                        break;
+                      }
+                    case 2:
+                      {
+                        context.go('/booking-gym');
+                        break;
+                      }
+                    case 3:
+                      {
+                        context.go('/booking-kelas');
+                        break;
+                      }
+                    case 4:
+                      {
+                        context.go('/transaksi');
+                        break;
+                      }
+                  }
+                  break;
+                }
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
         return state.authState is FormSubmitting ||
                 state.authState is InitialFormState
@@ -66,8 +160,12 @@ class _SideBarPageState extends State<SideBarPage> {
                   title: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      goFit,
-                      const SizedBox(width: 30),
+                      MediaQuery.of(context).size.width > 700
+                          ? goFit
+                          : Container(),
+                      MediaQuery.of(context).size.width > 700
+                          ? const SizedBox(width: 30)
+                          : Container(),
                       Text(
                         "Selamat Datang, ${BlocProvider.of<AppBloc>(context).state.user.nama} !",
                         style: TextStyle(
@@ -81,136 +179,117 @@ class _SideBarPageState extends State<SideBarPage> {
                   ),
                   backgroundColor: accentColor,
                   elevation: 0,
-                  actions: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.logout,
-                        color: textColor,
-                      ),
-                      onPressed: () => context
-                          .read<AppBloc>()
-                          .add(const AppLogoutRequested()),
-                    ),
-                  ],
+                  actions: MediaQuery.of(context).size.width > 700
+                      ? [
+                          IconButton(
+                            icon: Icon(
+                              Icons.logout,
+                              color: textColor,
+                            ),
+                            onPressed: () => context
+                                .read<AppBloc>()
+                                .add(const AppLogoutRequested()),
+                          ),
+                        ]
+                      : [
+                          IconButton(
+                            icon: Icon(
+                              Icons.menu,
+                              color: textColor,
+                            ),
+                            onPressed: () => context
+                                .read<AppBloc>()
+                                .add(NavigationRailShowChanged()),
+                          ),
+                        ],
                 ),
                 body: Row(
                   children: [
-                    NavigationRail(
-                      backgroundColor: accentColor,
-                      selectedLabelTextStyle: TextStyle(color: primaryColor),
-                      unselectedIconTheme: IconThemeData(color: textColor),
-                      unselectedLabelTextStyle: TextStyle(color: textColor),
-                      labelType: NavigationRailLabelType.selected,
-                      groupAlignment: 0,
-                      selectedIndex: state.selectedIndex,
-                      destinations: sideBarList[state.user.jabatan - 1],
-                      onDestinationSelected: (value) {
-                        context
-                            .read<AppBloc>()
-                            .add(ChangedSelectedIndex(selectedIndex: value));
-                        switch (state.user.jabatan) {
-                          //MO
-                          case 1:
-                            {
-                              switch (value) {
-                                case 0:
-                                  {
-                                    context.go('/home');
-                                    break;
-                                  }
-                                case 1:
-                                  {
-                                    context.go('/jadwal-umum');
-                                    break;
-                                  }
-                                case 2:
-                                  {
-                                    context.go('/jadwal-harian');
-                                    break;
-                                  }
-                                case 3:
-                                  {
-                                    context.go('/izin-instruktur');
-                                    break;
-                                  }
-                                case 4:
-                                  {
-                                    context.go('/laporan');
-                                    break;
-                                  }
-                              }
-                              break;
-                            }
-                          //Admin
-                          case 2:
-                            {
-                              switch (value) {
-                                case 0:
-                                  {
-                                    context.go('/home');
-                                    break;
-                                  }
-                                case 1:
-                                  {
-                                    context.go('/instruktur');
-                                    break;
-                                  }
-                              }
-                              break;
-                            }
-                          //Kasir
-                          case 3:
-                            {
-                              switch (value) {
-                                case 0:
-                                  {
-                                    context.go('/home');
-                                    break;
-                                  }
-                                case 1:
-                                  {
-                                    context.go('/member');
-                                    break;
-                                  }
-                                case 2:
-                                  {
-                                    context.go('/booking-gym');
-                                    break;
-                                  }
-                                case 3:
-                                  {
-                                    context.go('/booking-kelas');
-                                    break;
-                                  }
-                                case 4:
-                                  {
-                                    context.go('/transaksi');
-                                    break;
-                                  }
-                              }
-                              break;
-                            }
-                        }
-                      },
-                    ),
-                    const VerticalDivider(thickness: 1, width: 1),
-                    Expanded(
-                      child: SingleChildScrollView(
-                          child: Container(
-                              padding: const EdgeInsets.all(20),
-                              constraints: BoxConstraints(
-                                  minHeight:
-                                      MediaQuery.of(context).size.height - 100),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: widget.mainPageContent)),
-                    ),
+                    MediaQuery.of(context).size.width > 700 ||
+                            state.showNavigationRail
+                        ? const NavigationRailSideBar()
+                        : Container(),
+                    MainBody(widget: widget),
                   ],
                 ),
               );
       }),
     );
+  }
+}
+
+class NavigationRailSideBar extends StatelessWidget {
+  const NavigationRailSideBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+      return NavigationRail(
+        backgroundColor: accentColor,
+        selectedLabelTextStyle: TextStyle(color: primaryColor),
+        unselectedIconTheme: IconThemeData(color: textColor),
+        unselectedLabelTextStyle: TextStyle(color: textColor),
+        labelType: NavigationRailLabelType.selected,
+        groupAlignment: 0,
+        selectedIndex: state.selectedIndex,
+        destinations: sideBarList[state.user.jabatan - 1]
+            .map(
+              (e) => NavigationRailDestination(
+                icon: Icon(e['icon'] as IconData),
+                label: Text(
+                  e['label'].toString(),
+                ),
+              ),
+            )
+            .toList(),
+        trailing: MediaQuery.of(context).size.width < 700
+            ? IconButton(
+                icon: Icon(
+                  Icons.logout,
+                  color: textColor,
+                ),
+                onPressed: () =>
+                    context.read<AppBloc>().add(const AppLogoutRequested()),
+              )
+            : null,
+        onDestinationSelected: (value) {
+          context
+              .read<AppBloc>()
+              .add(ChangedSelectedIndex(selectedIndex: value));
+        },
+      );
+    });
+  }
+}
+
+class MainBody extends StatelessWidget {
+  const MainBody({
+    super.key,
+    required this.widget,
+  });
+
+  final SideBarPage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+      return Expanded(
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - 100),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 255, 249, 243),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: widget.mainPageContent,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
