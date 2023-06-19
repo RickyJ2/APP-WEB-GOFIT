@@ -38,4 +38,6 @@ Repository ini merupakan Website Sistem Informasi Gym GoFit.
 - Menampilkan dan mengonfirmasi izin Instruktur
 - Mencetak Laporan Pendapatan per bulan (dengan grafik), Laporan Aktivitas Kelas Bulanan, Laporan Aktivitas Gym Bulnana, dan Laporan Kinerja Instruktur Bulnana
 
+
+## Contributors
 Ricky Junaidi - 200710589
