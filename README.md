@@ -39,7 +39,7 @@ Repository ini merupakan Website Sistem Informasi Gym GoFit.
 - CRUDS Jadwal Umum
 - Mengelola dan mengenerate otomatis Jadwal Harian
 - Menampilkan dan mengonfirmasi izin Instruktur
-- Mencetak Laporan Pendapatan per bulan (dengan grafik), Laporan Aktivitas Kelas Bulanan, Laporan Aktivitas Gym Bulnana, dan Laporan Kinerja Instruktur Bulnana
+- Mencetak Laporan Pendapatan per bulan (dengan grafik), Laporan Aktivitas Kelas Bulanan, Laporan Aktivitas Gym Bulnana, dan Laporan Kinerja Instruktur Bulanan
 
 
 ## Contributors
