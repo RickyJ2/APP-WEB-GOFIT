@@ -18,7 +18,7 @@
 Proyek ini merupakan tugas Mata Kuliah Proyek Pembangunan Perangkat Lunak Universitas Atma Jaya Yogyakarta. Proyek ini juga merupakan proyek pertama saya dalam menggunakan Framework Flutter. Proyek ini bertemakan dibagi menjadi 3 bagian, yaitu 
 - Backend yang mengelola transaksi FrontEnd dengan Database menggunakan Framework Laravel. Lihat <a href="https://github.com/RickyJ2/RestAPI-WEB-GoFit"> disini </a>
 - Website Sistem Informasi yang diakses oleh pegawai Gym GoFit menggunakan Framework Flutter
-- Aplikasi Mobile yang diakses oleh Member dan Instruktur Gym GoFit menggunakan Framework Flutter. Lihat <a href="https://github.com/RickyJ2/RestAPI-WEB-GoFit"> disini </a>
+- Aplikasi Mobile yang diakses oleh Member dan Instruktur Gym GoFit menggunakan Framework Flutter. Lihat <a href="https://github.com/RickyJ2/APP-MOBILE-GOFIT"> disini </a>
 
 Repository ini merupakan Website Sistem Informasi Gym GoFit.
 
@@ -31,6 +31,9 @@ Repository ini merupakan Website Sistem Informasi Gym GoFit.
 - Melayani dan mencetak Struk Transaksi Aktivasi Tahunan, Deposit Uang, dan Deposit Kelas
 - Mempresensi dan mencetak struk presensi Gym Member
 - Mencetak struk presensi Kelas Member
+- Mendeaktivasi Member dengan Membership kadarluasa
+- Mereset deposit kelas Member yang kadarluasa
+- Mereset Akumulasi terlambat instruktur
 
 **Manajer Operasional**
 - CRUDS Jadwal Umum
