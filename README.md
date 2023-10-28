@@ -9,7 +9,7 @@
     Tugas Mata Kuliah Proyek Pembangunan Perangkat Lunak Universitas Atma Jaya Yogyakarta
     <br />
     <br />
-    <a href="https://rickyj2.github.io/GoFit/">View Demo</a>
+    <a href="https://studentsuajyac-my.sharepoint.com/:v:/g/personal/200710589_students_uajy_ac_id/EZw4OoRBwl1Gn5gkksnJf6cBW2w6hwY5okl_uE__4bdLkw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=7JYgJh">View Demo</a>
   </p>
 </div>
 
